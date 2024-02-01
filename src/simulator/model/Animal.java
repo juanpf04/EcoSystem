@@ -1,5 +1,6 @@
 package simulator.model;
 
+import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
 public abstract class Animal implements Entity, AnimalInfo {
@@ -20,16 +21,22 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 protected SelectionStrategy _mate_strategy;
 	 
 	 protected Animal(String genetic_code, Diet diet, double sight_range,
-			 double init_speed, SelectionStrategy mate_strategy, Vector2D pos) {
+			 double init_speed, SelectionStrategy mate_strategy, Vector2D pos) { // lanzar excepciones, pagina 5
 		 
 		 this._genetic_code = genetic_code;
 		 this._diet = diet;
 		 this._sight_range = sight_range;
-		 this._speed = init_speed;
+		 this._speed = Utils.get_randomized_parameter(init_speed, 0.1);
 		 this._mate_strategy = mate_strategy;
 		 this._pos = pos;
 		 
-		// resto de atributos 
+		 this._state = State.NORMAL;
+		 this._energy = 100.0;
+		 this._desire = 0.0; 
+		 this._dest = null;
+		 this._mate_target = null;
+		 this._baby = null;
+		 this._region_mngr = null;
 	 }
 
 }
