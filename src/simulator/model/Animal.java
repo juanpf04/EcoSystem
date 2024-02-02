@@ -32,7 +32,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 
 		 this._state = State.NORMAL;
 		 this._energy = 100.0;
-		 this._desire = 0.0; 
+		 this._desire = 0.0; //hola
 		 this._dest = null;
 		 this._mate_target = null;
 		 this._baby = null;
