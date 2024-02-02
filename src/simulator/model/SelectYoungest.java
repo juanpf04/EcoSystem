@@ -6,9 +6,10 @@ public class SelectYoungest implements SelectionStrategy {
 
 	@Override
 	public Animal select(Animal a, List<Animal> as) {
-		if((as.isEmpty())
+		if(as.isEmpty())
 				return null;
 		//animal mas joven
+		return null;
 	}
 
 }
