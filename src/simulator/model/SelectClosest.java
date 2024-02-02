@@ -6,9 +6,10 @@ public class SelectClosest implements SelectionStrategy {
 
 	@Override
 	public Animal select(Animal a, List<Animal> as) {
-		if((as.isEmpty())
+		if(as.isEmpty())
 			return null;
 		//busqueda animal mas cercano?
+		return null;
 	}
 
 }

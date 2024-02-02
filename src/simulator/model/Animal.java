@@ -17,7 +17,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 protected double _sight_range;
 	 protected Animal _mate_target;
 	 protected Animal _baby;
-	 protected AnimalMapView _region_mngr;
+//	 protected AnimalMapView _region_mngr;
 	 protected SelectionStrategy _mate_strategy;
 	 
 	 protected Animal(String genetic_code, Diet diet, double sight_range,
@@ -36,7 +36,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 this._dest = null;
 		 this._mate_target = null;
 		 this._baby = null;
-		 this._region_mngr = null;
+//		 this._region_mngr = null;
 	 }
 
 }

@@ -9,7 +9,7 @@ public class SelectFirst implements SelectionStrategy {
 		if(as.isEmpty())
 			return null;
 		
-		return as[0];
+		return as.get(0);
 	}
 
 }
