@@ -11,7 +11,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	
 	// revisar nombres
 	protected static final double ENERGY = 100.0;
-	protected static final double SPEED = 0.1;
+	protected static final double SPEED_TOLERANCE = 0.1;
 	protected static final double FACTOR = 60.0;
 	protected static final double MUTATION_TOLERANCE = 0.2;
 	
@@ -41,7 +41,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 this._genetic_code = genetic_code;
 		 this._diet = diet;
 		 this._sight_range = sight_range;
-		 this._speed = Utils.get_randomized_parameter(init_speed, SPEED);
+		 this._speed = Utils.get_randomized_parameter(init_speed, SPEED_TOLERANCE);
 		 this._mate_strategy = mate_strategy;
 		 this._pos = pos;
 		 
