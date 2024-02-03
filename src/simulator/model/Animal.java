@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.lang.IllegalArgumentException;
+import org.json.JSONObject;
 
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
@@ -90,5 +91,29 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 this._dest = Vector2D.get_random_vector(0, maximo del mapa);
 	 }
 	 
+	 public Animal deliver_baby(){
+		 Animal a = this._baby;	// cambiar
+		 this._baby = null;		// si no esto hara que a sea null;
+		 return a;
+//		 devolver _baby y ponerlo a null. El simulador invocará a este método
+//		 para que nazcan los animales
+		 // return this._baby = null;
+	 }
+	 
+	 protected void move(double speed) {
+		 this._pos = _pos.plus(_dest.minus(_pos).direction().scale(speed));
+	 }
+	 
+	 @Override
+	 public JSONObject as_JSON() { // revisar
+		 JSONObject jo = new JSONObject();
+			
+			jo.put("pos", this._pos);
+			jo.put("gcode", this._genetic_code);
+			jo.put("diet", this._diet);
+			jo.put("state", this._state);
+			
+		 return jo;
+	 }
 	 
 }
