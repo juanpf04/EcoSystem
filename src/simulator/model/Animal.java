@@ -7,9 +7,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	
 	protected static final double ENERGY = 100.0;
 	protected static final double SPEED = 0.1;
-	protected static final double SCALE = 60.0;
-	protected static final double SIGHT_RANGE = 0.2;
-	protected static final double SPEED2 = 0.2;
+	protected static final double FACTOR = 60.0;
+	protected static final double MUTATION_TOLERANCE = 0.2;
+	
 	
 	 protected String _genetic_code;
 	 protected Diet _diet;
@@ -56,10 +56,10 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 this._genetic_code = p1._genetic_code;
 		 this._diet = p1._diet;
 		 this._energy = (p1._energy + p2._energy)/2;
-		 this._pos = p1.get_position().plus(Vector2D.get_random_vector(-1,1).scale(SCALE*(Utils._rand
+		 this._pos = p1.get_position().plus(Vector2D.get_random_vector(-1,1).scale(FACTOR*(Utils._rand
 				 .nextGaussian()+1)));
-		 this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range()+p2.get_sight_range())/2, SIGHT_RANGE);
-		 this._speed = Utils.get_randomized_parameter((p1.get_speed()+p2.get_speed())/2, SPEED2);
+		 this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range()+p2.get_sight_range())/2, MUTATION_TOLERANCE);
+		 this._speed = Utils.get_randomized_parameter((p1.get_speed()+p2.get_speed())/2, MUTATION_TOLERANCE);
 	 }
 	 
 }
