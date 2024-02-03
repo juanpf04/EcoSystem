@@ -1,10 +1,14 @@
 package simulator.model;
 
+import java.lang.IllegalArgumentException;
+
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
+import simulator.view.Messages;
 
 public abstract class Animal implements Entity, AnimalInfo {
 	
+	// revisar nombres
 	protected static final double ENERGY = 100.0;
 	protected static final double SPEED = 0.1;
 	protected static final double FACTOR = 60.0;
@@ -27,7 +31,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 protected SelectionStrategy _mate_strategy;
 	 
 	 protected Animal(String genetic_code, Diet diet, double sight_range,
-			 double init_speed, SelectionStrategy mate_strategy, Vector2D pos) { // lanzar excepciones, pagina 5
+			 double init_speed, SelectionStrategy mate_strategy, Vector2D pos) {
+		 
+		 // revisar excepciones
+		 if(genetic_code.isEmpty() || sight_range < 0 || init_speed < 0 || mate_strategy == null)
+			 throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
 		 
 		 this._genetic_code = genetic_code;
 		 this._diet = diet;
@@ -38,7 +46,10 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 
 		 this._state = State.NORMAL;
 		 this._energy = ENERGY;
-		 this._age = 0.0;			 // revisar
+		 
+		 // revisar inicialización de age
+		 this._age = 0.0;	
+		 
 		 this._desire = 0.0;
 		 this._dest = null;
 		 this._mate_target = null;
@@ -61,5 +72,23 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range()+p2.get_sight_range())/2, MUTATION_TOLERANCE);
 		 this._speed = Utils.get_randomized_parameter((p1.get_speed()+p2.get_speed())/2, MUTATION_TOLERANCE);
 	 }
+	 
+	 public void init(AnimalMapView reg_mngr) { 
+		 this._region_mngr = reg_mngr;
+		 
+		 if(this._pos == null) 		
+			 this._pos = new Vector2D((0,region_mngr.get_width()-1), (0, _region_mngr.get_height()-1));
+		 else 
+			 this._pos = null;
+//			 terminar 
+//			 Si _pos no es
+//			 null hay que ajustarlo para que esté dentro del mapa si es necesario (ver el apartado “Ajustar
+//					 posiciones”).
+		 
+			 
+		  // terminar Elegir una posición aleatoria para _dest (dentro del rango del mapa).
+		 this._dest = Vector2D.get_random_vector(0, maximo del mapa);
+	 }
+	 
 	 
 }

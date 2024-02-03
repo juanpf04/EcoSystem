@@ -8,7 +8,7 @@ public class SelectClosest implements SelectionStrategy {
 	public Animal select(Animal a, List<Animal> as) {
 		if(as.isEmpty())
 			return null;
-		//busqueda animal mas cercano?
+		// terminar devolver animal mas cercacno
 		return null;
 	}
 

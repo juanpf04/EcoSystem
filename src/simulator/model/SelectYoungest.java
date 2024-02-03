@@ -8,7 +8,7 @@ public class SelectYoungest implements SelectionStrategy {
 	public Animal select(Animal a, List<Animal> as) {
 		if(as.isEmpty())
 				return null;
-		//animal mas joven
+		// terminar devolver animal mas joven
 		return null;
 	}
 
