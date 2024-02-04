@@ -19,17 +19,19 @@ public class Sheep extends Animal {
 	protected static final double INIT_SIGHT_RANGE = 40.0;
 	protected static final double INIT_SPEED = 35.0;
 	protected static final double MAX_AGE = 8.0;
-	
+	protected static final double MIN_ENERGY = 0.0;
+	protected static final double MAX_ENERGY = 100.0;
+
 	protected Animal _danger_source;
 	protected SelectionStrategy _danger_strategy;
-	
+
 	public Sheep(SelectionStrategy mate_strategy, SelectionStrategy danger_strategy, Vector2D pos) {
 		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE,INIT_SPEED, mate_strategy, pos);
 		
 		this._danger_source = null;
 		this._danger_strategy = danger_strategy;
 	}
-	
+
 	protected Sheep(Sheep p1, Animal p2) {
 		super(p1, p2);
 		
@@ -41,6 +43,8 @@ public class Sheep extends Animal {
 	public void update(double dt) {
 		if(this._state != State.DEAD) {
 			// actualizar estado
+			this._region_mngr.get_animals_in_range();
+			// e
 			if(fuera del mapa) {
 //				Ajustar posicion
 				this._state = State.NORMAL;
@@ -49,63 +53,64 @@ public class Sheep extends Animal {
 				this._state = State.DEAD;
 			if(this._state != State.DEAD) {
 				this._region_mngr.get_food(this, dt);
-				// añadir energia entre 0.0 y 100.0
+				// añadir energia entre MIN_ENERGY y MAX_ENERGY
 			}
+			
+			// revisar
+			if(this._state == State.NORMAL) {
+				this._danger_source = null;
+				this._mate_target = null;
+			}
+			if (this._state == State.MATE)
+				this._danger_source = null;
+			if (this._state == State.MATE)
+				this._mate_target = null;
 		}
 	}
 
 	@Override
 	public State get_state() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._state;
 	}
 
 	@Override
 	public Vector2D get_position() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._pos;
 	}
 
 	@Override
 	public String get_genetic_code() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._genetic_code;
 	}
 
 	@Override
 	public Diet get_diet() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._diet;
 	}
 
 	@Override
 	public double get_speed() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this._speed;
 	}
 
 	@Override
 	public double get_sight_range() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this._sight_range;
 	}
 
 	@Override
 	public double get_energy() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this._energy;
 	}
 
 	@Override
 	public double get_age() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this._age;
 	}
 
 	@Override
 	public Vector2D get_destination() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._dest;
 	}
 
 	@Override
