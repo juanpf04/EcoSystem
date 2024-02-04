@@ -42,6 +42,10 @@ public class Sheep extends Animal {
 	@Override
 	public void update(double dt) {
 		if(this._state != State.DEAD) {
+			
+			
+			
+			
 			// actualizar estado
 			this._region_mngr.get_animals_in_range();
 			// e
