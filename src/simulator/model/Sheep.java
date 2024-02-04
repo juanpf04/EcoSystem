@@ -18,6 +18,7 @@ public class Sheep extends Animal {
 	);
 	protected static final double INIT_SIGHT_RANGE = 40.0;
 	protected static final double INIT_SPEED = 35.0;
+	protected static final double MAX_AGE = 8.0;
 	
 	protected Animal _danger_source;
 	protected SelectionStrategy _danger_strategy;
@@ -38,8 +39,19 @@ public class Sheep extends Animal {
 
 	@Override
 	public void update(double dt) {
-		// TODO Auto-generated method stub
-		
+		if(this._state != State.DEAD) {
+			// actualizar estado
+			if(fuera del mapa) {
+//				Ajustar posicion
+				this._state = State.NORMAL;
+			}
+			if(this._energy == 0.0 || this._age > MAX_AGE)
+				this._state = State.DEAD;
+			if(this._state != State.DEAD) {
+				this._region_mngr.get_food(this, dt);
+				// añadir energia entre 0.0 y 100.0
+			}
+		}
 	}
 
 	@Override
