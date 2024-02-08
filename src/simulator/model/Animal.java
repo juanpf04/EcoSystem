@@ -10,10 +10,14 @@ import simulator.view.Messages;
 public abstract class Animal implements Entity, AnimalInfo {
 	
 	// revisar nombres
-	protected static final double ENERGY = 100.0;
 	protected static final double SPEED_TOLERANCE = 0.1;
 	protected static final double FACTOR = 60.0;
 	protected static final double MUTATION_TOLERANCE = 0.2;
+	
+	protected static final double MIN_ENERGY = 0.0;
+	protected static final double MAX_ENERGY = 100.0;
+	protected static final double MIN_DESIRE = 0.0;
+	protected static final double MAX_DESIRE = 100.0;
 	
 	
 	 protected String _genetic_code;
@@ -46,9 +50,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 this._pos = pos;
 		 
 		 this._state = State.NORMAL;
-		 this._energy = ENERGY;
+		 this._energy = MAX_ENERGY;
 		 
-		 // revisar inicialización de age
+		 // revisar inicializaciÃ³n de age
 		 this._age = 0.0;	
 		 
 		 this._desire = 0.0;
@@ -83,11 +87,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 			 this._pos = null;
 //			 terminar 
 //			 Si _pos no es
-//			 null hay que ajustarlo para que esté dentro del mapa si es necesario (ver el apartado “Ajustar
-//					 posiciones”).
+//			 null hay que ajustarlo para que estÃ© dentro del mapa si es necesario (ver el apartado â€œAjustar
+//					 posicionesâ€�).
 		 
 			 
-		  // terminar Elegir una posición aleatoria para _dest (dentro del rango del mapa).
+		  // terminar Elegir una posiciÃ³n aleatoria para _dest (dentro del rango del mapa).
 		 this._dest = Vector2D.get_random_vector(0, maximo del mapa);
 	 }
 	 
@@ -95,13 +99,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 Animal a = this._baby;	// cambiar
 		 this._baby = null;		// si no esto hara que a sea null;
 		 return a;
-//		 devolver _baby y ponerlo a null. El simulador invocará a este método
+//		 devolver _baby y ponerlo a null. El simulador invocarÃ¡ a este mÃ©todo
 //		 para que nazcan los animales
 		 // return this._baby = null;
 	 }
 	 
 	 protected void move(double speed) {
-		 this._pos = _pos.plus(_dest.minus(_pos).direction().scale(speed));
+		 this._pos = this._pos.plus(this._dest.minus(this._pos).direction().scale(speed));
 	 }
 	 
 	 @Override

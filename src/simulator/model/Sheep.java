@@ -19,8 +19,6 @@ public class Sheep extends Animal {
 	protected static final double INIT_SIGHT_RANGE = 40.0;
 	protected static final double INIT_SPEED = 35.0;
 	protected static final double MAX_AGE = 8.0;
-	protected static final double MIN_ENERGY = 0.0;
-	protected static final double MAX_ENERGY = 100.0;
 
 	protected Animal _danger_source;
 	protected SelectionStrategy _danger_strategy;
@@ -41,7 +39,7 @@ public class Sheep extends Animal {
 
 	@Override
 	public void update(double dt) {
-		if(this._state != State.DEAD) {
+		/*if(this._state != State.DEAD) {
 			
 			
 			
@@ -69,7 +67,7 @@ public class Sheep extends Animal {
 				this._danger_source = null;
 			if (this._state == State.MATE)
 				this._mate_target = null;
-		}
+		}*/
 	}
 
 	@Override
@@ -119,8 +117,7 @@ public class Sheep extends Animal {
 
 	@Override
 	public boolean is_pregnant() {
-		// TODO Auto-generated method stub
-		return false;
+		return this._baby != null;
 	}
 
 }
