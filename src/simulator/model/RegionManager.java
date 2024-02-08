@@ -2,6 +2,9 @@ package simulator.model;
 
 import java.util.Map;
 import java.util.function.Predicate;
+
+import simulator.misc.Utils;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +35,25 @@ public class RegionManager implements AnimalMapView {
 		// new TreeMap<String, Integer>()// estructura ordenada
 	}
 	
+	void set_region(int row, int col, Region r) {
+		this._regions[row][col] = r;
+	}
 	
+	void register_animal(Animal a) { // revisar 
+		for (int i = 0; i < this.get_rows(); i++)
+			for (int j = 0; j < this.get_cols(); j++) {
+				double x = a.get_position().getX(),
+						y = a.get_position().getY(),
+						minX = j * this.get_region_width(),
+						minY = i * this.get_region_height(),
+						maxX = (j + 1) * this.get_region_width(),
+						maxY = (y + 1) * this.get_region_height();
+				if (x == Utils.constrain_value_in_range(x, minX, maxX) && 
+						y == Utils.constrain_value_in_range(y, minY, maxY)) { 
+					this._animal_region.put(a, this._regions[i][j]);
+				}
+			}
+	}
 
 	@Override
 	public int get_cols() {
