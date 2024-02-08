@@ -53,7 +53,7 @@ public class RegionManager implements AnimalMapView {
 					this._animal_region.put(a, this._regions[i][j]);
 				}
 			}
-	}
+	} 
 
 	@Override
 	public int get_cols() {
@@ -95,5 +95,5 @@ public class RegionManager implements AnimalMapView {
 	public List<Animal> get_animals_in_range(Animal e, Predicate<Animal> filter) {
 		return null;
 	}
-	
+
 }
