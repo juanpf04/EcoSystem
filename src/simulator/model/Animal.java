@@ -112,5 +112,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 			
 		 return jo;
 	 }
+
+	public double distanceTo(Animal closest) {
+		return this.get_position().distanceTo(closest.get_position());
+	}
 	 
 }
