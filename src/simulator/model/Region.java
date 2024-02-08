@@ -50,4 +50,8 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 			 
 		return i;
 	 }
+
+	public boolean contains(Animal a) {
+		return this._animal_in_region.contains(a);
+	}
 }

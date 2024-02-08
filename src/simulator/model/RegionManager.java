@@ -3,10 +3,14 @@ package simulator.model;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.json.JSONObject;
+
 import simulator.misc.Utils;
+import simulator.view.Messages;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 public class RegionManager implements AnimalMapView {
 	
@@ -40,29 +44,67 @@ public class RegionManager implements AnimalMapView {
 	}
 	
 	void register_animal(Animal a) { // revisar 
-		boolean region_found = false;
-		for (int i = 0; i < this.get_rows() && !region_found; i++)
-			for (int j = 0; j < this.get_cols() && !region_found; j++) {
+		boolean registered = false;
+		
+		for (int i = 0; i < this.get_rows() && !registered; i++)
+			for (int j = 0; j < this.get_cols() && !registered; j++) {
+				
 				double x = a.get_position().getX(),
 						y = a.get_position().getY(),
 						minX = j * this.get_region_width(),
 						minY = i * this.get_region_height(),
 						maxX = (j + 1) * this.get_region_width(),
 						maxY = (y + 1) * this.get_region_height();
+				
 				if (x == Utils.constrain_value_in_range(x, minX, maxX) && 
 						y == Utils.constrain_value_in_range(y, minY, maxY)) { 
+					
 					this._regions[i][j].add_animal(a);
 					this._animal_region.put(a, this._regions[i][j]);
-					region_found = true;
+					
+					registered = true;
 				}
 			}
 	} 
 	
 	void unregister_animal(Animal a) {
-		for (int i = 0; i < this.get_rows(); i++)
-			for (int j = 0; j < this.get_cols(); j++) 
-				this._regions[i][j].remove_animal(a);
-			
+		boolean unregistered = false;
+		for (int i = 0; i < this.get_rows() && !unregistered; i++)
+			for (int j = 0; j < this.get_cols() && !unregistered; j++) 
+				if (this._regions[i][j].contains(a)) {
+					this._regions[i][j].remove_animal(a);
+					this._animal_region.remove(a);
+					unregistered = true;
+				}
+	}
+	
+	void update_animal_region(Animal a) {
+		boolean updated = false;
+		
+		for (int i = 0; i < this.get_rows() && !updated; i++)
+			for (int j = 0; j < this.get_cols() && !updated; j++) {
+				
+				double x = a.get_position().getX(),
+						y = a.get_position().getY(),
+						minX = j * this.get_region_width(),
+						minY = i * this.get_region_height(),
+						maxX = (j + 1) * this.get_region_width(),
+						maxY = (y + 1) * this.get_region_height();
+				
+				if (x == Utils.constrain_value_in_range(x, minX, maxX) && 
+						y == Utils.constrain_value_in_range(y, minY, maxY)) { 
+					this._regions[i][j].add_animal(a);
+					this._animal_region.put(a, this._regions[i][j]);
+					
+					updated = true;
+				}
+			}
+	}
+	
+	void update_all_regions(double dt) {
+		for(Region[] regions: this._regions)
+			for(Region region: regions)
+				region.update(dt);
 	}
 
 	@Override
@@ -97,8 +139,7 @@ public class RegionManager implements AnimalMapView {
 
 	@Override
 	public double get_food(Animal a, double dt) {
-		//hacer
-		return 0;
+		return this._animal_region.get(a).get_food(a, dt);
 	}
 
 	@Override
@@ -106,4 +147,23 @@ public class RegionManager implements AnimalMapView {
 		return null;
 	}
 
+	@Override
+	 public JSONObject as_JSON() { // revisar
+		JSONObject jo = new JSONObject();
+		 
+		List<JSONObject> regions = new ArrayList<JSONObject>();
+		
+		for (int i = 0; i < this.get_rows(); i++) 
+			for (int j = 0; j < this.get_cols(); j++) {
+				JSONObject jo1 = new JSONObject();
+				jo1.put(Messages.ROW, i);
+				jo1.put(Messages.COLUMN, j);
+				jo1.put(Messages.DATA, this._regions[i][j]);
+				regions.add(jo1);
+			}			
+		 
+		jo.put(Messages.REGIONS, regions);
+			
+		return jo;
+	 }
 }
