@@ -14,20 +14,22 @@ import java.util.ArrayList;
 
 public class RegionManager implements AnimalMapView {
 	
-	protected int _cols;
-	protected int _rows;
-	protected int _height;
-	protected int _width;	
-	protected int _region_height;
-	protected int _region_width;
-	protected Region[][] _regions; 
-	protected Map<Animal, Region> _animal_region;
+	private int _cols;
+	private int _rows;
+	private int _height;
+	private int _width;	
+	private int _region_height;
+	private int _region_width;
+	private Region[][] _regions; 
+	private Map<Animal, Region> _animal_region;
 	
 	public RegionManager(int cols, int rows, int width, int height) {
 		this._cols = cols;
 		this._rows = rows;
 		this._width = width;
 		this._height = height;
+		this._region_width = this._width / this._cols;
+		this._region_height = this._height / this._rows;
 		
 		this._regions = new Region[this._rows][this._cols];
 		

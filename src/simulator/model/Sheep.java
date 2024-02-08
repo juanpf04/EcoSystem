@@ -20,8 +20,8 @@ public class Sheep extends Animal {
 	protected static final double INIT_SPEED = 35.0;
 	protected static final double MAX_AGE = 8.0;
 
-	protected Animal _danger_source;
-	protected SelectionStrategy _danger_strategy;
+	private Animal _danger_source;
+	private SelectionStrategy _danger_strategy;
 
 	public Sheep(SelectionStrategy mate_strategy, SelectionStrategy danger_strategy, Vector2D pos) {
 		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE,INIT_SPEED, mate_strategy, pos);

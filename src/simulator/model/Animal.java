@@ -76,7 +76,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 public void init(AnimalMapView reg_mngr) { 
 		 this._region_mngr = reg_mngr;
 		 
-		 if(this._pos == null) 		// revisar si hay que poner  -1 o no
+		 if(this.get_position() == null) 		// revisar si hay que poner  -1 o no
 			 this._pos = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
 		 else {			 
 //			 terminar 
@@ -98,17 +98,17 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 }
 	 
 	 protected void move(double speed) {
-		 this._pos = this._pos.plus(this._dest.minus(this._pos).direction().scale(speed));
+		 this._pos = this.get_position().plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
 	 }
 	 
 	 @Override
 	 public JSONObject as_JSON() {
 		 JSONObject jo = new JSONObject();
 			
-			jo.put(Messages.POSITION, this._pos);
-			jo.put(Messages.GENETIC_CODE, this._genetic_code);
-			jo.put(Messages.DIET, this._diet);
-			jo.put(Messages.STATE, this._state);
+			jo.put(Messages.POSITION, this.get_position());
+			jo.put(Messages.GENETIC_CODE, this.get_genetic_code());
+			jo.put(Messages.DIET, this.get_diet());
+			jo.put(Messages.STATE, this.get_state());
 			
 		 return jo;
 	 }

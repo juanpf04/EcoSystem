@@ -20,8 +20,8 @@ public class Wolf extends Animal {
 	protected static final double INIT_SPEED = 60.0;
 	protected static final double MAX_AGE = 14.0;
 	
-	protected Animal _hunt_target;
-	protected SelectionStrategy _hunting_strategy;
+	private Animal _hunt_target;
+	private SelectionStrategy _hunting_strategy;
 	
 	public Wolf(SelectionStrategy mate_strategy, SelectionStrategy hunting_strategy,
 			Vector2D pos) {

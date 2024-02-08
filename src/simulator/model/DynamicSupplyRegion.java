@@ -4,8 +4,8 @@ import simulator.misc.Utils;
 
 public class DynamicSupplyRegion extends Region {
 
-	protected double _food;
-	protected double _factor;
+	private double _food;
+	private double _factor;
 	
 	public DynamicSupplyRegion(double init_food, double growth_factor) {
 		super();
