@@ -1,9 +1,16 @@
 package simulator.model;
 
 import java.util.List;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
-public class Region implements Entity, FoodSupplier, RegionInfo {
+public abstract class Region implements Entity, FoodSupplier, RegionInfo {
+	
+	protected static final double FOOD = 60.0;
+	protected static final double NOMBRE_RECHULON = 5.0;
+	protected static final double NOMBRE_RECHULON2 = 2.0;
 	
 	protected List<Animal> _animal_in_region;
 	
@@ -11,17 +18,6 @@ public class Region implements Entity, FoodSupplier, RegionInfo {
 		this._animal_in_region = new ArrayList<Animal>();
 	}
 
-	@Override
-	public double get_food(Animal a, double dt) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void update(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
 	// revisar visibilidad
 	public final void add_animal(Animal a) {
 		this._animal_in_region.add(a);
@@ -35,4 +31,23 @@ public class Region implements Entity, FoodSupplier, RegionInfo {
 	public final List<Animal> getAnimals(){
 		return this._animal_in_region;
 	}
+	
+	 @Override
+	 public JSONObject as_JSON() { // revisar
+		 JSONObject jo = new JSONObject();
+		 
+		jo.put("animals", this._animal_in_region);
+			
+		 return jo;
+	 }
+	 
+	 protected int count(Diet d) {
+		 int i = 0;
+		 
+		 for (Animal a: this._animal_in_region) 
+			 if(d.equals(a.get_diet()))
+				 i++;
+			 
+		return i;
+	 }
 }
