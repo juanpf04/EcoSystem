@@ -40,8 +40,9 @@ public class RegionManager implements AnimalMapView {
 	}
 	
 	void register_animal(Animal a) { // revisar 
-		for (int i = 0; i < this.get_rows(); i++)
-			for (int j = 0; j < this.get_cols(); j++) {
+		boolean region_found = false;
+		for (int i = 0; i < this.get_rows() && !region_found; i++)
+			for (int j = 0; j < this.get_cols() && !region_found; j++) {
 				double x = a.get_position().getX(),
 						y = a.get_position().getY(),
 						minX = j * this.get_region_width(),
@@ -50,10 +51,19 @@ public class RegionManager implements AnimalMapView {
 						maxY = (y + 1) * this.get_region_height();
 				if (x == Utils.constrain_value_in_range(x, minX, maxX) && 
 						y == Utils.constrain_value_in_range(y, minY, maxY)) { 
+					this._regions[i][j].add_animal(a);
 					this._animal_region.put(a, this._regions[i][j]);
+					region_found = true;
 				}
 			}
 	} 
+	
+	void unregister_animal(Animal a) {
+		for (int i = 0; i < this.get_rows(); i++)
+			for (int j = 0; j < this.get_cols(); j++) 
+				this._regions[i][j].remove_animal(a);
+			
+	}
 
 	@Override
 	public int get_cols() {
