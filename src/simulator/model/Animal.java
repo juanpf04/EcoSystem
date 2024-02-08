@@ -9,11 +9,9 @@ import simulator.view.Messages;
 
 public abstract class Animal implements Entity, AnimalInfo {
 	
-	// revisar nombres
 	protected static final double SPEED_TOLERANCE = 0.1;
 	protected static final double FACTOR = 60.0;
 	protected static final double MUTATION_TOLERANCE = 0.2;
-	
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
 	protected static final double MIN_DESIRE = 0.0;
@@ -51,10 +49,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 
 		 this._state = State.NORMAL;
 		 this._energy = MAX_ENERGY;
-		 
-		 // revisar inicializaciÃ³n de age
 		 this._age = 0.0;	
-		 
 		 this._desire = 0.0;
 		 this._dest = null;
 		 this._mate_target = null;
@@ -81,18 +76,16 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 public void init(AnimalMapView reg_mngr) { 
 		 this._region_mngr = reg_mngr;
 		 
-		 if(this._pos == null) 		
-			 this._pos = new Vector2D((0,region_mngr.get_width()-1), (0, _region_mngr.get_height()-1));
-		 else 
-			 this._pos = null;
+		 if(this._pos == null) 		// revisar si hay que poner  -1 o no
+			 this._pos = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
+		 else {			 
 //			 terminar 
 //			 Si _pos no es
 //			 null hay que ajustarlo para que estÃ© dentro del mapa si es necesario (ver el apartado â€œAjustar
 //					 posicionesâ€�).
-		 
+		 }
 			 
-		  // terminar Elegir una posiciÃ³n aleatoria para _dest (dentro del rango del mapa).
-		 this._dest = Vector2D.get_random_vector(0, maximo del mapa);
+		 this._dest = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
 	 }
 	 
 	 public Animal deliver_baby(){
@@ -109,7 +102,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 }
 	 
 	 @Override
-	 public JSONObject as_JSON() { // revisar
+	 public JSONObject as_JSON() {
 		 JSONObject jo = new JSONObject();
 			
 			jo.put("pos", this._pos);
