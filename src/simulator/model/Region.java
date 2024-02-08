@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import simulator.view.Messages;
+
 import java.util.ArrayList;
 
 public abstract class Region implements Entity, FoodSupplier, RegionInfo {
@@ -36,7 +38,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	 public JSONObject as_JSON() { // revisar
 		 JSONObject jo = new JSONObject();
 		 
-		jo.put("animals", this._animal_in_region);
+		jo.put(Messages.ANIMALS, this._animal_in_region);
 			
 		 return jo;
 	 }

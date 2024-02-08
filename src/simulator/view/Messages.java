@@ -6,6 +6,11 @@ public class Messages {
 	
 	
 	// JSONObjects key names
+	
+	public static final String POSITION = "pos";
+	public static final String GENETIC_CODE = "gcode";
+	public static final String DIET = "diet";
+	public static final String STATE = "state";
 	public static final String COLUMN = "col";
 	public static final String 	ROW = "row";
 	public static final String 	DATA = "data";
