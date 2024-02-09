@@ -30,7 +30,7 @@ public class Simulator implements JSONable {
 	}
 	
 	public void set_region(int row, int col, JSONObject r_json) { 
-		this.set_region(row, col, this._regions_factory.fun(r_json));
+		this.set_region(row, col, this._regions_factory.create_instance(r_json));
 	}
 	
 	private void add_animal(Animal a) {
@@ -39,7 +39,7 @@ public class Simulator implements JSONable {
 	}
 	
 	public void add_animal(JSONObject a_json) {
-		this.add_animal(this._animals_factory.fun(a_json));
+		this.add_animal(this._animals_factory.create_instance(a_json));
 	}
 	
 	public MapInfo get_map_info() {

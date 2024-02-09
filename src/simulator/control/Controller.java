@@ -18,8 +18,8 @@ public class Controller {
 	public void load_data(JSONObject data) {
 		// recorrer data para sacar los animales y las regiones
 		//utilizar 
-		this._sim.add_animal(data);
 		this._sim.set_region(data, data, data);
+		this._sim.add_animal(data);
 		// tratar data
 	}
 	
@@ -28,6 +28,8 @@ public class Controller {
 		jo.put(Messages.IN, this._sim.as_JSON());
 		while(this._sim.get_time() <= t) {
 			this._sim.advance(dt);
+			if(sv) 
+				print(this._sim);
 		}
 		jo.put(Messages.OUT, this._sim.as_JSON());
 		//out.write(jo);
