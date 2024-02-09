@@ -16,7 +16,11 @@ public class Controller {
 	}
 	
 	public void load_data(JSONObject data) {
-		
+		// recorrer data para sacar los animales y las regiones
+		//utilizar 
+		this._sim.add_animal(data);
+		this._sim.set_region(data, data, data);
+		// tratar data
 	}
 	
 	public void run(double t, double dt, boolean sv, OutputStream out) {
