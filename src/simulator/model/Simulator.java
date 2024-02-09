@@ -29,8 +29,8 @@ public class Simulator implements JSONable {
 		this._region_manager.set_region(row, col, r); 
 	}
 	
-	public void set_region(int row, int col, JSONObject r_json) { // revisar
-		this.set_region(row, col, (Region) r_json.get(Messages.DATA));
+	public void set_region(int row, int col, JSONObject r_json) { 
+		this.set_region(row, col, );
 	}
 	
 	private void add_animal(Animal a) {
@@ -71,9 +71,11 @@ public class Simulator implements JSONable {
 	}
 
 	private void remove_deaths() {
-		for(Animal a: this._animals)
+		for(int i = this._animals.size() - 1; i>=0 ; i--) {
+			Animal a = this._animals.get(i);
 			if(!a.is_alive())
 				this._animals.remove(a);
+		}
 	}
 	
 	@Override

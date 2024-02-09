@@ -39,10 +39,10 @@ public class Sheep extends Animal {
 
 	@Override
 	public void update(double dt) {
-		/*if(this._state != State.DEAD) {
+		if(this._state != State.DEAD) {
 			
 			
-			
+			this.update(dt,this.get_state());
 			
 			// actualizar estado
 			this._region_mngr.get_animals_in_range();
@@ -67,7 +67,18 @@ public class Sheep extends Animal {
 				this._danger_source = null;
 			if (this._state == State.MATE)
 				this._mate_target = null;
-		}*/
+		}
+	}
+
+	private void update(double dt, State s) {
+		switch(s) {
+		case NORMAL:
+		
+		case MATE:
+			
+		
+		
+		}
 	}
 
 }

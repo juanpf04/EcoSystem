@@ -38,7 +38,7 @@ public class RegionManager implements AnimalMapView {
 				this._regions[i][j] = new DefaultRegion();
 		
 		this._animal_region = new HashMap<Animal, Region>();// estructura sin orden
-		// new TreeMap<String, Integer>()// estructura ordenada
+		// new TreeMap<SAnimal, Region>()// estructura ordenada
 	}
 	
 	void set_region(int row, int col, Region r) {

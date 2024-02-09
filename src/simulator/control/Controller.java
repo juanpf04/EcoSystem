@@ -24,12 +24,9 @@ public class Controller {
 		jo.put(Messages.IN, this._sim.as_JSON());
 		while(this._sim.get_time() <= t) {
 			this._sim.advance(dt);
-			
-			 
-			
 		}
 		jo.put(Messages.OUT, this._sim.as_JSON());
-		out.write(jo);
+		//out.write(jo);
 	}
 	
 }
