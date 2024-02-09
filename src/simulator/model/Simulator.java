@@ -1,6 +1,11 @@
 package simulator.model;
 
 import java.util.List;
+
+import org.json.JSONObject;
+
+import simulator.view.Messages;
+
 import java.util.ArrayList;
 
 public class Simulator implements JSONable {
@@ -20,8 +25,65 @@ public class Simulator implements JSONable {
 		this._time = 0.0;
 	}
 
-	private set_region(int row, int col, JSONObject r) {
-		
+	private void set_region(int row, int col, Region r) {
+		this._region_manager.set_region(row, col, r); 
 	}
+	
+	public void set_region(int row, int col, JSONObject r_json) { // revisar
+		this.set_region(row, col, (Region) r_json.get(Messages.DATA));
+	}
+	
+	private void add_animal(Animal a) {
+		this._animals.add(a);
+		this._region_manager.register_animal(a);
+	}
+	
+	public void add_animal(JSONObject a_json) {
+		this.add_animal(a_json);
+	}
+	
+	public MapInfo get_map_info() {
+		return this._region_manager;
+	}
+	
+	public List<? extends Animalnfo> get_animals() {
+		return this._animals;
+	}
+	
+	public double get_time() {
+		return this._time;
+	}
+	
+	public void advance(double dt) {
+		this._time *= dt;
+		this.remove_deaths();
+		this.update_all_animals(dt);
+		this._region_manager.update_all_regions(dt);
+		for(Animal a: this._animals)
+			if(a.is_pregnant())
+				this.add_animal(a.deliver_baby());
+			
+	}
+
+	private void update_all_animals(double dt) {
+		for(Animal a: this._animals)
+			a.update(dt);
+	}
+
+	private void remove_deaths() {
+		for(Animal a: this._animals)
+			if(!a.is_alive())
+				this._animals.remove(a);
+	}
+	
+	@Override
+	 public JSONObject as_JSON() { // revisar
+		JSONObject jo = new JSONObject();	
+		 
+		jo.put(Messages.TIME, this.get_time());
+		jo.put(Messages.REGIONS_STATE, this._region_manager.as_JSON());
+			
+		return jo;
+	 }
 	
 }

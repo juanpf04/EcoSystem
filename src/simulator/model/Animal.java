@@ -101,20 +101,74 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 this._pos = this.get_position().plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
 	 }
 	 
-	 @Override
-	 public JSONObject as_JSON() {
-		 JSONObject jo = new JSONObject();
+	@Override
+	public JSONObject as_JSON() {
+		JSONObject jo = new JSONObject();
 			
-			jo.put(Messages.POSITION, this.get_position());
-			jo.put(Messages.GENETIC_CODE, this.get_genetic_code());
-			jo.put(Messages.DIET, this.get_diet());
-			jo.put(Messages.STATE, this.get_state());
+		jo.put(Messages.POSITION, this.get_position());
+		jo.put(Messages.GENETIC_CODE, this.get_genetic_code());
+		jo.put(Messages.DIET, this.get_diet());			
+		jo.put(Messages.ANIMAL_STATE, this.get_state());
 			
-		 return jo;
-	 }
+		return jo;
+	}
+	
+	@Override
+	public State get_state() {
+		return this._state;
+	}
+
+	@Override
+	public Vector2D get_position() {
+		return this._pos;
+	}
+
+	@Override
+	public String get_genetic_code() {
+		return this._genetic_code;
+	}
+
+	@Override
+	public Diet get_diet() {
+		return this._diet;
+	}
+
+	@Override
+	public double get_speed() {
+		return this._speed;
+	}
+
+	@Override
+	public double get_sight_range() {
+		return this._sight_range;
+	}
+
+	@Override
+	public double get_energy() {
+		return this._energy;
+	}
+
+	@Override
+	public double get_age() {
+		return this._age;
+	}
+
+	@Override
+	public Vector2D get_destination() {
+		return this._dest;
+	}
+
+	@Override
+	public boolean is_pregnant() {
+		return this._baby != null;
+	}
 
 	public double distanceTo(Animal closest) {
 		return this.get_position().distanceTo(closest.get_position());
+	}
+	
+	public boolean is_alive() {
+		return this.get_state() != State.DEAD;
 	}
 	 
 }

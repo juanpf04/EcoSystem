@@ -42,55 +42,5 @@ public class Wolf extends Animal {
 	public void update(double dt) {
 		
 	}
-
-	@Override
-	public State get_state() {
-		return this._state;
-	}
-
-	@Override
-	public Vector2D get_position() {
-		return this._pos;
-	}
-
-	@Override
-	public String get_genetic_code() {
-		return this._genetic_code;
-	}
-
-	@Override
-	public Diet get_diet() {
-		return this._diet;
-	}
-
-	@Override
-	public double get_speed() {
-		return this._speed;
-	}
-
-	@Override
-	public double get_sight_range() {
-		return this._sight_range;
-	}
-
-	@Override
-	public double get_energy() {
-		return this._energy;
-	}
-
-	@Override
-	public double get_age() {
-		return this._age;
-	}
-
-	@Override
-	public Vector2D get_destination() {
-		return this._dest;
-	}
-
-	@Override
-	public boolean is_pregnant() {
-		return this._baby != null;
-	}
 	
 }
