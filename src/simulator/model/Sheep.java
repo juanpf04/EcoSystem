@@ -39,6 +39,9 @@ public class Sheep extends Animal {
 
 	@Override
 	public void update(double dt) {
+		
+		
+		
 		if(this._state != State.DEAD) {
 			
 			
