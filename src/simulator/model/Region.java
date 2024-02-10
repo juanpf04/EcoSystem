@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import simulator.view.Messages;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	
@@ -29,9 +30,8 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		this._animal_in_region.remove(a);
 	}
 	
-	// revisar si es constante
 	public final List<Animal> getAnimals(){
-		return this._animal_in_region;
+		return Collections.unmodifiableList(this._animal_in_region);
 	}
 	
 	 @Override

@@ -8,6 +8,7 @@ import simulator.factories.Factory;
 import simulator.view.Messages;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Simulator implements JSONable {
 	
@@ -47,8 +48,8 @@ public class Simulator implements JSONable {
 		return this._region_manager;
 	}
 	
-	public List<? extends Animalnfo> get_animals() {
-		return this._animals;
+	public List<? extends AnimalInfo> get_animals() {
+		return Collections.unmodifiableList(this._animals);
 	}
 	
 	public double get_time() {

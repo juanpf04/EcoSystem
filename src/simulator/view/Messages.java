@@ -14,6 +14,7 @@ public class Messages {
 	public static final String COLUMN = "col";
 	public static final String ROW = "row";
 	public static final String DATA = "data";
+	public static final String TYPE = "type";
 	public static final String ANIMALS = "animals";
 	public static final String REGIONS = "regiones";
 	public static final String TIME = "time";
@@ -25,5 +26,6 @@ public class Messages {
 	// Exceptions
 	public static final String INVALID_TYPE = "Invalid type";
 	public static final String INVALID_DESC = "Invalid desc";
+	public static final String INVALID_INFO = "’info’ cannot be null";
 	
 }
