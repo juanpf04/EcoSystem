@@ -44,7 +44,7 @@ public class RegionManager implements AnimalMapView {
 		this._regions[row][col] = r;
 	}
 	
-	void register_animal(Animal a) { // revisar 
+	void register_animal(Animal a) { 
 		boolean registered = false;
 		
 		for (int i = 0; i < this.get_rows() && !registered; i++)
@@ -62,7 +62,7 @@ public class RegionManager implements AnimalMapView {
 					
 					this._regions[i][j].add_animal(a);
 					this._animal_region.put(a, this._regions[i][j]);
-					
+					a.init(this);
 					registered = true;
 				}
 			}
@@ -79,7 +79,7 @@ public class RegionManager implements AnimalMapView {
 				}
 	}
 	
-	void update_animal_region(Animal a) {
+	void update_animal_region(Animal a) { // revisar
 		boolean updated = false;
 		
 		for (int i = 0; i < this.get_rows() && !updated; i++)

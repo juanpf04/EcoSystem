@@ -18,88 +18,99 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected static final double MAX_DESIRE = 100.0;
 	
 	
-	 protected String _genetic_code;
-	 protected Diet _diet;
-	 protected State _state;
-	 protected Vector2D _pos;
-	 protected Vector2D _dest;
-	 protected double _energy;
-	 protected double _speed;
-	 protected double _age;
-	 protected double _desire;
-	 protected double _sight_range;
-	 protected Animal _mate_target;
-	 protected Animal _baby;
-	 protected AnimalMapView _region_mngr;
-	 protected SelectionStrategy _mate_strategy;
-	 
-	 protected Animal(String genetic_code, Diet diet, double sight_range,
-			 double init_speed, SelectionStrategy mate_strategy, Vector2D pos) {
+	protected String _genetic_code;
+	protected Diet _diet;
+	protected State _state;
+	protected Vector2D _pos;
+	protected Vector2D _dest;
+	protected double _energy;
+	protected double _speed;
+	protected double _age;
+	protected double _desire;
+	protected double _sight_range;
+	protected Animal _mate_target;
+	protected Animal _baby;
+	protected AnimalMapView _region_mngr;
+	protected SelectionStrategy _mate_strategy;
+	
+	protected Animal(String genetic_code, Diet diet, double sight_range,
+			double init_speed, SelectionStrategy mate_strategy, Vector2D pos) {
 		 
-		 // revisar excepciones
-		 if(genetic_code.isEmpty() || sight_range < 0 || init_speed < 0 || mate_strategy == null)
-			 throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if(genetic_code.isEmpty() || sight_range < 0 || init_speed < 0 || mate_strategy == null)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
 		 
-		 this._genetic_code = genetic_code;
-		 this._diet = diet;
-		 this._sight_range = sight_range;
-		 this._speed = Utils.get_randomized_parameter(init_speed, SPEED_TOLERANCE);
-		 this._mate_strategy = mate_strategy;
-		 this._pos = pos;
-		 
-		 this._state = State.NORMAL;
-		 this._energy = MAX_ENERGY;
-		 this._age = 0.0;	
-		 this._desire = 0.0;
-		 this._dest = null;
-		 this._mate_target = null;
-		 this._baby = null;
-		 this._region_mngr = null;
-	 }
+		this._genetic_code = genetic_code;
+		this._diet = diet;
+		this._sight_range = sight_range;
+		this._speed = Utils.get_randomized_parameter(init_speed, SPEED_TOLERANCE);
+		this._mate_strategy = mate_strategy;
+		this._pos = pos;
+		
+		this._state = State.NORMAL;
+		this._energy = MAX_ENERGY;
+		this._age = 0.0;	
+		this._desire = 0.0;
+		this._dest = null;
+		this._mate_target = null;
+		this._baby = null;
+		this._region_mngr = null;
+	}
 
-	 protected Animal(Animal p1, Animal p2) {
-		 this._dest = null;
-		 this._baby = null;
-		 this._mate_target = null;
-		 this._region_mngr = null;
-		 this._state = State.NORMAL;
-		 this._desire = 0.0;
-		 this._genetic_code = p1.get_genetic_code();
-		 this._diet = p1.get_diet();
-		 this._energy = (p1.get_energy() + p2.get_energy())/2;
-		 this._pos = p1.get_position().plus(Vector2D.get_random_vector(-1,1).scale(FACTOR*(Utils._rand
-				 .nextGaussian()+1)));
-		 this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range()+p2.get_sight_range())/2, MUTATION_TOLERANCE);
-		 this._speed = Utils.get_randomized_parameter((p1.get_speed()+p2.get_speed())/2, MUTATION_TOLERANCE);
-	 }
+	protected Animal(Animal p1, Animal p2) {
+		this._dest = null;
+		this._baby = null;
+		this._mate_target = null;
+		this._region_mngr = null;
+		this._state = State.NORMAL;
+		this._desire = 0.0;
+		this._genetic_code = p1.get_genetic_code();
+		this._diet = p1.get_diet();
+		this._energy = (p1.get_energy() + p2.get_energy())/2;
+		this._pos = p1.get_position().plus(Vector2D.get_random_vector(-1,1).scale(FACTOR*(Utils._rand
+			 .nextGaussian()+1)));
+		this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range()+p2.get_sight_range())/2, MUTATION_TOLERANCE);
+		this._speed = Utils.get_randomized_parameter((p1.get_speed()+p2.get_speed())/2, MUTATION_TOLERANCE);
+	}
 	 
-	 public void init(AnimalMapView reg_mngr) { 
-		 this._region_mngr = reg_mngr;
+	public void init(AnimalMapView reg_mngr) { 
+		this._region_mngr = reg_mngr;
 		 
-		 if(this.get_position() == null) 		// revisar si hay que poner  -1 o no
-			 this._pos = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
-		 else {			 
-//			 terminar 
-//			 Si _pos no es
-//			 null hay que ajustarlo para que estÃ© dentro del mapa si es necesario (ver el apartado â€œAjustar
-//					 posicionesâ€�).
-		 }
+		if(this.get_position() == null) 		// revisar si hay que poner  widht-1 y height-1 o no
+			this._pos = new Vector2D(
+				Utils._rand.nextDouble(0, this._region_mngr.get_width()), 
+				Utils._rand.nextDouble(0, this._region_mngr.get_height()));
+		else if(this.is_out()) { 
+			this.adjust_position();
+		}
 			 
-		 this._dest = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
-	 }
+		this._dest = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
+	}
 	 
-	 public Animal deliver_baby(){
-		 Animal a = this._baby;	// cambiar
-		 this._baby = null;		// si no esto hara que a sea null;
-		 return a;
-//		 devolver _baby y ponerlo a null. El simulador invocarÃ¡ a este mÃ©todo
-//		 para que nazcan los animales
-		 // return this._baby = null;
-	 }
+	protected boolean is_out() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	protected void adjust_position() {	// revisar
+		 while (this.get_position().getX() >= this._region_mngr.get_width()) 
+			 this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0));
+		 while (this.get_position().getX() < 0) 
+			 this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
+		 while (this.get_position().getY() >= this._region_mngr.get_height()) 
+			 this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
+		 while (this.get_position().getY() < 0) 
+			 this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
+	}
+
+	public Animal deliver_baby() { // revisar
+		Animal baby = this._baby;	
+		this._baby = null;		
+		return baby;
+	}
 	 
-	 protected void move(double speed) {
-		 this._pos = this.get_position().plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
-	 }
+	protected void move(double speed) {
+		this._pos = this.get_position().plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
+	}
 	 
 	@Override
 	public JSONObject as_JSON() {
