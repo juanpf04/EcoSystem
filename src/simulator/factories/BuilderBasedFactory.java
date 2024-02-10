@@ -52,8 +52,15 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		// info.has("data") ? info.getJSONObject("data") : new getJSONObject()
 		// …
 		// If no builder is found or the result is null ...
+		Builder<T> b = this._builders.get(info.getString(Messages.TYPE));
+		T t = null;
 		
-		throw new IllegalArgumentException("Unrecognized ‘info’:" + info.toString());
+		if(b != null) 
+			t = b.create_instance(info.has(Messages.DATA) ? info.getJSONObject(Messages.DATA) : new getJSONObject());
+		if(t != null)
+			return t;
+		
+		throw new IllegalArgumentException(Messages.unrecognized_info(info.toString()));
 	}
 	
 	@Override
