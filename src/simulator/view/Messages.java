@@ -20,5 +20,10 @@ public class Messages {
 	public static final String REGIONS_STATE = "state";
 	public static final String IN = "in";
 	public static final String OUT = "out";
+
+
+	// Exceptions
+	public static final String INVALID_TYPE = "Invalid type";
+	public static final String INVALID_DESC = "Invalid desc";
 	
 }

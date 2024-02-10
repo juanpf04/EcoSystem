@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import simulator.factories.Factory;
 import simulator.view.Messages;
 
 import java.util.ArrayList;
@@ -17,11 +18,11 @@ public class Simulator implements JSONable {
 	private double _time;
 	
 	public Simulator(int cols, int rows, int width, int height,
-			Factory<Animal> animals_factory, Factory<Region> animals_factory) {
+			Factory<Animal> animals_factory, Factory<Region> regions_factory) {
 		this._animals_factory = animals_factory;
-		this._animals_factory = animals_factory;
+		this._regions_factory = regions_factory;
 		this._region_manager = new RegionManager(cols, rows, width, height);
-		this._animals = new ArrayList<Animal>(); // iniciar con los animales, mirar mas alante
+		this._animals = new ArrayList<Animal>();
 		this._time = 0.0;
 	}
 

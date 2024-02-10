@@ -37,8 +37,7 @@ public class RegionManager implements AnimalMapView {
 			for (int j = 0; j < this.get_cols(); j++)
 				this._regions[i][j] = new DefaultRegion();
 		
-		this._animal_region = new HashMap<Animal, Region>();// estructura sin orden
-		// new TreeMap<SAnimal, Region>()// estructura ordenada
+		this._animal_region = new HashMap<Animal, Region>();
 	}
 	
 	void set_region(int row, int col, Region r) {
@@ -97,7 +96,7 @@ public class RegionManager implements AnimalMapView {
 						y == Utils.constrain_value_in_range(y, minY, maxY)) { 
 					this._regions[i][j].add_animal(a);
 					this._animal_region.put(a, this._regions[i][j]);
-					
+					// utilizar mapa para saber en que region esta en el animal
 					updated = true;
 				}
 			}
