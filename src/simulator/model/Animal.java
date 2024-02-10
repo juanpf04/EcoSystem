@@ -49,7 +49,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._state = State.NORMAL;
 		this._energy = MAX_ENERGY;
 		this._age = 0.0;	
-		this._desire = 0.0;
+		this._desire = MIN_DESIRE;
 		this._dest = null;
 		this._mate_target = null;
 		this._baby = null;
@@ -77,13 +77,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 		 
 		if(this.get_position() == null) // revisar si hay que poner  widht-1 y height-1 o no
 			this._pos = new Vector2D(
-				Utils._rand.nextDouble(0, this._region_mngr.get_width()), 
-				Utils._rand.nextDouble(0, this._region_mngr.get_height()));
+				Utils._rand.nextDouble(this._region_mngr.get_width()), 
+				Utils._rand.nextDouble(this._region_mngr.get_height()));
 		else if(this.is_out()) { 
 			this.adjust_position();
 		}
 			 
-		this._dest = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
+		this._dest = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()), Utils._rand.nextDouble(this._region_mngr.get_height()));
 	}
 	 
 	protected boolean is_out() { // revisar y mirar si hay que poner height-1 o no

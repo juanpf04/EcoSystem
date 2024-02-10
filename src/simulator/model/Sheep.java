@@ -47,7 +47,7 @@ public class Sheep extends Animal {
 			
 			
 			// actualizar estado
-			this._region_mngr.get_animals_in_range();
+			this._region_mngr.get_animals_in_range(this,algo);
 			// e
 			if(this.is_out()) {
 //				Ajustar posicion
