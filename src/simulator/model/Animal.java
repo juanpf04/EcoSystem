@@ -75,7 +75,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public void init(AnimalMapView reg_mngr) { 
 		this._region_mngr = reg_mngr;
 		 
-		if(this.get_position() == null) 		// revisar si hay que poner  widht-1 y height-1 o no
+		if(this.get_position() == null) // revisar si hay que poner  widht-1 y height-1 o no
 			this._pos = new Vector2D(
 				Utils._rand.nextDouble(0, this._region_mngr.get_width()), 
 				Utils._rand.nextDouble(0, this._region_mngr.get_height()));
@@ -86,14 +86,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._dest = new Vector2D(Utils._rand.nextDouble(0, this._region_mngr.get_width()), Utils._rand.nextDouble(0, this._region_mngr.get_height()));
 	}
 	 
-	protected boolean is_out() {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean is_out() { // revisar y mirar si hay que poner height-1 o no
+		return this.get_position().getX() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_width() - 1)
+				&& this.get_position().getY() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_height() - 1);
 	}
 
-	protected void adjust_position() {	// revisar
+	protected void adjust_position() {	// revisar y mirar si hay que poner height-1 o no
 		 while (this.get_position().getX() >= this._region_mngr.get_width()) 
-			 this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0));
+			 this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0)); 
 		 while (this.get_position().getX() < 0) 
 			 this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
 		 while (this.get_position().getY() >= this._region_mngr.get_height()) 
