@@ -84,8 +84,8 @@ public class Simulator implements JSONable {
 	 public JSONObject as_JSON() { // revisar
 		JSONObject jo = new JSONObject();	
 		 
-		jo.put(Messages.TIME, this.get_time());
-		jo.put(Messages.REGIONS_STATE, this._region_manager.as_JSON());
+		jo.put(Messages.TIME_KEY, this.get_time());
+		jo.put(Messages.REGIONS_STATE_KEY, this._region_manager.as_JSON());
 			
 		return jo;
 	 }

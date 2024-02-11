@@ -38,7 +38,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	 public JSONObject as_JSON() { // revisar
 		 JSONObject jo = new JSONObject();
 		 
-		jo.put(Messages.ANIMALS, this._animal_in_region);
+		jo.put(Messages.ANIMALS_KEY, this._animal_in_region);
 			
 		 return jo;
 	 }

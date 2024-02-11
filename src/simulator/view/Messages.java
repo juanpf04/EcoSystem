@@ -24,6 +24,7 @@ public class Messages {
 
 
 	// Exceptions
+	
 	public static final String INVALID_TYPE = "Invalid type";
 	public static final String INVALID_DESC = "Invalid desc";
 	public static final String INVALID_INFO = "’info’ cannot be null";
@@ -33,5 +34,6 @@ public class Messages {
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
 	}
+	
 	
 }

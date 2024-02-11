@@ -116,10 +116,10 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public JSONObject as_JSON() {
 		JSONObject jo = new JSONObject();
 			
-		jo.put(Messages.POSITION, this.get_position());
-		jo.put(Messages.GENETIC_CODE, this.get_genetic_code());
-		jo.put(Messages.DIET, this.get_diet());			
-		jo.put(Messages.ANIMAL_STATE, this.get_state());
+		jo.put(Messages.POSITION_KEY, this.get_position());
+		jo.put(Messages.GENETIC_CODE_KEY, this.get_genetic_code());
+		jo.put(Messages.DIET_KEY, this.get_diet());			
+		jo.put(Messages.ANIMAL_STATE_KEY, this.get_state());
 			
 		return jo;
 	}

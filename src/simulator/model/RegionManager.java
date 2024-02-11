@@ -157,13 +157,13 @@ public class RegionManager implements AnimalMapView {
 		for (int i = 0; i < this.get_rows(); i++) 
 			for (int j = 0; j < this.get_cols(); j++) {
 				JSONObject jo1 = new JSONObject();
-				jo1.put(Messages.ROW, i);
-				jo1.put(Messages.COLUMN, j);
-				jo1.put(Messages.DATA, this._regions[i][j]);
+				jo1.put(Messages.ROW_KEY, i);
+				jo1.put(Messages.COLUMN_KEY, j);
+				jo1.put(Messages.DATA_KEY, this._regions[i][j]);
 				regions.add(jo1);
 			}			
 		 
-		jo.put(Messages.REGIONS, regions);
+		jo.put(Messages.REGIONS_KEY, regions);
 			
 		return jo;
 	 }
