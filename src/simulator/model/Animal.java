@@ -134,13 +134,16 @@ public abstract class Animal implements Entity, AnimalInfo {
 				this.adjust_position();
 				this._state = State.NORMAL;
 			}
+			
+			// hacer algo para actualizar danger sourcer y hunt target
+			
 			if(this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
 				this._state = State.DEAD;
+			
 			if(this.get_state() != State.DEAD) {
 				this._energy = this._region_mngr.get_food(this, dt);
 				this.adjust_energy();
 			}
-
 		}
 	}
 	
