@@ -145,6 +145,7 @@ public class RegionManager implements AnimalMapView {
 
 	@Override
 	public List<Animal> get_animals_in_range(Animal e, Predicate<Animal> filter) {
+		// hacer
 		return null;
 	}
 
