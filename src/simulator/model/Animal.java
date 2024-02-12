@@ -125,6 +125,35 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 	
 	@Override
+	public void update(double dt) {
+		if(this._state != State.DEAD) {
+			
+			this.update_according_to_state(dt);
+			
+			if(this.is_out()) {
+				this.adjust_position();
+				this._state = State.NORMAL;
+			}
+			if(this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
+				this._state = State.DEAD;
+			if(this.get_state() != State.DEAD) {
+				this._energy = this._region_mngr.get_food(this, dt);
+				this.adjust_energy();
+			}
+
+		}
+	}
+	
+	private void adjust_energy() {
+		if(this.get_energy()<MIN_ENERGY) this._energy = MIN_ENERGY;
+		if(this.get_energy()>MAX_ENERGY) this._energy = MAX_ENERGY;
+	}
+
+	protected abstract double max_age();
+	
+	protected abstract void update_according_to_state(double dt);
+	
+	@Override
 	public State get_state() {
 		return this._state;
 	}

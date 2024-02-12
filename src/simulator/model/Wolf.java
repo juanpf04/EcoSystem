@@ -39,8 +39,14 @@ public class Wolf extends Animal {
 	}
 
 	@Override
-	public void update(double dt) {
+	protected void update_according_to_state(double dt) {
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	protected double max_age() {
+		return MAX_AGE;
 	}
 	
 }

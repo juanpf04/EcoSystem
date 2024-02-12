@@ -38,38 +38,14 @@ public class Sheep extends Animal {
 	}
 
 	@Override
-	public void update(double dt) {
+	protected void update_according_to_state(double dt) {
+		// TODO Auto-generated method stub
 		
-		
-		
-		if(this._state != State.DEAD) {
-			
-			
-			
-			// actualizar estado
-			this._region_mngr.get_animals_in_range(this,algo);
-			// e
-			if(this.is_out()) {
-//				Ajustar posicion
-				this._state = State.NORMAL;
-			}
-			if(this._energy == 0.0 || this._age > MAX_AGE)
-				this._state = State.DEAD;
-			if(this._state != State.DEAD) {
-				this._region_mngr.get_food(this, dt);
-				// añadir energia entre MIN_ENERGY y MAX_ENERGY
-			}
-			
-			// revisar
-			if(this._state == State.NORMAL) {
-				this._danger_source = null;
-				this._mate_target = null;
-			}
-			if (this._state == State.MATE)
-				this._danger_source = null;
-			if (this._state == State.MATE)
-				this._mate_target = null;
-		}
+	}
+	
+	@Override
+	protected double max_age() {
+		return MAX_AGE;
 	}
 
 }
