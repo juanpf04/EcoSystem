@@ -136,6 +136,15 @@ public abstract class Animal implements Entity, AnimalInfo {
 			}
 			
 			// hacer algo para actualizar danger sourcer y hunt target
+			if(this.get_state()== State.NORMAL) {
+				this._mate_strategy = null;
+				this.update();
+			}
+			else if(this.get_state()== State.MATE)
+				this._mate_strategy = null;
+			else if(this.get_state()== State.NORMAL)
+				this._mate_strategy = null;
+			
 			
 			if(this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
 				this._state = State.DEAD;
@@ -147,6 +156,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		}
 	}
 	
+	protected abstract void update();
+
 	private void adjust_energy() {
 		if(this.get_energy()<MIN_ENERGY) this._energy = MIN_ENERGY;
 		if(this.get_energy()>MAX_ENERGY) this._energy = MAX_ENERGY;
