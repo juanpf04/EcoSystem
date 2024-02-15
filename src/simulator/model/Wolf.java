@@ -48,5 +48,10 @@ public class Wolf extends Animal {
 	protected double max_age() {
 		return MAX_AGE;
 	}
+
+	@Override
+	protected void update() {
+		this._hunt_target = null;
+	}
 	
 }

@@ -82,10 +82,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 		else if(this.is_out()) { 
 			this.adjust_position();
 		}
-			 
-		this._dest = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()), Utils._rand.nextDouble(this._region_mngr.get_height()));
+	
+		this.new_dest();
 	}
 	 
+	protected void new_dest() {
+		this._dest = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()), Utils._rand.nextDouble(this._region_mngr.get_height()));
+	}
+
 	protected boolean is_out() { // revisar y mirar si hay que poner height-1 o no
 		return this.get_position().getX() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_width() - 1)
 				&& this.get_position().getY() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_height() - 1);
@@ -135,16 +139,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 				this._state = State.NORMAL;
 			}
 			
-			// hacer algo para actualizar danger sourcer y hunt target
 			if(this.get_state()== State.NORMAL) {
 				this._mate_strategy = null;
 				this.update();
 			}
 			else if(this.get_state()== State.MATE)
+				this.update();
+			else if(this.get_state()== State.HUNGER || this.get_state()== State.DANGER)
 				this._mate_strategy = null;
-			else if(this.get_state()== State.NORMAL)
-				this._mate_strategy = null;
-			
 			
 			if(this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
 				this._state = State.DEAD;
@@ -158,9 +160,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 	
 	protected abstract void update();
 
-	private void adjust_energy() {
+	protected void adjust_energy() {
 		if(this.get_energy()<MIN_ENERGY) this._energy = MIN_ENERGY;
 		if(this.get_energy()>MAX_ENERGY) this._energy = MAX_ENERGY;
+	}
+	
+	protected void adjust_desire() {
+		if(this._desire<MIN_DESIRE) this._desire = MIN_DESIRE;
+		if(this._desire>MAX_DESIRE) this._desire = MAX_DESIRE;
 	}
 
 	protected abstract double max_age();
