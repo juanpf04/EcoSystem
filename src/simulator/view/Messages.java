@@ -16,11 +16,13 @@ public class Messages {
 	public static final String DATA_KEY = "data";
 	public static final String TYPE_KEY = "type";
 	public static final String ANIMALS_KEY = "animals";
-	public static final String REGIONS_KEY = "regiones";
+	public static final String REGIONS_KEY = "regions";
 	public static final String TIME_KEY = "time";
 	public static final String REGIONS_STATE_KEY = "state";
 	public static final String IN_KEY = "in";
 	public static final String OUT_KEY = "out";
+	public static final String AMOUNT_KEY = "amount";	
+	public static final String SPEC_KEY = "spec";
 
 
 	// Exceptions
@@ -47,7 +49,11 @@ public class Messages {
 	public static final String SHEEP_TAG = "Sheep";
 
 
-	public static final String DESCRIPTION = "Descripcion personalizada";	
+	public static final String DESCRIPTION = "Descripcion personalizada";
+
+
+
+
 
 
 	

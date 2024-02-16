@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.model.AnimalInfo;
@@ -23,11 +24,19 @@ public class Controller {
 	}
 	
 	public void load_data(JSONObject data) {
-		// recorrer data para sacar los animales y las regiones
-		//utilizar 
-		this._sim.set_region(data, data, data);
-		this._sim.add_animal(data);
-		// tratar data
+		JSONArray la = data.getJSONArray(Messages.ANIMALS_KEY);
+		JSONArray lr = data.getJSONArray(Messages.REGIONS_KEY);
+		
+		for(int i = 0; i < la.length(); i++) {
+			JSONObject jo = la.getJSONObject(i);
+			int n = jo.getInt(Messages.AMOUNT_KEY);
+			for (int j = 0; j < n; j++)
+				this._sim.add_animal(jo.getJSONObject(Messages.SPEC_KEY));
+		}
+		
+		if(lr != null)
+			for (JSONObject jo: lr)
+			
 	}
 	
 	public void run(double t, double dt, boolean sv, OutputStream out) {
