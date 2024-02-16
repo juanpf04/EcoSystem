@@ -29,11 +29,15 @@ public class Messages {
 	public static final String INVALID_DESC = "Invalid desc";
 	public static final String INVALID_INFO = "’info’ cannot be null";
 
-	private static final String UNRECOGNIZED_INFO = "Unrecognized ‘info’: %s";	
+	private static final String UNRECOGNIZED_INFO = "Unrecognized ‘info’: %s";
 	
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
 	}
 	
+	
+	// Genetic code of Animals
+	public static final String SHEEP_GENETIC_CODE = "Sheep";	
+	public static final String WOLF_GENETIC_CODE = "Wolf";	
 	
 }

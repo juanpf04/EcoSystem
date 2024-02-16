@@ -83,37 +83,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			this.adjust_position();
 		}
 	
-		this.new_dest();
-	}
-	 
-	protected void new_dest() {
-		this._dest = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()), Utils._rand.nextDouble(this._region_mngr.get_height()));
-	}
-
-	protected boolean is_out() { // revisar y mirar si hay que poner height-1 o no
-		return this.get_position().getX() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_width() - 1)
-				&& this.get_position().getY() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_height() - 1);
-	}
-
-	protected void adjust_position() {	// revisar y mirar si hay que poner height-1 o no
-		 while (this.get_position().getX() >= this._region_mngr.get_width()) 
-			 this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0)); 
-		 while (this.get_position().getX() < 0) 
-			 this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
-		 while (this.get_position().getY() >= this._region_mngr.get_height()) 
-			 this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
-		 while (this.get_position().getY() < 0) 
-			 this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
-	}
-
-	public Animal deliver_baby() { // revisar
-		Animal baby = this._baby;	
-		this._baby = null;		
-		return baby;
-	}
-	 
-	protected void move(double speed) {
-		this._pos = this.get_position().plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
+		this.new_random_dest();
 	}
 	 
 	@Override
@@ -139,19 +109,19 @@ public abstract class Animal implements Entity, AnimalInfo {
 				this._state = State.NORMAL;
 			}
 			
-			if(this.get_state()== State.NORMAL) {
+			if(this.get_state() == State.NORMAL) {
 				this._mate_strategy = null;
 				this.update();
 			}
-			else if(this.get_state()== State.MATE)
+			else if(this.get_state() == State.MATE)
 				this.update();
-			else if(this.get_state()== State.HUNGER || this.get_state()== State.DANGER)
+			else if(this.get_state() == State.HUNGER || this.get_state() == State.DANGER)
 				this._mate_strategy = null;
 			
 			if(this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
 				this._state = State.DEAD;
 			
-			if(this.get_state() != State.DEAD) {
+			if(this.is_alive()) {
 				this._energy = this._region_mngr.get_food(this, dt);
 				this.adjust_energy();
 			}
@@ -232,4 +202,37 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return this.get_state() != State.DEAD;
 	}
 	 
+	protected void reset_desire() {
+		this._desire = MIN_DESIRE;
+	}
+	
+	protected void new_random_dest() {
+		this._dest = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()), Utils._rand.nextDouble(this._region_mngr.get_height()));
+	}
+
+	protected boolean is_out() { // revisar y mirar si hay que poner height-1 o no
+		return this.get_position().getX() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_width() - 1)
+				&& this.get_position().getY() != Utils.constrain_value_in_range(this.get_position().getX(), 0, this._region_mngr.get_height() - 1);
+	}
+
+	protected void adjust_position() {	// revisar y mirar si hay que poner height-1 o no
+		 while (this.get_position().getX() >= this._region_mngr.get_width()) 
+			 this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0)); 
+		 while (this.get_position().getX() < 0) 
+			 this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
+		 while (this.get_position().getY() >= this._region_mngr.get_height()) 
+			 this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
+		 while (this.get_position().getY() < 0) 
+			 this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
+	}
+
+	public Animal deliver_baby() {
+		Animal baby = this._baby;	
+		this._baby = null;		
+		return baby;
+	}
+	 
+	protected void move(double speed) {
+		this._pos = this.get_position().plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
+	}
 }

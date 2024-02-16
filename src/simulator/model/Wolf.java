@@ -4,10 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import simulator.misc.Vector2D;
+import simulator.view.Messages;
 
 public class Wolf extends Animal {
 
-	protected static final String GENETIC_CODE = "Wolf";
+	protected static final String GENETIC_CODE = Messages.WOLF_GENETIC_CODE;
 	protected static final Diet DIET = Diet.CARNIVORE;
 	protected static final List<State> ALLOWED_STATES = Arrays.asList(
 			State.NORMAL,
