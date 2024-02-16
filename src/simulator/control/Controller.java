@@ -23,20 +23,26 @@ public class Controller {
 		this._sim = sim;
 	}
 	
-	public void load_data(JSONObject data) {
+	public void load_data(JSONObject data) { // revisar y terminar
 		JSONArray la = data.getJSONArray(Messages.ANIMALS_KEY);
 		JSONArray lr = data.getJSONArray(Messages.REGIONS_KEY);
+		
+		if(lr != null)
+			for(int i = 0; i < lr.length(); i++) {
+				JSONObject jo = lr.getJSONObject(i);
+				JSONArray lc = jo.getJSONArray("col");
+				JSONArray lrr = jo.getJSONArray("row");
+				for(int col = lc.getInt(0); col <= lc.getInt(1); col++)
+					for(int row = lrr.getInt(0); row <= lrr.getInt(1); row++)
+						this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
+			}
 		
 		for(int i = 0; i < la.length(); i++) {
 			JSONObject jo = la.getJSONObject(i);
 			int n = jo.getInt(Messages.AMOUNT_KEY);
 			for (int j = 0; j < n; j++)
 				this._sim.add_animal(jo.getJSONObject(Messages.SPEC_KEY));
-		}
-		
-		if(lr != null)
-			for (JSONObject jo: lr)
-			
+		}	
 	}
 	
 	public void run(double t, double dt, boolean sv, OutputStream out) {
