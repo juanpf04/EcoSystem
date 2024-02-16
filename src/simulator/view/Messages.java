@@ -52,6 +52,9 @@ public class Messages {
 	public static final String DESCRIPTION = "Descripcion personalizada";
 
 
+	public static final String WOLF_TAG = "Wolf";
+
+
 
 
 
