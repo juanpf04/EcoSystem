@@ -52,11 +52,11 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		// info.has("data") ? info.getJSONObject("data") : new getJSONObject()
 		// …
 		// If no builder is found or the result is null ...
-		Builder<T> b = this._builders.get(info.getString(Messages.TYPE));
+		Builder<T> b = this._builders.get(info.getString(Messages.TYPE_KEY));
 		T t = null;
 		
 		if(b != null) 
-			t = b.create_instance(info.has(Messages.DATA) ? info.getJSONObject(Messages.DATA) : new getJSONObject());
+			t = b.create_instance(info.has(Messages.DATA_KEY) ? info.getJSONObject(Messages.DATA_KEY) : new JSONObject());
 		if(t != null)
 			return t;
 		
