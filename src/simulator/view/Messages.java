@@ -39,6 +39,16 @@ public class Messages {
 	// Genetic code of Animals
 	
 	public static final String SHEEP_GENETIC_CODE = "Sheep";	
-	public static final String WOLF_GENETIC_CODE = "Wolf";	
+	public static final String WOLF_GENETIC_CODE = "Wolf";
+
+
+	// revisar nombre type / tag
+	public static final String DEFAULT_REGION_TYPE = "first";
+	public static final String SHEEP_TAG = "Sheep";
+
+
+	public static final String DESCRIPTION = "Descripcion personalizada";	
+
+
 	
 }
