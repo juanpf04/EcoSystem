@@ -44,4 +44,10 @@ public class SheepBuilder extends Builder<Sheep> {
 		
 		return new Sheep(mate_strategy, danger_strategy, position);
 	}
+	
+	@Override
+	protected void fill_in_data(JSONObject o) {
+		// no se si es hacer esto o que 
+		
+	}
 }

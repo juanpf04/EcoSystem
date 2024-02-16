@@ -44,4 +44,10 @@ public class WolfBuilder extends Builder<Wolf> {
 		
 		return new Wolf(mate_strategy, hunt_strategy, position);
 	}
+	
+	@Override
+	protected void fill_in_data(JSONObject o) {
+		// no se si es hacer esto o que 
+		
+	}
 }
