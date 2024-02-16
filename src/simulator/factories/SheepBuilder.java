@@ -2,6 +2,7 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
+import simulator.misc.Vector2D;
 import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
 import simulator.model.Sheep;
@@ -20,8 +21,14 @@ public class SheepBuilder extends Builder<Sheep> {
 	protected Sheep create_instance(JSONObject data) {		
 		SelectionStrategy mate_strategy = new SelectFirst();
 		SelectionStrategy danger_strategy = new SelectFirst();
+		Vector2D position = null;
 		
-		
+		if(data.has("mate_strategy"))
+			mate_strategy = this._factory.create_instance(data.getJSONObject("mate_strategy"));
+		if(data.has("danger_strategy"))
+			danger_strategy = this._factory.create_instance(data.getJSONObject("danger_strategy"));
+		if(data.has("mate_strategy"))
+			mate_strategy = this._factory.create_instance(data.getJSONObject("mate_strategy"));
 		return null;
 	}
 

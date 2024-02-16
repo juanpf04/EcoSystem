@@ -2,9 +2,9 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-import simulator.view.Messages;
+import simulator.model.SelectFirst;
 
-public class SelectFirstBuilder<SelectFirst> extends Builder<SelectFirst> {
+public class SelectFirstBuilder extends Builder<SelectFirst> {
 
 	private static final String TYPE = "first";
 	private static final String DESCRIPTION = "descripcion rechulona";
@@ -16,9 +16,6 @@ public class SelectFirstBuilder<SelectFirst> extends Builder<SelectFirst> {
 
 	@Override
 	protected SelectFirst create_instance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SelectFirst();
 	}
-
-	
 }

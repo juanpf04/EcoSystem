@@ -15,5 +15,4 @@ public class DefaultRegionBuilder extends Builder<DefaultRegion> { // preguntar
 	protected DefaultRegion create_instance(JSONObject data) {
 		return new DefaultRegion();
 	}
-	
 }
