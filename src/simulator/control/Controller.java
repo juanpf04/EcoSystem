@@ -32,7 +32,7 @@ public class Controller {
 	
 	public void run(double t, double dt, boolean sv, OutputStream out) {
 		JSONObject jo = new JSONObject();	
-		jo.put(Messages.IN, this._sim.as_JSON());
+		jo.put(Messages.IN_KEY, this._sim.as_JSON());
 		
 		SimpleObjectViewer view = null;
 		if (sv) {
@@ -50,7 +50,7 @@ public class Controller {
 		
 		if (sv) view.close();
 		
-		jo.put(Messages.OUT, this._sim.as_JSON());
+		jo.put(Messages.OUT_KEY, this._sim.as_JSON());
 		PrintStream p = new PrintStream(out);
 		p.println(jo);
 	}
