@@ -21,8 +21,8 @@ public class WolfBuilder extends Builder<Wolf> {
 
 	@Override
 	protected Wolf create_instance(JSONObject data) {		
-		SelectionStrategy mate_strategy = new SelectFirst();
-		SelectionStrategy hunt_strategy = new SelectFirst();
+		SelectionStrategy mate_strategy = new SelectFirst(), 
+						hunt_strategy = new SelectFirst();
 		Vector2D position = null;
 		
 		if(data.has("mate_strategy"))
@@ -33,8 +33,8 @@ public class WolfBuilder extends Builder<Wolf> {
 		
 		if(data.has("pos")) { 
 			JSONObject jo = data.getJSONObject("position");
-			JSONArray jax = jo.getJSONArray("x_range");
-			JSONArray jay = jo.getJSONArray("y_range");
+			JSONArray jax = jo.getJSONArray("x_range"), 
+					jay = jo.getJSONArray("y_range");
 			
 			double x = Utils._rand.nextDouble(jax.getDouble(0), jax.getDouble(1)),
 					y = Utils._rand.nextDouble(jay.getDouble(0), jay.getDouble(1));
