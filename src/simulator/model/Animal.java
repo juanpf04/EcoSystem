@@ -10,7 +10,7 @@ import simulator.view.Messages;
 public abstract class Animal implements Entity, AnimalInfo {
 
 	protected static final double SPEED_TOLERANCE = 0.1;
-	protected static final double FACTOR = 60.0;
+	protected static final double FACTOR = 60.0; //revisar nombre
 	protected static final double MUTATION_TOLERANCE = 0.2;
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
@@ -35,7 +35,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected Animal(String genetic_code, Diet diet, double sight_range, double init_speed,
 			SelectionStrategy mate_strategy, Vector2D pos) {
 
-		if (genetic_code.isEmpty() || sight_range < 0 || init_speed < 0 || mate_strategy == null)
+		if (genetic_code.isEmpty())
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (sight_range <= 0)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (init_speed <= 0)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (mate_strategy == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
 
 		this._genetic_code = genetic_code;
@@ -44,7 +50,6 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._speed = Utils.get_randomized_parameter(init_speed, SPEED_TOLERANCE);
 		this._mate_strategy = mate_strategy;
 		this._pos = pos;
-
 		this._state = State.NORMAL;
 		this._energy = MAX_ENERGY;
 		this._age = 0.0;
@@ -75,14 +80,24 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public void init(AnimalMapView reg_mngr) {
 		this._region_mngr = reg_mngr;
 
-		if (this.get_position() == null) // revisar si hay que poner widht-1 y height-1 o no
+		if (this.get_position() == null)
 			this._pos = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()),
 					Utils._rand.nextDouble(this._region_mngr.get_height()));
-		else if (this.is_out()) {
+		else if (this.is_out()) 
 			this.adjust_position();
-		}
-
+		
 		this.new_random_dest();
+	}
+	
+	public Animal deliver_baby() {
+		Animal baby = this._baby;
+		this._baby = null;
+		return baby;
+	}
+
+	protected void move(double speed) {
+		this._pos = this.get_position()
+				.plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
 	}
 
 	@Override
@@ -220,7 +235,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 						this._region_mngr.get_height() - 1);
 	}
 
-	protected void adjust_position() { // revisar y mirar si hay que poner height-1 o no
+	protected void adjust_position() {
 		while (this.get_position().getX() >= this._region_mngr.get_width())
 			this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0));
 		while (this.get_position().getX() < 0)
@@ -229,16 +244,5 @@ public abstract class Animal implements Entity, AnimalInfo {
 			this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
 		while (this.get_position().getY() < 0)
 			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
-	}
-
-	public Animal deliver_baby() {
-		Animal baby = this._baby;
-		this._baby = null;
-		return baby;
-	}
-
-	protected void move(double speed) {
-		this._pos = this.get_position()
-				.plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
 	}
 }

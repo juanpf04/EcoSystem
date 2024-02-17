@@ -9,19 +9,18 @@ public class SelectClosest implements SelectionStrategy {
 		if (as.isEmpty())
 			return null;
 
-		Animal closest = as.get(0);
-		double closest_distance = a.distanceTo(closest);
+		Animal closest_animal = as.get(0);
+		double closest_distance = a.distanceTo(closest_animal);
 
 		for (int i = 1; i < as.size(); i++) {
 			Animal animal = as.get(i);
 			double distance = a.distanceTo(animal);
 			if (distance < closest_distance) {
-				closest = animal;
+				closest_animal = animal;
 				closest_distance = distance;
 			}
 		}
 
-		return closest;
+		return closest_animal;
 	}
-
 }
