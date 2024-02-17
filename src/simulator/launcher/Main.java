@@ -130,7 +130,6 @@ public class Main {
 		return new JSONObject(new JSONTokener(in));
 	}
 
-
 	private static void start_batch_mode() throws Exception {
 		InputStream is = new FileInputStream(new File(_in_file));
 	}

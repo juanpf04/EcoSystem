@@ -12,12 +12,8 @@ public class Sheep extends Animal {
 	// revisar
 	protected static final String GENETIC_CODE = Messages.SHEEP_GENETIC_CODE;
 	protected static final Diet DIET = Diet.HERBIVORE;
-	protected static final List<State> ALLOWED_STATES = Arrays.asList(
-			State.NORMAL,
-			State.MATE,
-			State.DANGER,
-			State.DEAD
-	);
+	protected static final List<State> ALLOWED_STATES = Arrays.asList(State.NORMAL, State.MATE, State.DANGER,
+			State.DEAD);
 	protected static final double INIT_SIGHT_RANGE = 40.0;
 	protected static final double INIT_SPEED = 35.0;
 	protected static final double MAX_AGE = 8.0;
@@ -37,121 +33,128 @@ public class Sheep extends Animal {
 	private SelectionStrategy _danger_strategy;
 
 	public Sheep(SelectionStrategy mate_strategy, SelectionStrategy danger_strategy, Vector2D pos) {
-		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE,INIT_SPEED, mate_strategy, pos);
-		
+		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE, INIT_SPEED, mate_strategy, pos);
+
 		this._danger_source = null;
 		this._danger_strategy = danger_strategy;
 	}
 
 	protected Sheep(Sheep p1, Animal p2) {
 		super(p1, p2);
-		
+
 		this._danger_source = null;
 		this._danger_strategy = p1._danger_strategy;
 	}
 
 	@Override
 	protected void update_according_to_state(double dt) {
-		switch(this.get_state()) {
-		case NORMAL: 
-			
+		switch (this.get_state()) {
+		case NORMAL:
+
 			if (this.get_destination().distanceTo(this.get_position()) <= DESTINATION_RANGE)
 				this.new_random_dest();
-			
-			this.move(this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
-			
+
+			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+
 			this._age += dt;
-			
+
 			this._energy -= ENERGY_COST * dt;
 			this.adjust_energy();
-			
+
 			this._desire += DESIRE_COST * dt;
 			this.adjust_desire();
-			
+
 			if (this._danger_source == null)
-				this._danger_source = this._danger_strategy.select(this, this._region_mngr.get_animals_in_range(this, null));// hacer
-			
-			if (this._danger_source != null) 
+				this._danger_source = this._danger_strategy.select(this,
+						this._region_mngr.get_animals_in_range(this, null));// hacer
+
+			if (this._danger_source != null)
 				this._state = State.DANGER;
 			else if (this._desire > UMBRAL_DESIRE)
 				this._state = State.MATE;
-			
+
 			break;
 		case DANGER:
-			
+
 			if (this._danger_source != null && !this._danger_source.is_alive())
 				this._danger_source = null;
-			
+
 			if (this._danger_source == null)
-				this.move(this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
+				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 			else {
-				this._dest = this.get_position().plus(this.get_position().minus(_danger_source.get_position()).direction());
-				
-				this.move(FLEE_SPEED*this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
-				
+				this._dest = this.get_position()
+						.plus(this.get_position().minus(_danger_source.get_position()).direction());
+
+				this.move(FLEE_SPEED * this.get_speed() * dt
+						* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+
 				this._age += dt;
-				
+
 				this._energy -= ENERGY_COST * FLEE_ENERGY_COST * dt;
 				this.adjust_energy();
-				
+
 				this._desire += DESIRE_COST * dt;
 				this.adjust_desire();
 			}
-			
+
 			if (this._danger_source == null || this._danger_source.distanceTo(this) <= this.get_sight_range()) {
-				this._danger_source = this._danger_strategy.select(this, this._region_mngr.get_animals_in_range(this, null));// hacer
+				this._danger_source = this._danger_strategy.select(this,
+						this._region_mngr.get_animals_in_range(this, null));// hacer
 
 				if (this._danger_source == null) {
 					if (this._desire <= UMBRAL_DESIRE)
 						this._state = State.NORMAL;
-					else 
+					else
 						this._state = State.MATE;
 				}
 			}
 			break;
 		case MATE:
-			
-			if (this._mate_target != null && !this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
+
+			if (this._mate_target != null && !this._mate_target.is_alive()
+					|| this._mate_target.distanceTo(this) > this.get_sight_range())
 				this._mate_target = null;
-			
-			if (this._mate_target == null) 
-				this._mate_target = this._mate_strategy.select(this, this._region_mngr.get_animals_in_range(this, null)); // hacer
-			
+
 			if (this._mate_target == null)
-				this.move( this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
+				this._mate_target = this._mate_strategy.select(this,
+						this._region_mngr.get_animals_in_range(this, null)); // hacer
+
+			if (this._mate_target == null)
+				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 			else {
-				this._dest =  this._mate_target.get_position();
-				
-				this.move(OESTRUS_SPEED*_speed*dt*Math.exp((_energy-MAX_ENERGY)*SPEED_MULTIPLIER));
-				
+				this._dest = this._mate_target.get_position();
+
+				this.move(OESTRUS_SPEED * _speed * dt * Math.exp((_energy - MAX_ENERGY) * SPEED_MULTIPLIER));
+
 				this._age += dt;
-				
+
 				this._energy -= ENERGY_COST * OESTRUS_ENERGY_COST * dt;
 				this.adjust_energy();
-				
+
 				this._desire += DESIRE_COST * dt;
 				this.adjust_desire();
-				
+
 				if (this.distanceTo(this._mate_target) <= PROCREATION_RANGE) {
 					this.reset_desire();
-					
-					if(!this.is_pregnant() && Utils._rand.nextDouble() <= PREGNANT_PROBABILITY)
-						this._baby = new Sheep(this,this._mate_target);
-					
+
+					if (!this.is_pregnant() && Utils._rand.nextDouble() <= PREGNANT_PROBABILITY)
+						this._baby = new Sheep(this, this._mate_target);
+
 					this._mate_target = null;
 				}
-				
+
 			}
 			if (this._danger_source == null)
-				this._danger_source = this._danger_strategy.select(this, this._region_mngr.get_animals_in_range(this, null));// hacer
-				
-			if (this._danger_source != null) 
+				this._danger_source = this._danger_strategy.select(this,
+						this._region_mngr.get_animals_in_range(this, null));// hacer
+
+			if (this._danger_source != null)
 				this._state = State.DANGER;
 			else if (this._desire < UMBRAL_DESIRE)
 				this._state = State.NORMAL;
-			
+
 			break;
-		case HUNGER: 
+		case HUNGER:
 			// lanzar excepción?
 			break;
 		default:

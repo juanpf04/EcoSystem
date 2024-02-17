@@ -11,13 +11,8 @@ public class Wolf extends Animal {
 
 	protected static final String GENETIC_CODE = Messages.WOLF_GENETIC_CODE;
 	protected static final Diet DIET = Diet.CARNIVORE;
-	protected static final List<State> ALLOWED_STATES = Arrays.asList(
-			State.NORMAL,
-			State.MATE,
-			State.HUNGER,
-			State.DANGER,
-			State.DEAD
-	);
+	protected static final List<State> ALLOWED_STATES = Arrays.asList(State.NORMAL, State.MATE, State.HUNGER,
+			State.DANGER, State.DEAD);
 	protected static final double INIT_SIGHT_RANGE = 50.0;
 	protected static final double INIT_SPEED = 60.0;
 	protected static final double MAX_AGE = 14.0;
@@ -34,131 +29,135 @@ public class Wolf extends Animal {
 	protected static final double OESTRUS_ENERGY_COST = 1.2;
 	protected static final double PREGNANT_PROBABILITY = 0.9;
 	protected static final double ENERGY_TO_SUBTRACT = 10.0;
-	
+
 	private Animal _hunt_target;
 	private SelectionStrategy _hunting_strategy;
-	
-	public Wolf(SelectionStrategy mate_strategy, SelectionStrategy hunting_strategy,
-			Vector2D pos) {
-		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE,INIT_SPEED, mate_strategy, pos);
-		
+
+	public Wolf(SelectionStrategy mate_strategy, SelectionStrategy hunting_strategy, Vector2D pos) {
+		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE, INIT_SPEED, mate_strategy, pos);
+
 		this._hunt_target = null;
 		this._hunting_strategy = hunting_strategy;
 	}
-	
+
 	protected Wolf(Wolf p1, Animal p2) {
 		super(p1, p2);
-		
+
 		this._hunt_target = null;
 		this._hunting_strategy = p1._hunting_strategy;
 	}
 
 	@Override
 	protected void update_according_to_state(double dt) {
-		switch(this.get_state()) {
-		case NORMAL: 
-			
+		switch (this.get_state()) {
+		case NORMAL:
+
 			if (this.get_destination().distanceTo(this.get_position()) <= DESTINATION_RANGE)
 				this.new_random_dest();
-			
-			this.move(this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
-			
+
+			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+
 			this._age += dt;
-			
+
 			this._energy -= ENERGY_COST * dt;
 			this.adjust_energy();
-			
+
 			this._desire += DESIRE_COST * dt;
 			this.adjust_desire();
-			
-			if(this._energy < UMBRAL_ENERGY)
+
+			if (this._energy < UMBRAL_ENERGY)
 				this._state = State.HUNGER;
-				
+
 			else if (this._desire > UMBRAL_DESIRE)
 				this._state = State.MATE;
-			
+
 			break;
 		case HUNGER:
-			
-			if (this._hunt_target== null || (this._hunt_target != null && !this._hunt_target.is_alive()) || this._hunt_target.distanceTo(this) > this.get_sight_range())
-				this._hunt_target = this._hunting_strategy.select(this, this._region_mngr.get_animals_in_range(this, null));
-			
+
+			if (this._hunt_target == null || (this._hunt_target != null && !this._hunt_target.is_alive())
+					|| this._hunt_target.distanceTo(this) > this.get_sight_range())
+				this._hunt_target = this._hunting_strategy.select(this,
+						this._region_mngr.get_animals_in_range(this, null));
+
 			if (this._hunt_target == null)
-				this.move(this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
+				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 			else {
 				this._dest = _hunt_target.get_position();
-				
-				this.move(HUNT_SPEED*this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
-				
+
+				this.move(HUNT_SPEED * this.get_speed() * dt
+						* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+
 				this._age += dt;
-				
+
 				this._energy -= ENERGY_COST * HUNT_ENERGY_COST * dt;
 				this.adjust_energy();
-				
+
 				this._desire += DESIRE_COST * dt;
 				this.adjust_desire();
 			}
-			
-			if(this._hunt_target.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE) {
+
+			if (this._hunt_target.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE) {
 				this._hunt_target._state = State.DEAD;
 				this._hunt_target = null;
 				this._energy += UMBRAL_ENERGY;
 				this.adjust_energy();
 			}
-			
-			if(this._energy >= UMBRAL_ENERGY){
-					if (this._desire <= UMBRAL_DESIRE)
-						this._state = State.NORMAL;
-					else 
-						this._state = State.MATE;
+
+			if (this._energy >= UMBRAL_ENERGY) {
+				if (this._desire <= UMBRAL_DESIRE)
+					this._state = State.NORMAL;
+				else
+					this._state = State.MATE;
 			}
-			
+
 			break;
 		case MATE:
-			
-			if (this._mate_target != null && !this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
+
+			if (this._mate_target != null && !this._mate_target.is_alive()
+					|| this._mate_target.distanceTo(this) > this.get_sight_range())
 				this._mate_target = null;
-			
-			if (this._mate_target == null) 
-				this._mate_target = this._mate_strategy.select(this, this._region_mngr.get_animals_in_range(this, null)); // hacer
-			
+
 			if (this._mate_target == null)
-				this.move( this.get_speed()*dt*Math.exp((this.get_energy()-MAX_ENERGY)*SPEED_MULTIPLIER));
+				this._mate_target = this._mate_strategy.select(this,
+						this._region_mngr.get_animals_in_range(this, null)); // hacer
+
+			if (this._mate_target == null)
+				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 			else {
-				this._dest =  _mate_target.get_position();
-				
-				this.move(OESTRUS_SPEED*_speed*dt*Math.exp((_energy-MAX_ENERGY)*SPEED_MULTIPLIER));
-				
+				this._dest = _mate_target.get_position();
+
+				this.move(OESTRUS_SPEED * _speed * dt * Math.exp((_energy - MAX_ENERGY) * SPEED_MULTIPLIER));
+
 				this._age += dt;
-				
+
 				this._energy -= ENERGY_COST * OESTRUS_ENERGY_COST * dt;
 				this.adjust_energy();
-				
+
 				this._desire += DESIRE_COST * dt;
 				this.adjust_desire();
-				
+
 				if (this.distanceTo(this._mate_target) <= PROCREATION_RANGE) {
 					this.reset_desire();
 					this._mate_target.reset_desire();
-					
-					if(!this.is_pregnant() && Utils._rand.nextDouble() <= PREGNANT_PROBABILITY)
-						this._baby = new Wolf(this,this._mate_target);
-					
+
+					if (!this.is_pregnant() && Utils._rand.nextDouble() <= PREGNANT_PROBABILITY)
+						this._baby = new Wolf(this, this._mate_target);
+
 					this._energy -= ENERGY_TO_SUBTRACT;
 					this._mate_target = null;
 				}
-				
+
 			}
-			if(this._energy < UMBRAL_ENERGY)
+			if (this._energy < UMBRAL_ENERGY)
 				this._state = State.HUNGER;
-			else if(this._desire < UMBRAL_DESIRE)
+			else if (this._desire < UMBRAL_DESIRE)
 				this._state = State.NORMAL;
-			
+
 			break;
-		case DANGER: 
+		case DANGER:
 			// lanzar excepción?
 			break;
-			
+
 		default:
 			break;
 		}
@@ -173,5 +172,5 @@ public class Wolf extends Animal {
 	protected void update() {
 		this._hunt_target = null;
 	}
-	
+
 }

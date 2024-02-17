@@ -8,10 +8,10 @@ public class SelectFirstBuilder extends Builder<SelectFirst> {
 
 	private static final String TYPE = "first";
 	private static final String DESCRIPTION = "descripcion rechulona";
-	
+
 	public SelectFirstBuilder() {
 		super(TYPE, DESCRIPTION);
-		
+
 	}
 
 	@Override
