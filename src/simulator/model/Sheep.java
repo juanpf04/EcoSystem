@@ -111,7 +111,7 @@ public class Sheep extends Animal {
 			break;
 		case MATE:
 			
-			if (this._mate_target != null && !this._mate_target.is_alive() || this._danger_source.distanceTo(this) > this.get_sight_range())
+			if (this._mate_target != null && !this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
 				this._mate_target = null;
 			
 			if (this._mate_target == null) 
