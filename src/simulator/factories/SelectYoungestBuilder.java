@@ -2,7 +2,6 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-import simulator.model.SelectFirst;
 import simulator.model.SelectYoungest;
 
 public class SelectYoungestBuilder extends Builder<SelectYoungest> {

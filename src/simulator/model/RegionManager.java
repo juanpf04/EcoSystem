@@ -6,13 +6,11 @@ import java.util.function.Predicate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import simulator.misc.Utils;
 import simulator.view.Messages;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ArrayList;
 
 public class RegionManager implements AnimalMapView {
 

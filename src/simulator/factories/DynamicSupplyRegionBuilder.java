@@ -2,7 +2,6 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-import simulator.model.DefaultRegion;
 import simulator.model.DynamicSupplyRegion;
 import simulator.view.Messages;
 

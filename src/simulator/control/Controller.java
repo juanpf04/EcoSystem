@@ -23,27 +23,29 @@ public class Controller {
 		this._sim = sim;
 	}
 
-	public void load_data(JSONObject data) { // revisar y terminar
-		JSONArray la = data.getJSONArray(Messages.ANIMALS_KEY);
-		JSONArray lr = data.getJSONArray(Messages.REGIONS_KEY);
+	public void load_data(JSONObject data) { // preguntar expciones
 
-		if (lr != null)
-			for (int i = 0; i < lr.length(); i++) {
-				JSONObject jo = lr.getJSONObject(i);
-				JSONArray lc = jo.getJSONArray("col");
-				JSONArray lrr = jo.getJSONArray("row");
-				for (int col = lc.getInt(0); col <= lc.getInt(1); col++)
-					for (int row = lrr.getInt(0); row <= lrr.getInt(1); row++)
+		if (data.has(Messages.REGIONS_KEY)) {
+			JSONArray ja = data.getJSONArray(Messages.REGIONS_KEY);
+			for (int i = 0; i < ja.length(); i++) {
+				JSONObject jo = ja.getJSONObject(i);
+				JSONArray jac = jo.getJSONArray(Messages.COLUMN_KEY);
+				JSONArray jar = jo.getJSONArray(Messages.ROW_KEY);
+				for (int col = jac.getInt(0); col <= jac.getInt(1); col++)
+					for (int row = jar.getInt(0); row <= jar.getInt(1); row++)
 						this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
 			}
-
-		for (int i = 0; i < la.length(); i++) {
-			JSONObject jo = la.getJSONObject(i);
+		}
+		
+		JSONArray ja = data.getJSONArray(Messages.ANIMALS_KEY);
+		
+		for (int i = 0; i < ja.length(); i++) {
+			JSONObject jo = ja.getJSONObject(i);
 			int n = jo.getInt(Messages.AMOUNT_KEY);
 			for (int j = 0; j < n; j++)
 				this._sim.add_animal(jo.getJSONObject(Messages.SPEC_KEY));
 		}
-	}
+	} 
 
 	public void run(double t, double dt, boolean sv, OutputStream out) {
 		JSONObject jo = new JSONObject();
