@@ -11,7 +11,6 @@ public class SelectFirstBuilder extends Builder<SelectFirst> {
 
 	public SelectFirstBuilder() {
 		super(TYPE, DESCRIPTION);
-
 	}
 
 	@Override

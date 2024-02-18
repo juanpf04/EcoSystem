@@ -12,11 +12,14 @@ import simulator.view.Messages;
 
 public class SheepBuilder extends Builder<Sheep> {
 
-	private Factory<SelectionStrategy> _factory;
+	private Factory<SelectionStrategy> _selection_strategy_factory;
 
-	public SheepBuilder(Factory<SelectionStrategy> factory) {
+	public SheepBuilder(Factory<SelectionStrategy> selection_strategy_factory) {
 		super(Messages.SHEEP_TAG, Messages.DESCRIPTION);
-		this._factory = factory;
+		if (selection_strategy_factory == null)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+
+		this._selection_strategy_factory = selection_strategy_factory;
 	}
 
 	@Override
@@ -25,10 +28,10 @@ public class SheepBuilder extends Builder<Sheep> {
 		Vector2D position = null;
 
 		if (data.has("mate_strategy"))
-			mate_strategy = this._factory.create_instance(data.getJSONObject("mate_strategy"));
+			mate_strategy = this._selection_strategy_factory.create_instance(data.getJSONObject("mate_strategy"));
 
 		if (data.has("danger_strategy"))
-			danger_strategy = this._factory.create_instance(data.getJSONObject("danger_strategy"));
+			danger_strategy = this._selection_strategy_factory.create_instance(data.getJSONObject("danger_strategy"));
 
 		if (data.has("pos")) {
 			JSONObject jo = data.getJSONObject("position");

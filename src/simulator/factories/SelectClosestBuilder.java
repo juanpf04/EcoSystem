@@ -11,7 +11,6 @@ public class SelectClosestBuilder extends Builder<SelectClosest> {
 
 	public SelectClosestBuilder() {
 		super(TYPE, DESCRIPTION);
-
 	}
 
 	@Override

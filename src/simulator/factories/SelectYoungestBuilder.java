@@ -11,7 +11,6 @@ public class SelectYoungestBuilder extends Builder<SelectYoungest> {
 
 	public SelectYoungestBuilder() {
 		super(TYPE, DESCRIPTION);
-
 	}
 
 	@Override
