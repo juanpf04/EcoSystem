@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import simulator.model.DefaultRegion;
 import simulator.view.Messages;
 
-public class DefaultRegionBuilder extends Builder<DefaultRegion> { // preguntar
+public class DefaultRegionBuilder extends Builder<DefaultRegion> {
 
 	public DefaultRegionBuilder() {
 		super(Messages.DEFAULT_REGION_TYPE, Messages.MENSAJE_PERSONALIZADO);

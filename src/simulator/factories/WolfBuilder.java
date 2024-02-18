@@ -12,11 +12,14 @@ import simulator.view.Messages;
 
 public class WolfBuilder extends Builder<Wolf> {
 
-	private Factory<SelectionStrategy> _factory;
+	private Factory<SelectionStrategy> _selection_strategy_factory;
 
-	public WolfBuilder(Factory<SelectionStrategy> factory) {
+	public WolfBuilder(Factory<SelectionStrategy> selection_strategy_factory) {
 		super(Messages.WOLF_TAG, Messages.DESCRIPTION);
-		this._factory = factory;
+		if (selection_strategy_factory == null)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		
+		this._selection_strategy_factory = selection_strategy_factory;
 	}
 
 	@Override
@@ -25,10 +28,10 @@ public class WolfBuilder extends Builder<Wolf> {
 		Vector2D position = null;
 
 		if (data.has("mate_strategy"))
-			mate_strategy = this._factory.create_instance(data.getJSONObject("mate_strategy"));
+			mate_strategy = this._selection_strategy_factory.create_instance(data.getJSONObject("mate_strategy"));
 
 		if (data.has("hunt_strategy"))
-			hunt_strategy = this._factory.create_instance(data.getJSONObject("hunt_strategy"));
+			hunt_strategy = this._selection_strategy_factory.create_instance(data.getJSONObject("hunt_strategy"));
 
 		if (data.has("pos")) {
 			JSONObject jo = data.getJSONObject("position");

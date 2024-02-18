@@ -16,26 +16,22 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 	private List<JSONObject> _builders_info;
 
 	public BuilderBasedFactory() {
-		// Create a HashMap for _builders, and a LinkedList _builders_info
-		// …
 		this._builders = new HashMap<String, Builder<T>>();
 		this._builders_info = new LinkedList<JSONObject>();
 	}
 
 	public BuilderBasedFactory(List<Builder<T>> builders) {
 		this();
-		// call add_builder(b) for each builder b in builder
-		// …
+		
+		if(builders == null)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+
 		for (Builder<T> b : builders)
 			this.add_builder(b);
 	}
 
 	public void add_builder(Builder<T> b) {
-		// add an entry “b.getTag() |−> b” to _builders.
-		// ...
 		this._builders.put(b.get_type_tag(), b);
-		// add b.get_info() to _buildersInfo
-		// ...
 		this._builders_info.add(b.get_info());
 	}
 
