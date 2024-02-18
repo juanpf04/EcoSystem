@@ -50,51 +50,39 @@ public class RegionManager implements AnimalMapView {
 		this._animal_region = new HashMap<Animal, Region>();
 	}
 
-	void set_region(int row, int col, Region r) {
+	public void set_region(int row, int col, Region r) {
+		for(Animal a: this._regions[row][col].getAnimals()) {			
+			r.add_animal(a);
+			this._animal_region.put(a, r);
+		}
 		this._regions[row][col] = r;
 	}
 
-	void register_animal(Animal a) {
+	public void register_animal(Animal a) {
 		int j = (int) (a.get_position().getX() / this.get_region_width()) - 1,
 				i = (int) (a.get_position().getY() / this.get_region_height()) - 1;
-
-		this._regions[i][j].add_animal(a);
-		this._animal_region.put(a, this._regions[i][j]);
+		Region region = this._regions[i][j];
+		region.add_animal(a);
+		this._animal_region.put(a, region);
 		a.init(this);
 	}
 
-	void unregister_animal(Animal a) {
-		boolean unregistered = false;
-		for (int i = 0; i < this.get_rows() && !unregistered; i++)
-			for (int j = 0; j < this.get_cols() && !unregistered; j++)
-				if (this._regions[i][j].contains(a)) {
-					this._regions[i][j].remove_animal(a);
-					this._animal_region.remove(a);
-					unregistered = true;
-				}
+	public void unregister_animal(Animal a) {
+		this._animal_region.remove(a).remove_animal(a);
 	}
 
-	void update_animal_region(Animal a) { // revisar
-		boolean updated = false;
-
-		for (int i = 0; i < this.get_rows() && !updated; i++)
-			for (int j = 0; j < this.get_cols() && !updated; j++) {
-
-				double x = a.get_position().getX(), y = a.get_position().getY(), minX = j * this.get_region_width(),
-						minY = i * this.get_region_height(), maxX = (j + 1) * this.get_region_width(),
-						maxY = (y + 1) * this.get_region_height();
-
-				if (x == Utils.constrain_value_in_range(x, minX, maxX)
-						&& y == Utils.constrain_value_in_range(y, minY, maxY)) {
-					this._regions[i][j].add_animal(a);
-					this._animal_region.put(a, this._regions[i][j]);
-					// utilizar mapa para saber en que region esta en el animal
-					updated = true;
-				}
-			}
+	public void update_animal_region(Animal a) {
+		int j = (int) (a.get_position().getX() / this.get_region_width()) - 1,
+				i = (int) (a.get_position().getY() / this.get_region_height()) - 1;
+		Region new_region = this._regions[i][j];
+		if(!new_region.contains(a)) {
+			new_region.add_animal(a);
+			Region old_region = this._animal_region.put(a, new_region);
+			old_region.remove_animal(a);
+		}
 	}
 
-	void update_all_regions(double dt) {
+	public void update_all_regions(double dt) {
 		for (Region[] regions : this._regions)
 			for (Region region : regions)
 				region.update(dt);
