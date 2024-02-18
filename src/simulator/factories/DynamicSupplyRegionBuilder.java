@@ -3,9 +3,10 @@ package simulator.factories;
 import org.json.JSONObject;
 
 import simulator.model.DynamicSupplyRegion;
+import simulator.model.Region;
 import simulator.view.Messages;
 
-public class DynamicSupplyRegionBuilder extends Builder<DynamicSupplyRegion> {
+public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
 	public DynamicSupplyRegionBuilder() {
 		super(Messages.DEFAULT_REGION_TYPE, Messages.MENSAJE_PERSONALIZADO);

@@ -5,12 +5,13 @@ import org.json.JSONObject;
 
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
+import simulator.model.Animal;
 import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
 import simulator.model.Wolf;
 import simulator.view.Messages;
 
-public class WolfBuilder extends Builder<Wolf> {
+public class WolfBuilder extends Builder<Animal> {
 
 	private Factory<SelectionStrategy> _selection_strategy_factory;
 

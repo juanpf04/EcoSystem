@@ -13,7 +13,12 @@ import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import simulator.misc.Utils;
+import simulator.model.SelectionStrategy;
+import simulator.factories.*;
 
 public class Main {
 
@@ -124,6 +129,14 @@ public class Main {
 	}
 
 	private static void init_factories() {
+		// initialize the strategies factory
+		List<Builder<SelectionStrategy>> selection_strategy_builders = new LinkedList<>();
+		selection_strategy_builders.add(new SelectFirstBuilder());
+		selection_strategy_builders.add(new SelectClosestBuilder());
+		selection_strategy_builders.add(new SelectYoungestBuilder());
+		Factory<SelectionStrategy> selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(
+				selection_strategy_builders);
+
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
