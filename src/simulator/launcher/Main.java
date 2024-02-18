@@ -17,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import simulator.misc.Utils;
+import simulator.model.Animal;
+import simulator.model.Region;
 import simulator.model.SelectionStrategy;
 import simulator.factories.*;
 
@@ -128,7 +130,8 @@ public class Main {
 		}
 	}
 
-	private static void init_factories() {
+	private static void init_factories() { // hacer
+		
 		// initialize the strategies factory
 		List<Builder<SelectionStrategy>> selection_strategy_builders = new LinkedList<>();
 		selection_strategy_builders.add(new SelectFirstBuilder());
@@ -136,6 +139,20 @@ public class Main {
 		selection_strategy_builders.add(new SelectYoungestBuilder());
 		Factory<SelectionStrategy> selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(
 				selection_strategy_builders);
+		
+		// initialize the animal factory
+		List<Builder<Animal>> animal_builders = new LinkedList<>();
+		animal_builders.add(new SheepBuilder(selection_strategy_factory));
+		animal_builders.add(new WolfBuilder(selection_strategy_factory));
+		Factory<Animal> animal_factory = new BuilderBasedFactory<Animal>(
+				animal_builders);
+		
+		// initialize the region factory
+		List<Builder<Region>> region_builders = new LinkedList<>();
+		region_builders.add(new DefaultRegionBuilder());
+		region_builders.add(new DynamicSupplyRegionBuilder());
+		Factory<Region> region_factory = new BuilderBasedFactory<Region>(
+				region_builders);
 
 	}
 
@@ -145,6 +162,7 @@ public class Main {
 
 	private static void start_batch_mode() throws Exception {
 		InputStream is = new FileInputStream(new File(_in_file));
+		//hacer
 	}
 
 	private static void start_GUI_mode() throws Exception {
