@@ -24,6 +24,16 @@ public class RegionManager implements AnimalMapView {
 	private Map<Animal, Region> _animal_region;
 
 	public RegionManager(int cols, int rows, int width, int height) {
+		
+		if (cols <= 0)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (rows <= 0)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (width <= 0)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (height <= 0)
+			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		
 		this._cols = cols;
 		this._rows = rows;
 		this._width = width;

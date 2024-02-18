@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 import simulator.view.Messages;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 
@@ -18,7 +18,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	protected List<Animal> _animal_in_region;
 
 	public Region() {
-		this._animal_in_region = new ArrayList<Animal>();
+		this._animal_in_region = new LinkedList<Animal>();
 	}
 
 	// revisar visibilidad
