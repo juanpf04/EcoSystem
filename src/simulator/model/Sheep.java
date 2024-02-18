@@ -29,9 +29,9 @@ public class Sheep extends Animal {
 	public Sheep(SelectionStrategy mate_strategy, SelectionStrategy danger_strategy, Vector2D pos) {
 		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE, INIT_SPEED, mate_strategy, pos);
 
-		if(danger_strategy == null)
+		if (danger_strategy == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
-		
+
 		this._danger_strategy = danger_strategy;
 		this._danger_source = null;
 	}

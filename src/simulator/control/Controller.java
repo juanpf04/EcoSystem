@@ -36,16 +36,16 @@ public class Controller {
 						this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
 			}
 		}
-		
+
 		JSONArray ja = data.getJSONArray(Messages.ANIMALS_KEY);
-		
+
 		for (int i = 0; i < ja.length(); i++) {
 			JSONObject jo = ja.getJSONObject(i);
 			int n = jo.getInt(Messages.AMOUNT_KEY);
 			for (int j = 0; j < n; j++)
 				this._sim.add_animal(jo.getJSONObject(Messages.SPEC_KEY));
 		}
-	} 
+	}
 
 	public void run(double t, double dt, boolean sv, OutputStream out) {
 		JSONObject jo = new JSONObject();

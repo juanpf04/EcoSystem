@@ -22,8 +22,8 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 
 	public BuilderBasedFactory(List<Builder<T>> builders) {
 		this();
-		
-		if(builders == null)
+
+		if (builders == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
 
 		for (Builder<T> b : builders)

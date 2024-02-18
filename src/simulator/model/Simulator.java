@@ -20,11 +20,11 @@ public class Simulator implements JSONable {
 
 	public Simulator(int cols, int rows, int width, int height, Factory<Animal> animals_factory,
 			Factory<Region> regions_factory) {
-		if(animals_factory == null)
+		if (animals_factory == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
-		if(regions_factory == null)
+		if (regions_factory == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
-		
+
 		this._animals_factory = animals_factory;
 		this._regions_factory = regions_factory;
 		this._region_manager = new RegionManager(cols, rows, width, height);
@@ -74,7 +74,7 @@ public class Simulator implements JSONable {
 			if (a.is_pregnant()) {
 				Animal baby = a.deliver_baby();
 				this.add_animal(baby);
-				this._animals.add(baby); // revisar 
+				this._animals.add(baby); // revisar
 			}
 	}
 

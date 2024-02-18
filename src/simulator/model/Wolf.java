@@ -31,9 +31,9 @@ public class Wolf extends Animal {
 	public Wolf(SelectionStrategy mate_strategy, SelectionStrategy hunting_strategy, Vector2D pos) {
 		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE, INIT_SPEED, mate_strategy, pos);
 
-		if(hunting_strategy == null)
+		if (hunting_strategy == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
-		
+
 		this._hunting_strategy = hunting_strategy;
 		this._hunt_target = null;
 	}

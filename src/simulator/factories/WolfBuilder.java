@@ -18,7 +18,7 @@ public class WolfBuilder extends Builder<Wolf> {
 		super(Messages.WOLF_TAG, Messages.DESCRIPTION);
 		if (selection_strategy_factory == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
-		
+
 		this._selection_strategy_factory = selection_strategy_factory;
 	}
 
