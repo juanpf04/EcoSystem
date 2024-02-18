@@ -2,6 +2,7 @@ package simulator.model;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.view.Messages;
@@ -35,10 +36,14 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	@Override
-	public JSONObject as_JSON() { // revisar
+	public JSONObject as_JSON() {
 		JSONObject jo = new JSONObject();
+		JSONArray ja = new JSONArray();
+		
+		for(Animal a: this.getAnimals())
+			ja.put(a.as_JSON());
 
-		jo.put(Messages.ANIMALS_KEY, this._animals_in_region);
+		jo.put(Messages.ANIMALS_KEY, ja);
 
 		return jo;
 	}

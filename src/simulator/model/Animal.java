@@ -1,6 +1,8 @@
 package simulator.model;
 
 import java.lang.IllegalArgumentException;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.misc.Utils;
@@ -10,7 +12,7 @@ import simulator.view.Messages;
 public abstract class Animal implements Entity, AnimalInfo {
 
 	protected static final double SPEED_TOLERANCE = 0.1;
-	protected static final double FACTOR = 60.0; //revisar nombre
+	protected static final double FACTOR = 60.0; // revisar nombre
 	protected static final double MUTATION_TOLERANCE = 0.2;
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
@@ -83,12 +85,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 		if (this.get_position() == null)
 			this._pos = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()),
 					Utils._rand.nextDouble(this._region_mngr.get_height()));
-		else if (this.is_out()) 
+		else if (this.is_out())
 			this.adjust_position();
-		
+
 		this.new_random_dest();
 	}
-	
+
 	public Animal deliver_baby() {
 		Animal baby = this._baby;
 		this._baby = null;
@@ -103,11 +105,15 @@ public abstract class Animal implements Entity, AnimalInfo {
 	@Override
 	public JSONObject as_JSON() {
 		JSONObject jo = new JSONObject();
+		JSONArray ja = new JSONArray();
 
-		jo.put(Messages.POSITION_KEY, this.get_position());
+		ja.put(this.get_position().getX());
+		ja.put(this.get_position().getY());
+
+		jo.put(Messages.POSITION_KEY, ja);
 		jo.put(Messages.GENETIC_CODE_KEY, this.get_genetic_code());
-		jo.put(Messages.DIET_KEY, this.get_diet());
-		jo.put(Messages.ANIMAL_STATE_KEY, this.get_state());
+		jo.put(Messages.DIET_KEY, this.get_diet().toString());
+		jo.put(Messages.ANIMAL_STATE_KEY, this.get_state().toString());
 
 		return jo;
 	}
@@ -211,8 +217,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return this._baby != null;
 	}
 
-	public double distanceTo(Animal closest) {
-		return this.get_position().distanceTo(closest.get_position());
+	public double distanceTo(Animal a) {
+		return this.get_position().distanceTo(a.get_position());
 	}
 
 	public boolean is_alive() {
@@ -244,5 +250,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 			this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
 		while (this.get_position().getY() < 0)
 			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
+	}
+
+	public boolean in_sight_range(Animal a) {
+		return this.distanceTo(a) <= a.get_sight_range();
 	}
 }
