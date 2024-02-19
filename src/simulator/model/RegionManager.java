@@ -126,6 +126,17 @@ public class RegionManager implements AnimalMapView {
 	@Override // terminar
 	public List<Animal> get_animals_in_range(Animal a, Predicate<Animal> filter) {
 		List<Animal> animals_in_range = new LinkedList<Animal>();
+
+		for(Region region: this.get_regions_in_range(a))
+			for (Animal animal : region.getAnimals())
+				if (animal.in_sight_range(a) && filter == null)
+					animals_in_range.add(animal);
+
+		return animals_in_range;
+	}
+	
+	public List<Region> get_regions_in_range(Animal a) {
+		List<Region> regions_in_range = new LinkedList<>();
 		double sr = a.get_sight_range(), x = a.get_position().getX(), y = a.get_position().getY();
 		int init_j = (int) (x - sr / this.get_region_width()) - 1,
 				init_i = (int) (y - sr / this.get_region_height()) - 1;
@@ -133,11 +144,9 @@ public class RegionManager implements AnimalMapView {
 
 		for (int i = init_i; i < end_i; i++)
 			for (int j = init_j; j < end_j; j++)
-				for (Animal animal : this._regions[i][j].getAnimals())
-					if (animal.in_sight_range(a) && filter == null)
-						animals_in_range.add(animal);
+				regions_in_range.add(this._regions[i][j]);
 
-		return animals_in_range;
+		return regions_in_range;
 	}
 
 	@Override
