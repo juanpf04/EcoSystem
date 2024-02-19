@@ -32,7 +32,7 @@ public class Simulator implements JSONable {
 		this._time = 0.0;
 	}
 
-	private void set_region(int row, int col, Region r) {
+	public void set_region(int row, int col, Region r) { // cambiar a private despues de probar
 		this._region_manager.set_region(row, col, r);
 	}
 
@@ -40,7 +40,7 @@ public class Simulator implements JSONable {
 		this.set_region(row, col, this._regions_factory.create_instance(r_json));
 	}
 
-	private void add_animal(Animal a) {
+	public void add_animal(Animal a) { // cambiar a private despues de probar
 		this._animals.add(a);
 		this._region_manager.register_animal(a);
 	}
@@ -74,7 +74,7 @@ public class Simulator implements JSONable {
 			if (a.is_pregnant()) {
 				Animal baby = a.deliver_baby();
 				this.add_animal(baby);
-				this._animals.add(baby); // revisar
+				this._animals.add(baby);
 			}
 	}
 

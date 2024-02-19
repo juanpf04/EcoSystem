@@ -22,7 +22,6 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		this._animals_in_region = new LinkedList<Animal>();
 	}
 
-	// revisar visibilidad
 	public final void add_animal(Animal a) {
 		this._animals_in_region.add(a);
 	}
