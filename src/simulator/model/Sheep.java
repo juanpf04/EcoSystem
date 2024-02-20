@@ -1,5 +1,7 @@
 package simulator.model;
 
+import java.util.function.Predicate;
+
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 import simulator.view.Messages;
@@ -114,8 +116,18 @@ public class Sheep extends Animal {
 
 			if (this._mate_target == null)
 				this._mate_target = this._mate_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, null)); // hacer
+						this._region_mngr.get_animals_in_range(this, (Animal a) -> {return this.get_genetic_code() == a.get_genetic_code();}));
 
+			/* Segunda forma
+			this._region_mngr.get_animals_in_range(this, new Predicate<Animal>() {
+
+				@Override
+				public boolean test(Animal t) {
+					return get_genetic_code() == t.get_genetic_code();
+				}
+			
+			}); */
+			
 			if (this._mate_target == null)
 				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 			else {
@@ -150,9 +162,6 @@ public class Sheep extends Animal {
 			else if (this._desire < UMBRAL_DESIRE)
 				this._state = State.NORMAL;
 
-			break;
-		case HUNGER:
-			// lanzar excepción?
 			break;
 		default:
 			break;

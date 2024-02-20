@@ -123,18 +123,19 @@ public class RegionManager implements AnimalMapView {
 		return this._animal_region.get(a).get_food(a, dt);
 	}
 
-	@Override // terminar
+	@Override
 	public List<Animal> get_animals_in_range(Animal a, Predicate<Animal> filter) {
 		List<Animal> animals_in_range = new LinkedList<Animal>();
 
 		for (Region region : this.get_regions_in_range(a))
 			for (Animal animal : region.getAnimals())
-				if (animal.in_sight_range(a) && filter == null)
+				if (animal.in_sight_range(a) && filter.test(animal))
 					animals_in_range.add(animal);
 
 		return animals_in_range;
 	}
 
+	// TODO
 	public List<Region> get_regions_in_range(Animal a) {
 		List<Region> regions_in_range = new LinkedList<>();
 
