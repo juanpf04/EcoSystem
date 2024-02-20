@@ -140,14 +140,14 @@ public class Main {
 		Factory<SelectionStrategy> selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(
 				selection_strategy_builders);
 		
-		// initialize the animal factory
+		// initialize the animals factory
 		List<Builder<Animal>> animal_builders = new LinkedList<>();
 		animal_builders.add(new SheepBuilder(selection_strategy_factory));
 		animal_builders.add(new WolfBuilder(selection_strategy_factory));
 		Factory<Animal> animal_factory = new BuilderBasedFactory<Animal>(
 				animal_builders);
 		
-		// initialize the region factory
+		// initialize the regions factory
 		List<Builder<Region>> region_builders = new LinkedList<>();
 		region_builders.add(new DefaultRegionBuilder());
 		region_builders.add(new DynamicSupplyRegionBuilder());
