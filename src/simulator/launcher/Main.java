@@ -2,7 +2,11 @@ package simulator.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -20,7 +24,9 @@ import simulator.misc.Utils;
 import simulator.model.Animal;
 import simulator.model.Region;
 import simulator.model.SelectionStrategy;
+import simulator.model.Simulator;
 import simulator.view.Messages;
+import simulator.control.Controller;
 import simulator.factories.*;
 
 public class Main {
@@ -208,8 +214,18 @@ public class Main {
 	}
 
 	private static void start_batch_mode() throws Exception {
-		InputStream is = new FileInputStream(new File(_in_file));
-		// hacer
+		InputStream in = new FileInputStream(new File(_in_file));
+		JSONObject data = load_JSON_file(in);
+		
+		// TODO
+		OutputStream out = new FileOutputStream(_out_file); 
+		data.get("blablbla");
+		Simulator simulator = new Simulator(0, 0, 0, 0, _animal_factory, _region_factory);
+		
+		Controller controller = new Controller(simulator);
+		controller.load_data(data);
+		controller.run(_time, _delta_time, _sv, out);
+		out.close();
 	}
 
 	private static void start_GUI_mode() throws Exception {
