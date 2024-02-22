@@ -101,19 +101,19 @@ public class Main {
 		Options cmdLineOptions = new Options();
 
 		// delta time
-		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_DELTA_TIME_SHORTCUT).longOpt(Messages.COMMAND_DELTA_TIME_NAME).hasArg().desc(Messages.COMMAND_DELTA_TIME_DESCRIPTION).build());
 		
 		// help
-		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message.").build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_HELP_SHORTCUT).longOpt("help").desc("Print this message.").build());
 
 		// input file
-		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("A configuration file.").build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_INPUT_SHORTCUT).longOpt("input").hasArg().desc("A configuration file.").build());
 		
 		// output file
-		cmdLineOptions.addOption(Option.builder("i").longOpt("output").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_OUTPUT_SHORTCUT).longOpt("output").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
 		
 		// simple viewer
-		cmdLineOptions.addOption(Option.builder("i").longOpt("simple-viewer").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
+		cmdLineOptions.addOption(Option.builder().longOpt("simple-viewer").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
 
 		// steps
 		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
