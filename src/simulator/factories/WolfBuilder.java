@@ -49,7 +49,13 @@ public class WolfBuilder extends Builder<Animal> {
 
 	@Override
 	protected void fill_in_data(JSONObject o) {
-		// no se si es hacer esto o que
-
+		o.put("mate_strategy", "{...}");
+		o.put("hunt_strategy", "{...}");
+		
+		JSONObject jo = new JSONObject();
+		jo.put("x_range", "[ 100.0, 200.0 ]");
+		jo.put("y_range", "[ 100.0, 200.0 ]");		
+		
+		o.put("pos", jo);
 	}
 }
