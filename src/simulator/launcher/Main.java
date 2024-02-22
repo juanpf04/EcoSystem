@@ -20,6 +20,7 @@ import simulator.misc.Utils;
 import simulator.model.Animal;
 import simulator.model.Region;
 import simulator.model.SelectionStrategy;
+import simulator.view.Messages;
 import simulator.factories.*;
 
 public class Main {
@@ -53,6 +54,12 @@ public class Main {
 	private static Double _time = null;
 	private static String _in_file = null;
 	private static ExecMode _mode = ExecMode.BATCH;
+	
+	// factories
+	//
+	private static Factory<SelectionStrategy> _selection_strategy_factory;
+	private static Factory<Animal> _animal_factory;
+	private static Factory<Region> _region_factory;
 
 	private static void parse_args(String[] args) {
 
@@ -65,8 +72,11 @@ public class Main {
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
+			parse_delta_time_option(line);
 			parse_help_option(line, cmdLineOptions);
 			parse_in_file_option(line);
+			parse_out_file_option(line);
+			parse_simple_viewer_option(line);
 			parse_time_option(line);
 
 			// if there are some remaining arguments, then something wrong is
@@ -90,11 +100,20 @@ public class Main {
 	private static Options build_options() {
 		Options cmdLineOptions = new Options();
 
+		// delta time
+		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
+		
 		// help
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message.").build());
 
 		// input file
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("A configuration file.").build());
+		
+		// output file
+		cmdLineOptions.addOption(Option.builder("i").longOpt("output").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
+		
+		// simple viewer
+		cmdLineOptions.addOption(Option.builder("i").longOpt("simple-viewer").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
 
 		// steps
 		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
@@ -103,6 +122,13 @@ public class Main {
 				.build());
 
 		return cmdLineOptions;
+	}
+	
+	private static void parse_delta_time_option(CommandLine line) throws ParseException {
+		_in_file = line.getOptionValue("i");
+		if (_mode == ExecMode.BATCH && _in_file == null) {
+			throw new ParseException("In batch mode an input configuration file is required");
+		}
 	}
 
 	private static void parse_help_option(CommandLine line, Options cmdLineOptions) {
@@ -114,6 +140,20 @@ public class Main {
 	}
 
 	private static void parse_in_file_option(CommandLine line) throws ParseException {
+		_in_file = line.getOptionValue("i");
+		if (_mode == ExecMode.BATCH && _in_file == null) {
+			throw new ParseException("In batch mode an input configuration file is required");
+		}
+	}
+	
+	private static void parse_out_file_option(CommandLine line) throws ParseException {
+		_in_file = line.getOptionValue("i");
+		if (_mode == ExecMode.BATCH && _in_file == null) {
+			throw new ParseException("In batch mode an input configuration file is required");
+		}
+	}
+	
+	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
 		_in_file = line.getOptionValue("i");
 		if (_mode == ExecMode.BATCH && _in_file == null) {
 			throw new ParseException("In batch mode an input configuration file is required");
@@ -137,23 +177,22 @@ public class Main {
 		selection_strategy_builders.add(new SelectFirstBuilder());
 		selection_strategy_builders.add(new SelectClosestBuilder());
 		selection_strategy_builders.add(new SelectYoungestBuilder());
-		Factory<SelectionStrategy> selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(
+		_selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(
 				selection_strategy_builders);
 		
 		// initialize the animals factory
 		List<Builder<Animal>> animal_builders = new LinkedList<>();
-		animal_builders.add(new SheepBuilder(selection_strategy_factory));
-		animal_builders.add(new WolfBuilder(selection_strategy_factory));
-		Factory<Animal> animal_factory = new BuilderBasedFactory<Animal>(
+		animal_builders.add(new SheepBuilder(_selection_strategy_factory));
+		animal_builders.add(new WolfBuilder(_selection_strategy_factory));
+		_animal_factory = new BuilderBasedFactory<Animal>(
 				animal_builders);
 		
 		// initialize the regions factory
 		List<Builder<Region>> region_builders = new LinkedList<>();
 		region_builders.add(new DefaultRegionBuilder());
 		region_builders.add(new DynamicSupplyRegionBuilder());
-		Factory<Region> region_factory = new BuilderBasedFactory<Region>(
+		_region_factory = new BuilderBasedFactory<Region>(
 				region_builders);
-
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {

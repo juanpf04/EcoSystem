@@ -49,12 +49,19 @@ public class SheepBuilder extends Builder<Animal> {
 
 	@Override
 	protected void fill_in_data(JSONObject o) {
-		o.put("mate_strategy", "{...}");
-		o.put("danger_strategy", "{...}");
+		SelectFirstBuilder b = new SelectFirstBuilder();
+		
+		o.put("mate_strategy", b.get_info());
+		o.put("danger_strategy", b.get_info());
 		
 		JSONObject jo = new JSONObject();
-		jo.put("x_range", "[ 100.0, 200.0 ]");
-		jo.put("y_range", "[ 100.0, 200.0 ]");		
+		
+		JSONArray ja = new JSONArray();
+		ja.put(100.0);
+		ja.put(200.0);
+		
+		jo.put("x_range", ja);
+		jo.put("y_range", ja);		
 		
 		o.put("pos", jo);
 	}

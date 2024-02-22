@@ -48,4 +48,10 @@ public class Messages {
 
 	public static final String WOLF_TAG = "Wolf";
 
+	// Commands
+	
+	public static final String COMMAND__NAME = "";
+	public static final String COMMAND__SHORTCUT = "";
+	public static final String COMMAND__HELP = "";
+	
 }
