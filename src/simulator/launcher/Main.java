@@ -53,9 +53,13 @@ public class Main {
 	// some attributes to stores values corresponding to command-line parameters
 	//
 	private static Double _time = null;
+	private static Double _delta_time = null;
 	private static String _in_file = null;
+	private static String _out_file = null;
 	private static ExecMode _mode = ExecMode.BATCH;
-	
+
+	private static boolean _sv = false;
+
 	// factories
 	//
 	private static Factory<SelectionStrategy> _selection_strategy_factory;
@@ -102,37 +106,46 @@ public class Main {
 		Options cmdLineOptions = new Options();
 
 		// delta time
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_DELTA_TIME_SHORTCUT).longOpt(Messages.COMMAND_DELTA_TIME_NAME).hasArg().desc(Messages.command_delta_time_description(_default_delta_time)).build());
-		
+		cmdLineOptions.addOption(
+				Option.builder(Messages.COMMAND_DELTA_TIME_SHORTCUT).longOpt(Messages.COMMAND_DELTA_TIME_NAME).hasArg()
+						.desc(Messages.command_delta_time_description(_default_delta_time)).build());
+
 		// help
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_HELP_SHORTCUT).longOpt(Messages.COMMAND_HELP_NAME).desc(Messages.COMMAND_HELP_DESCRIPTION).build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_HELP_SHORTCUT).longOpt(Messages.COMMAND_HELP_NAME)
+				.desc(Messages.COMMAND_HELP_DESCRIPTION).build());
 
 		// input file
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_INPUT_SHORTCUT).longOpt(Messages.COMMAND_INPUT_NAME).hasArg().desc(Messages.COMMAND_INPUT_DESCRIPTION).build());
-		
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_INPUT_SHORTCUT).longOpt(Messages.COMMAND_INPUT_NAME)
+				.hasArg().desc(Messages.COMMAND_INPUT_DESCRIPTION).build());
+
 		// output file
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_OUTPUT_SHORTCUT).longOpt(Messages.COMMAND_OUTPUT_NAME).hasArg().desc(Messages.COMMAND_OUTPUT_DESCRIPTION).build());
-		
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_OUTPUT_SHORTCUT).longOpt(Messages.COMMAND_OUTPUT_NAME)
+				.hasArg().desc(Messages.COMMAND_OUTPUT_DESCRIPTION).build());
+
 		// simple viewer
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT).longOpt(Messages.COMMAND_SIMPLE_VIEWER_NAME).hasArg().desc(Messages.COMMAND_SIMPLE_VIEWER_DESCRIPTION).build());
+		cmdLineOptions.addOption(
+				Option.builder(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT).longOpt(Messages.COMMAND_SIMPLE_VIEWER_NAME)
+						.hasArg().desc(Messages.COMMAND_SIMPLE_VIEWER_DESCRIPTION).build());
 
 		// steps
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_TIME_SHORTCUT).longOpt(Messages.COMMAND_TIME_NAME).hasArg()
-				.desc(Messages.command_time_description(_default_time))
-				.build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_TIME_SHORTCUT).longOpt(Messages.COMMAND_TIME_NAME)
+				.hasArg().desc(Messages.command_time_description(_default_time)).build());
 
 		return cmdLineOptions;
 	}
-	
+
 	private static void parse_delta_time_option(CommandLine line) throws ParseException {
-		_in_file = line.getOptionValue("i");
-		if (_mode == ExecMode.BATCH && _in_file == null) {
-			throw new ParseException("In batch mode an input configuration file is required");
+		String t = line.getOptionValue(Messages.COMMAND_DELTA_TIME_SHORTCUT, _default_delta_time.toString());
+		try {
+			_delta_time = Double.parseDouble(t);
+			assert (_delta_time >= 0);
+		} catch (Exception e) {
+			throw new ParseException("Invalid value for delta time: " + t);
 		}
 	}
 
 	private static void parse_help_option(CommandLine line, Options cmdLineOptions) {
-		if (line.hasOption("h")) {
+		if (line.hasOption(Messages.COMMAND_HELP_SHORTCUT)) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp(Main.class.getCanonicalName(), cmdLineOptions, true);
 			System.exit(0);
@@ -140,28 +153,26 @@ public class Main {
 	}
 
 	private static void parse_in_file_option(CommandLine line) throws ParseException {
-		_in_file = line.getOptionValue("i");
-		if (_mode == ExecMode.BATCH && _in_file == null) {
-			throw new ParseException("In batch mode an input configuration file is required");
-		}
-	}
-	
-	private static void parse_out_file_option(CommandLine line) throws ParseException {
-		_in_file = line.getOptionValue("i");
-		if (_mode == ExecMode.BATCH && _in_file == null) {
-			throw new ParseException("In batch mode an input configuration file is required");
-		}
-	}
-	
-	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
-		_in_file = line.getOptionValue("i");
+		_in_file = line.getOptionValue(Messages.COMMAND_INPUT_SHORTCUT);
 		if (_mode == ExecMode.BATCH && _in_file == null) {
 			throw new ParseException("In batch mode an input configuration file is required");
 		}
 	}
 
+	private static void parse_out_file_option(CommandLine line) throws ParseException {
+		_out_file = line.getOptionValue(Messages.COMMAND_OUTPUT_SHORTCUT);
+		if (_out_file == null) {
+			throw new ParseException("HACER");
+		}
+	}
+
+	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
+		if (line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT))
+			_sv = true;
+	}
+
 	private static void parse_time_option(CommandLine line) throws ParseException {
-		String t = line.getOptionValue("t", _default_time.toString());
+		String t = line.getOptionValue(Messages.COMMAND_TIME_SHORTCUT, _default_time.toString());
 		try {
 			_time = Double.parseDouble(t);
 			assert (_time >= 0);
@@ -170,29 +181,26 @@ public class Main {
 		}
 	}
 
-	private static void init_factories() { // hacer
-		
+	private static void init_factories() {
+
 		// initialize the strategies factory
 		List<Builder<SelectionStrategy>> selection_strategy_builders = new LinkedList<>();
 		selection_strategy_builders.add(new SelectFirstBuilder());
 		selection_strategy_builders.add(new SelectClosestBuilder());
 		selection_strategy_builders.add(new SelectYoungestBuilder());
-		_selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(
-				selection_strategy_builders);
-		
+		_selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
+
 		// initialize the animals factory
 		List<Builder<Animal>> animal_builders = new LinkedList<>();
 		animal_builders.add(new SheepBuilder(_selection_strategy_factory));
 		animal_builders.add(new WolfBuilder(_selection_strategy_factory));
-		_animal_factory = new BuilderBasedFactory<Animal>(
-				animal_builders);
-		
+		_animal_factory = new BuilderBasedFactory<Animal>(animal_builders);
+
 		// initialize the regions factory
 		List<Builder<Region>> region_builders = new LinkedList<>();
 		region_builders.add(new DefaultRegionBuilder());
 		region_builders.add(new DynamicSupplyRegionBuilder());
-		_region_factory = new BuilderBasedFactory<Region>(
-				region_builders);
+		_region_factory = new BuilderBasedFactory<Region>(region_builders);
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
@@ -201,7 +209,7 @@ public class Main {
 
 	private static void start_batch_mode() throws Exception {
 		InputStream is = new FileInputStream(new File(_in_file));
-		//hacer
+		// hacer
 	}
 
 	private static void start_GUI_mode() throws Exception {
