@@ -49,9 +49,28 @@ public class Messages {
 	public static final String WOLF_TAG = "Wolf";
 
 	// Commands
-	
-	public static final String COMMAND__NAME = "";
-	public static final String COMMAND__SHORTCUT = "";
-	public static final String COMMAND__HELP = "";
-	
+
+	public static final String COMMAND_DELTA_TIME_NAME = "dt";
+	public static final String COMMAND_DELTA_TIM_SHORTCUT = "delta-time";
+	public static final String COMMAND_DELTA_TIM_DESCRIPTION = "";
+
+	public static final String COMMAND_HELP_NAME = "h";
+	public static final String COMMAND_HELP_SHORTCUT = "help";
+	public static final String COMMAND_HELP_DESCRIPTION = "";
+
+	public static final String COMMAND_INPUT_NAME = "i";
+	public static final String COMMAND_INPUT_SHORTCUT = "input";
+	public static final String COMMAND_INPUT_DESCRIPTION = "";
+
+	public static final String COMMAND_OUTPUT_NAME = "o";
+	public static final String COMMAND_OUTPUT_SHORTCUT = "output";
+	public static final String COMMAND_OUTPUT_DESCRIPTION = "";
+
+	public static final String COMMAND_SIMPLE_VIEWER_NAME = "sv";
+	public static final String COMMAND_SIMPLE_VIEWER_SHORTCUT = "simple-viewer";
+	public static final String COMMAND_SIMPLE_VIEWER_DESCRIPTION = "";
+
+	public static final String COMMAND_TIME_NAME = "t";
+	public static final String COMMAND_TIME_SHORTCUT = "time";
+	public static final String COMMAND_TIME_DESCRIPTION = "";
 }
