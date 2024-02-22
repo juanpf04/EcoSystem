@@ -63,7 +63,8 @@ public class Sheep extends Animal {
 			
 			});
 	 *
-	 *
+	 * 4.
+	 * a -> this.get_genetic_code() == a.get_genetic_code()
 	 */
 	
 
@@ -87,7 +88,7 @@ public class Sheep extends Animal {
 
 			if (this._danger_source == null)
 				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, (Animal a) -> this.get_genetic_code() != a.get_genetic_code()));
+						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
 
 			if (this._danger_source != null)
 				this._state = State.DANGER;
@@ -120,7 +121,7 @@ public class Sheep extends Animal {
 
 			if (this._danger_source == null || this._danger_source.distanceTo(this) <= this.get_sight_range()) {
 				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, (Animal a) -> this.get_genetic_code() != a.get_genetic_code()));
+						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
 
 				if (this._danger_source == null) {
 					if (this._desire <= UMBRAL_DESIRE)
@@ -138,7 +139,7 @@ public class Sheep extends Animal {
 
 			if (this._mate_target == null)
 				this._mate_target = this._mate_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, (Animal a) -> this.get_genetic_code() == a.get_genetic_code()));
+						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
 			
 			if (this._mate_target == null)
 				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
@@ -167,7 +168,7 @@ public class Sheep extends Animal {
 			}
 			if (this._danger_source == null)
 				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, (Animal a) -> this.get_genetic_code() != a.get_genetic_code()));
+						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
 
 			if (this._danger_source != null)
 				this._state = State.DANGER;

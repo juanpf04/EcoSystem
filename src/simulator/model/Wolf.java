@@ -75,7 +75,7 @@ public class Wolf extends Animal {
 			if (this._hunt_target == null || (this._hunt_target != null && !this._hunt_target.is_alive())
 					|| this._hunt_target.distanceTo(this) > this.get_sight_range())
 				this._hunt_target = this._hunting_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, null));
+						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
 
 			if (this._hunt_target == null)
 				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
@@ -117,7 +117,7 @@ public class Wolf extends Animal {
 
 			if (this._mate_target == null)
 				this._mate_target = this._mate_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, null)); // hacer
+						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code())); 
 
 			if (this._mate_target == null)
 				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
@@ -152,10 +152,6 @@ public class Wolf extends Animal {
 				this._state = State.NORMAL;
 
 			break;
-		case DANGER:
-			// lanzar excepción?
-			break;
-
 		default:
 			break;
 		}
