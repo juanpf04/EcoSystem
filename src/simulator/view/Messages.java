@@ -52,25 +52,34 @@ public class Messages {
 
 	public static final String COMMAND_DELTA_TIME_NAME = "delta-time";
 	public static final String COMMAND_DELTA_TIME_SHORTCUT = "dt";
-	public static final String COMMAND_DELTA_TIME_DESCRIPTION = "";
+	public static final String COMMAND_DELTA_TIME_DESCRIPTION = "A double representing actual time, in seconds, per simulation step. Default value: %s.";
 
 	public static final String COMMAND_HELP_NAME = "help";
 	public static final String COMMAND_HELP_SHORTCUT = "h";
-	public static final String COMMAND_HELP_DESCRIPTION = "";
+	public static final String COMMAND_HELP_DESCRIPTION = "Print this message.";
 
 	public static final String COMMAND_INPUT_NAME = "input";
 	public static final String COMMAND_INPUT_SHORTCUT = "i";
-	public static final String COMMAND_INPUT_DESCRIPTION = "";
+	public static final String COMMAND_INPUT_DESCRIPTION = "Initial configuration file.";
 
 	public static final String COMMAND_OUTPUT_NAME = "output";
 	public static final String COMMAND_OUTPUT_SHORTCUT = "o";
-	public static final String COMMAND_OUTPUT_DESCRIPTION = "";
+	public static final String COMMAND_OUTPUT_DESCRIPTION = "Output file, where output is written.";
 
 	public static final String COMMAND_SIMPLE_VIEWER_NAME = "simple-viewer";
 	public static final String COMMAND_SIMPLE_VIEWER_SHORTCUT = "sv";
-	public static final String COMMAND_SIMPLE_VIEWER_DESCRIPTION = "";
+	public static final String COMMAND_SIMPLE_VIEWER_DESCRIPTION = "Show the viewer window in console mode.";
 
 	public static final String COMMAND_TIME_NAME = "time";
 	public static final String COMMAND_TIME_SHORTCUT = "t";
-	public static final String COMMAND_TIME_DESCRIPTION = "";
+	public static final String COMMAND_TIME_DESCRIPTION = "An real number representing the total simulation time in seconds. Default value: %s.";
+	
+	public static final String command_delta_time_description(Double delta_time) {
+		return Messages.COMMAND_DELTA_TIME_DESCRIPTION.formatted(delta_time);
+	}
+	
+	public static final String command_time_description(Double time) {
+		return Messages.COMMAND_TIME_DESCRIPTION.formatted(time);
+	}
+	
 }

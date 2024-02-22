@@ -48,6 +48,7 @@ public class Main {
 	// default values for some parameters
 	//
 	private final static Double _default_time = 10.0; // in seconds
+	private final static Double _default_delta_time = 0.03; // in seconds
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
@@ -101,24 +102,23 @@ public class Main {
 		Options cmdLineOptions = new Options();
 
 		// delta time
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_DELTA_TIME_SHORTCUT).longOpt(Messages.COMMAND_DELTA_TIME_NAME).hasArg().desc(Messages.COMMAND_DELTA_TIME_DESCRIPTION).build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_DELTA_TIME_SHORTCUT).longOpt(Messages.COMMAND_DELTA_TIME_NAME).hasArg().desc(Messages.command_delta_time_description(_default_delta_time)).build());
 		
 		// help
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_HELP_SHORTCUT).longOpt("help").desc("Print this message.").build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_HELP_SHORTCUT).longOpt(Messages.COMMAND_HELP_NAME).desc(Messages.COMMAND_HELP_DESCRIPTION).build());
 
 		// input file
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_INPUT_SHORTCUT).longOpt("input").hasArg().desc("A configuration file.").build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_INPUT_SHORTCUT).longOpt(Messages.COMMAND_INPUT_NAME).hasArg().desc(Messages.COMMAND_INPUT_DESCRIPTION).build());
 		
 		// output file
-		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_OUTPUT_SHORTCUT).longOpt("output").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_OUTPUT_SHORTCUT).longOpt(Messages.COMMAND_OUTPUT_NAME).hasArg().desc(Messages.COMMAND_OUTPUT_DESCRIPTION).build());
 		
 		// simple viewer
-		cmdLineOptions.addOption(Option.builder().longOpt("simple-viewer").hasArg().desc(Messages.MENSAJE_PERSONALIZADO).build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT).longOpt(Messages.COMMAND_SIMPLE_VIEWER_NAME).hasArg().desc(Messages.COMMAND_SIMPLE_VIEWER_DESCRIPTION).build());
 
 		// steps
-		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
-				.desc("An real number representing the total simulation time in seconds. Default value: "
-						+ _default_time + ".")
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_TIME_SHORTCUT).longOpt(Messages.COMMAND_TIME_NAME).hasArg()
+				.desc(Messages.command_time_description(_default_time))
 				.build());
 
 		return cmdLineOptions;
