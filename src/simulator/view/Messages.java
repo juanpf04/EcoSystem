@@ -41,7 +41,8 @@ public class Messages {
 	public static final String WOLF_GENETIC_CODE = "Wolf";
 
 	// revisar nombre type / tag
-	public static final String DEFAULT_REGION_TYPE = "dynamic";
+	public static final String DEFAULT_REGION_TYPE = "default";
+	public static final String DYNAMIC_REGION_TYPE = "dynamic";
 	public static final String SHEEP_TAG = "sheep";
 
 	public static final String DESCRIPTION = "Descripcion personalizada";
