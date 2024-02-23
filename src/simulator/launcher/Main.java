@@ -128,9 +128,8 @@ public class Main {
 				.hasArg().desc(Messages.COMMAND_OUTPUT_DESCRIPTION).build());
 
 		// simple viewer
-		cmdLineOptions.addOption(
-				Option.builder(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT).longOpt(Messages.COMMAND_SIMPLE_VIEWER_NAME)
-						.hasArg().desc(Messages.COMMAND_SIMPLE_VIEWER_DESCRIPTION).build());
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT)
+				.longOpt(Messages.COMMAND_SIMPLE_VIEWER_NAME).desc(Messages.COMMAND_SIMPLE_VIEWER_DESCRIPTION).build());
 
 		// steps
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_TIME_SHORTCUT).longOpt(Messages.COMMAND_TIME_NAME)
@@ -215,12 +214,12 @@ public class Main {
 	private static void start_batch_mode() throws Exception {
 		InputStream in = new FileInputStream(new File(_in_file));
 		JSONObject data = load_JSON_file(in);
-		
+
 		// TODO
-		OutputStream out = new FileOutputStream(_out_file); 
+		OutputStream out = new FileOutputStream(_out_file);
 		data.get("blablbla");
 		Simulator simulator = new Simulator(0, 0, 0, 0, _animal_factory, _region_factory);
-		
+
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
 		controller.run(_time, _delta_time, _sv, out);
