@@ -27,9 +27,9 @@ public class Messages {
 
 	public static final String INVALID_TYPE = "Invalid type";
 	public static final String INVALID_DESC = "Invalid desc";
-	public static final String INVALID_INFO = "’info’ cannot be null";
+	public static final String INVALID_INFO = "'info' cannot be null";
 
-	private static final String UNRECOGNIZED_INFO = "Unrecognized ‘info’: %s";
+	private static final String UNRECOGNIZED_INFO = "Unrecognized 'info': %s";
 
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
