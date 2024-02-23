@@ -63,7 +63,6 @@ public class Main {
 	private static String _in_file = null;
 	private static String _out_file = null;
 	private static ExecMode _mode = ExecMode.BATCH;
-
 	private static boolean _sv = false;
 
 	// factories
