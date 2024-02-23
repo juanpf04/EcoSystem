@@ -217,8 +217,8 @@ public class Main {
 
 		// TODO
 		OutputStream out = new FileOutputStream(_out_file);
-		data.get("blablbla");
-		Simulator simulator = new Simulator(0, 0, 0, 0, _animal_factory, _region_factory);
+		SimulatorBuilder sb = new SimulatorBuilder(_animal_factory, _region_factory);
+		Simulator simulator = sb.create_instance(data);
 
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
