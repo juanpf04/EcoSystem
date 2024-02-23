@@ -46,7 +46,7 @@ public class Messages {
 
 	public static final String DESCRIPTION = "Descripcion personalizada";
 
-	public static final String WOLF_TAG = "Wolf";
+	public static final String WOLF_TAG = "wolf";
 
 	// Commands
 
@@ -73,6 +73,10 @@ public class Messages {
 	public static final String COMMAND_TIME_NAME = "time";
 	public static final String COMMAND_TIME_SHORTCUT = "t";
 	public static final String COMMAND_TIME_DESCRIPTION = "An real number representing the total simulation time in seconds. Default value: %s.";
+
+	public static final String SIMULATOR_TAG = "simulator";
+
+	public static final String SELECT_FIRST_TAG = "youngest";
 	
 	public static final String command_delta_time_description(Double delta_time) {
 		return Messages.COMMAND_DELTA_TIME_DESCRIPTION.formatted(delta_time);

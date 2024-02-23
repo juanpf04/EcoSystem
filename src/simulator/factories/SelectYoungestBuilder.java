@@ -4,14 +4,12 @@ import org.json.JSONObject;
 
 import simulator.model.SelectYoungest;
 import simulator.model.SelectionStrategy;
+import simulator.view.Messages;
 
 public class SelectYoungestBuilder extends Builder<SelectionStrategy> {
 
-	private static final String TYPE = "youngest";
-	private static final String DESCRIPTION = "descripcion rechulona";
-
 	public SelectYoungestBuilder() {
-		super(TYPE, DESCRIPTION);
+		super(Messages.SELECT_FIRST_TAG, Messages.DESCRIPTION);
 	}
 
 	@Override

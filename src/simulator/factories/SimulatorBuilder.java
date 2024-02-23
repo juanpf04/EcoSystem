@@ -13,7 +13,7 @@ public class SimulatorBuilder extends Builder<Simulator> {
 	private Factory<Region> _region_factory;
 
 	public SimulatorBuilder(Factory<Animal> animal_factory, Factory<Region> region_factory) {
-		super(Messages.MENSAJE_PERSONALIZADO,Messages.MENSAJE_PERSONALIZADO);
+		super(Messages.SIMULATOR_TAG,Messages.DESCRIPTION);
 		this._animal_factory = animal_factory;
 		this._region_factory = region_factory;
 	}
