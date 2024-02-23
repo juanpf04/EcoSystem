@@ -215,8 +215,8 @@ public class Main {
 		InputStream in = new FileInputStream(new File(_in_file));
 		JSONObject data = load_JSON_file(in);
 
-		// TODO
 		OutputStream out = new FileOutputStream(_out_file);
+		
 		SimulatorBuilder sb = new SimulatorBuilder(_animal_factory, _region_factory);
 		Simulator simulator = sb.create_instance(data);
 

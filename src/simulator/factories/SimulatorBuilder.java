@@ -20,8 +20,14 @@ public class SimulatorBuilder extends Builder<Simulator> {
 
 	@Override
 	public Simulator create_instance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return new Simulator(0, 0, 0, 0, _animal_factory, _region_factory);
+		int cols, rows, width, height;
+		
+		cols = data.getInt("cols");
+		rows = data.getInt("rows");
+		width = data.getInt("width");
+		height = data.getInt("height");
+		
+		return new Simulator(cols, rows, width, height, _animal_factory, _region_factory);
 	}
 
 }

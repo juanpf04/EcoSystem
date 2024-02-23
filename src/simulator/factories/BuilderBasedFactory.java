@@ -40,14 +40,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		if (info == null) {
 			throw new IllegalArgumentException(Messages.INVALID_INFO);
 		}
-		// Look for a builder with a tag equals to info.getString("type"), in the
-		// map _builder, and call its create_instance method and return the result
-		// if it is not null. The value you pass to create_instance is the following
-		// because ‘data’ is optional:
-		//
-		// info.has("data") ? info.getJSONObject("data") : new getJSONObject()
-		// …
-		// If no builder is found or the result is null ...
+
 		Builder<T> b = this._builders.get(info.getString(Messages.TYPE_KEY));
 		T t = null;
 
