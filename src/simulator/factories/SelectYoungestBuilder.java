@@ -9,7 +9,7 @@ import simulator.view.Messages;
 public class SelectYoungestBuilder extends Builder<SelectionStrategy> {
 
 	public SelectYoungestBuilder() {
-		super(Messages.SELECT_FIRST_TAG, Messages.DESCRIPTION);
+		super(Messages.SELECT_YOUNGEST_TAG, Messages.DESCRIPTION);
 	}
 
 	@Override

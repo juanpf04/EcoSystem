@@ -42,7 +42,7 @@ public class Messages {
 
 	// revisar nombre type / tag
 	public static final String DEFAULT_REGION_TYPE = "dynamic";
-	public static final String SHEEP_TAG = "Sheep";
+	public static final String SHEEP_TAG = "sheep";
 
 	public static final String DESCRIPTION = "Descripcion personalizada";
 
@@ -76,7 +76,9 @@ public class Messages {
 
 	public static final String SIMULATOR_TAG = "simulator";
 
-	public static final String SELECT_FIRST_TAG = "youngest";
+	public static final String SELECT_FIRST_TAG = "first";
+	public static final String SELECT_YOUNGEST_TAG = "youngest";
+	public static final String SELECT_CLOSEST_TAG = "closest";
 	
 	public static final String command_delta_time_description(Double delta_time) {
 		return Messages.COMMAND_DELTA_TIME_DESCRIPTION.formatted(delta_time);
