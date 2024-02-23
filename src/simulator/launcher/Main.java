@@ -218,12 +218,14 @@ public class Main {
 		// TODO
 		OutputStream out = new FileOutputStream(_out_file);
 		data.get("blablbla");
+		out.close();
+		
+		init_factories();
 		Simulator simulator = new Simulator(0, 0, 0, 0, _animal_factory, _region_factory);
 
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
 		controller.run(_time, _delta_time, _sv, out);
-		out.close();
 	}
 
 	private static void start_GUI_mode() throws Exception {
