@@ -20,7 +20,7 @@ public class Simulator implements JSONable {
 
 	public Simulator(int cols, int rows, int width, int height, Factory<Animal> animals_factory,
 			Factory<Region> regions_factory) {
-		
+
 		if (animals_factory == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
 		if (regions_factory == null)
@@ -41,7 +41,7 @@ public class Simulator implements JSONable {
 		this.set_region(row, col, this._regions_factory.create_instance(r_json));
 	}
 
-	private void add_animal(Animal a) { 
+	private void add_animal(Animal a) {
 		this._animals.add(a);
 		this._region_manager.register_animal(a);
 	}
@@ -71,12 +71,22 @@ public class Simulator implements JSONable {
 	}
 
 	private void update_babys() {
+//		for (Animal a : this._animals)
+//			if (a.is_pregnant()) {
+//				Animal baby = a.deliver_baby();
+//				this.add_animal(baby);
+//				this._animals.add(baby);
+//			}
+		List<Animal> babies = new LinkedList<Animal>();
 		for (Animal a : this._animals)
 			if (a.is_pregnant()) {
 				Animal baby = a.deliver_baby();
-				this.add_animal(baby);
-				this._animals.add(baby);
+				babies.add(baby);
 			}
+		for (Animal baby : babies) {
+			this.add_animal(baby);
+			this._animals.add(baby);
+		}
 	}
 
 	private void update_all_animals(double dt) {

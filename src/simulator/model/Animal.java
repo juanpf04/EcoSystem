@@ -126,12 +126,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 			}
 
 			if (this.get_state() == State.NORMAL) {
-				this._mate_strategy = null;
+				this._mate_target = null;
 				this.update();
 			} else if (this.get_state() == State.MATE)
 				this.update();
 			else if (this.get_state() == State.HUNGER || this.get_state() == State.DANGER)
-				this._mate_strategy = null;
+				this._mate_target = null;
 
 			if (this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
 				this._state = State.DEAD;
