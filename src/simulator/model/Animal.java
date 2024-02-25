@@ -37,7 +37,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected Animal(String genetic_code, Diet diet, double sight_range, double init_speed,
 			SelectionStrategy mate_strategy, Vector2D pos) {
 
-		if (genetic_code.isEmpty())
+		if (genetic_code == null || genetic_code.isBlank())
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
 		if (sight_range <= 0)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
@@ -137,7 +137,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 				this._state = State.DEAD;
 
 			if (this.is_alive()) {
-				this._energy = this._region_mngr.get_food(this, dt);
+				this._energy += this._region_mngr.get_food(this, dt);
 				this.adjust_energy();
 			}
 		}
@@ -230,7 +230,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 				Utils._rand.nextDouble(this._region_mngr.get_height()));
 	}
 
-	protected boolean is_out() { // revisar y mirar si hay que poner height-1 o no
+	protected boolean is_out() {
 		return this.get_position().getX() != Utils.constrain_value_in_range(this.get_position().getX(), 0,
 				this._region_mngr.get_width() - 1)
 				&& this.get_position().getY() != Utils.constrain_value_in_range(this.get_position().getX(), 0,

@@ -2,8 +2,6 @@ package simulator.view;
 
 public class Messages {
 
-	public static final String MENSAJE_PERSONALIZADO = "personalizar mensaje";
-
 	// JSONObjects key names
 
 	public static final String POSITION_KEY = "pos";
@@ -35,19 +33,10 @@ public class Messages {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
 	}
 
-	// Genetic code of Animals
+	// Animal genetic Codes
 
 	public static final String SHEEP_GENETIC_CODE = "Sheep";
 	public static final String WOLF_GENETIC_CODE = "Wolf";
-
-	// revisar nombre type / tag
-	public static final String DEFAULT_REGION_TYPE = "default";
-	public static final String DYNAMIC_REGION_TYPE = "dynamic";
-	public static final String SHEEP_TAG = "sheep";
-
-	public static final String DESCRIPTION = "Descripcion personalizada";
-
-	public static final String WOLF_TAG = "wolf";
 
 	// Commands
 
@@ -75,12 +64,6 @@ public class Messages {
 	public static final String COMMAND_TIME_SHORTCUT = "t";
 	public static final String COMMAND_TIME_DESCRIPTION = "An real number representing the total simulation time in seconds. Default value: %s.";
 
-	public static final String SIMULATOR_TAG = "simulator";
-
-	public static final String SELECT_FIRST_TAG = "first";
-	public static final String SELECT_YOUNGEST_TAG = "youngest";
-	public static final String SELECT_CLOSEST_TAG = "closest";
-	
 	public static final String command_delta_time_description(Double delta_time) {
 		return Messages.COMMAND_DELTA_TIME_DESCRIPTION.formatted(delta_time);
 	}
@@ -89,4 +72,18 @@ public class Messages {
 		return Messages.COMMAND_TIME_DESCRIPTION.formatted(time);
 	}
 	
+	// Builder tags
+	
+	public static final String SIMULATOR_TAG = "simulator";	
+	public static final String SHEEP_TAG = "sheep";
+	public static final String WOLF_TAG = "wolf";
+	public static final String SELECT_FIRST_TAG = "first";
+	public static final String SELECT_YOUNGEST_TAG = "youngest";
+	public static final String SELECT_CLOSEST_TAG = "closest";
+	public static final String DEFAULT_REGION_TAG = "default";
+	public static final String DYNAMIC_REGION_TAG = "dynamic";
+	
+	// Builder descriptions
+	
+	public static final String DESCRIPTION = "Descripcion personalizada";
 }
