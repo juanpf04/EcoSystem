@@ -27,13 +27,13 @@ public class RegionManager implements AnimalMapView {
 	public RegionManager(int cols, int rows, int width, int height) {
 
 		if (cols <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_COLS);
 		if (rows <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_ROWS);
 		if (width <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_WIDTH);
 		if (height <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_HEIGHT);
 
 		this._cols = cols;
 		this._rows = rows;

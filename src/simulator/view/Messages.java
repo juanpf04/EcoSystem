@@ -20,14 +20,27 @@ public class Messages {
 	public static final String OUT_KEY = "out";
 	public static final String AMOUNT_KEY = "amount";
 	public static final String SPEC_KEY = "spec";
+	public static final String FOOD_KEY = "food";
+	public static final String FACTOR_KEY = "factor";
 
 	// Exceptions
 
+	public static final String INVALID_GENETIC_CODE = "Invalid genetic code";
+	public static final String INVALID_SIGHT_RANGE = "Sight range must be a positive number";
+	public static final String INVALID_INIT_SPEED = "Initial speed must be a positive number";
+	public static final String INVALID_COLS = "columns must be a positive number";
+	public static final String INVALID_ROWS = "Rows must be a positive number";
+	public static final String INVALID_WIDTH = "Width must be a positive number";
+	public static final String INVALID_HEIGHT = "Height must be a positive number";
+	public static final String INVALID_INIT_FOOD = "Initial food must be a positive number";
+	public static final String INVALID_FACTOR = "Factor cannot be a negative number";
+	public static final String INVALID_MATE_STRATEGY = "Mate strategy cannot be null";
+	public static final String INVALID_DANGER_STRATEGY = "Danger strategy cannot be null";
+	public static final String INVALID_HUNTING_STRATEGY = "Hunting strategy cannot be null";
 	public static final String INVALID_TYPE = "Invalid type";
 	public static final String INVALID_DESC = "Invalid desc";
 	public static final String INVALID_INFO = "'info' cannot be null";
-
-	private static final String UNRECOGNIZED_INFO = "Unrecognized 'info': %s";
+	public static final String UNRECOGNIZED_INFO = "Unrecognized 'info': %s";
 
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
@@ -86,4 +99,7 @@ public class Messages {
 	// Builder descriptions
 	
 	public static final String DESCRIPTION = "Descripcion personalizada";
+	
+	
+	public static final String MENSAJE_PERSONALIZADO = "abahjab";
 }

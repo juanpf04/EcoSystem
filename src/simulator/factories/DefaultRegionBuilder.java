@@ -9,7 +9,7 @@ import simulator.view.Messages;
 public class DefaultRegionBuilder extends Builder<Region> {
 
 	public DefaultRegionBuilder() {
-		super(Messages.DEFAULT_REGION_TYPE, Messages.MENSAJE_PERSONALIZADO);
+		super(Messages.DEFAULT_REGION_TAG, Messages.MENSAJE_PERSONALIZADO);
 	}
 
 	@Override

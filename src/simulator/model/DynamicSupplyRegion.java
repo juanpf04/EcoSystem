@@ -14,9 +14,9 @@ public class DynamicSupplyRegion extends Region {
 		super();
 
 		if (init_food <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_INIT_FOOD);
 		if (factor < 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_FACTOR);
 
 		this._food = init_food;
 		this._factor = factor;

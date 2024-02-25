@@ -12,7 +12,7 @@ import simulator.view.Messages;
 public abstract class Animal implements Entity, AnimalInfo {
 
 	protected static final double SPEED_TOLERANCE = 0.1;
-	protected static final double FACTOR = 60.0; // revisar nombre
+	protected static final double FACTOR = 60.0;
 	protected static final double MUTATION_TOLERANCE = 0.2;
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
@@ -38,13 +38,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 			SelectionStrategy mate_strategy, Vector2D pos) {
 
 		if (genetic_code == null || genetic_code.isBlank())
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_GENETIC_CODE);
 		if (sight_range <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_SIGHT_RANGE);
 		if (init_speed <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_INIT_SPEED);
 		if (mate_strategy == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_MATE_STRATEGY);
 
 		this._genetic_code = genetic_code;
 		this._diet = diet;
@@ -120,7 +120,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 			this.update_according_to_state(dt);
 
-			if (this.is_out()) {
+			if (this.is_out() || true) {
 				this.adjust_position();
 				this._state = State.NORMAL;
 			}

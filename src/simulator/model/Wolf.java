@@ -32,7 +32,7 @@ public class Wolf extends Animal {
 		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE, INIT_SPEED, mate_strategy, pos);
 
 		if (hunting_strategy == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_HUNTING_STRATEGY);
 
 		this._hunting_strategy = hunting_strategy;
 		this._hunt_target = null;
