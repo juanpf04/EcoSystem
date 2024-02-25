@@ -120,7 +120,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 			this.update_according_to_state(dt);
 
-			if (this.is_out() || true) {
+			if (this.is_out()) {
 				this.adjust_position();
 				this._state = State.NORMAL;
 			}
@@ -231,10 +231,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected boolean is_out() {
-		return this.get_position().getX() != Utils.constrain_value_in_range(this.get_position().getX(), 0,
-				this._region_mngr.get_width() - 1)
-				&& this.get_position().getY() != Utils.constrain_value_in_range(this.get_position().getX(), 0,
-						this._region_mngr.get_height() - 1);
+		return this.get_position().getX() >= 0 && this.get_position().getX() < this._region_mngr.get_width()
+				&& this.get_position().getY() >= 0 && this.get_position().getY() < this._region_mngr.get_height();
 	}
 
 	protected void adjust_position() {
