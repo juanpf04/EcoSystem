@@ -60,8 +60,8 @@ public class RegionManager implements AnimalMapView {
 
 	public void register_animal(Animal a) {
 		a.init(this);
-		int j = (int) (a.get_position().getX() / this.get_region_width()) - 1,
-				i = (int) (a.get_position().getY() / this.get_region_height()) - 1;
+		int j = (int) (a.get_position().getX() / this.get_region_width()),
+				i = (int) (a.get_position().getY() / this.get_region_height());
 		Region region = this._regions[i][j];
 		region.add_animal(a);
 		this._animal_region.put(a, region);
@@ -72,8 +72,8 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	public void update_animal_region(Animal a) {
-		int j = (int) (a.get_position().getX() / this.get_region_width()) - 1,
-				i = (int) (a.get_position().getY() / this.get_region_height()) - 1;
+		int j = (int) (a.get_position().getX() / this.get_region_width()),
+				i = (int) (a.get_position().getY() / this.get_region_height());
 		Region new_region = this._regions[i][j];
 		if (!new_region.contains(a)) {
 			new_region.add_animal(a);
@@ -140,9 +140,9 @@ public class RegionManager implements AnimalMapView {
 		List<Region> regions_in_range = new LinkedList<>();
 
 		double sr = a.get_sight_range(), x = a.get_position().getX(), y = a.get_position().getY();
-		int init_j = (int) (x - sr / this.get_region_width()) - 1,
-				init_i = (int) (y - sr / this.get_region_height()) - 1;
-		int end_j = (int) (x + sr / this.get_region_width()), end_i = (int) (y + sr / this.get_region_height());
+		int init_j = (int) ((x - sr) / this.get_region_width()),
+				init_i = (int) ((y - sr) / this.get_region_height());
+		int end_j = (int) ((x + sr) / this.get_region_width()), end_i = (int) ((y + sr) / this.get_region_height());
 
 		for (int i = init_i; i < end_i; i++)
 			for (int j = init_j; j < end_j; j++)

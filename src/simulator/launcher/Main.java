@@ -68,8 +68,8 @@ public class Main {
 	// factories
 	//
 	private static Factory<SelectionStrategy> _selection_strategy_factory;
-	private static Factory<Animal> _animal_factory;
-	private static Factory<Region> _region_factory;
+	private static Factory<Animal> _animals_factory;
+	private static Factory<Region> _regions_factory;
 
 	private static void parse_args(String[] args) {
 
@@ -198,13 +198,13 @@ public class Main {
 		List<Builder<Animal>> animal_builders = new LinkedList<>();
 		animal_builders.add(new SheepBuilder(_selection_strategy_factory));
 		animal_builders.add(new WolfBuilder(_selection_strategy_factory));
-		_animal_factory = new BuilderBasedFactory<Animal>(animal_builders);
+		_animals_factory = new BuilderBasedFactory<Animal>(animal_builders);
 
 		// initialize the regions factory
 		List<Builder<Region>> region_builders = new LinkedList<>();
 		region_builders.add(new DefaultRegionBuilder());
 		region_builders.add(new DynamicSupplyRegionBuilder());
-		_region_factory = new BuilderBasedFactory<Region>(region_builders);
+		_regions_factory = new BuilderBasedFactory<Region>(region_builders);
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
@@ -217,7 +217,7 @@ public class Main {
 
 		OutputStream out = new FileOutputStream(_out_file);
 		
-		SimulatorBuilder sb = new SimulatorBuilder(_animal_factory, _region_factory);
+		SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
 		Simulator simulator = sb.create_instance(data);
 
 		Controller controller = new Controller(simulator);

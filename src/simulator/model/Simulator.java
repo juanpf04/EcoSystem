@@ -20,6 +20,7 @@ public class Simulator implements JSONable {
 
 	public Simulator(int cols, int rows, int width, int height, Factory<Animal> animals_factory,
 			Factory<Region> regions_factory) {
+		
 		if (animals_factory == null)
 			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
 		if (regions_factory == null)
