@@ -67,10 +67,8 @@ public class RegionManager implements AnimalMapView {
 		this._animal_region.put(a, region);
 	}
 
-	public void unregister_animal(Animal a) { // TODO revisaer
-		Region r = this._animal_region.remove(a);
-		if (r != null)
-			r.remove_animal(a);
+	public void unregister_animal(Animal a) {
+		this._animal_region.remove(a).remove_animal(a);
 	}
 
 	public void update_animal_region(Animal a) {
@@ -146,21 +144,18 @@ public class RegionManager implements AnimalMapView {
 		double x = a.get_position().getX();
 		double y = a.get_position().getY();
 
-		int iy = (int) (a.get_position().getY() / this.get_region_height());
-		int jx = (int) (a.get_position().getX() / this.get_region_width());
-
 		int ini_i = (int) ((y - sr) / this.get_region_height());
 		int ini_j = (int) ((x - sr) / this.get_region_width());
 		int end_i = (int) ((y + sr) / this.get_region_height());
 		int end_j = (int) ((x + sr) / this.get_region_width());
-
-		for (int i = ini_i; i < end_i; i++)
-			for (int j = ini_j; j < end_j; j++)
-				regions_in_range.add(this._regions[i][j]);
-
-//		for (Region[] regions : this._regions)
-//			for (Region region : regions)
-//				regions_in_range.add(region);
+		
+//		for (int i = ini_i; i < end_i; i++)
+//			for (int j = ini_j; j < end_j; j++)
+//				regions_in_range.add(this._regions[i][j]);
+//
+		for (Region[] regions : this._regions)
+			for (Region region : regions)
+				regions_in_range.add(region);
 
 		return regions_in_range;
 	}

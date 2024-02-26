@@ -16,22 +16,22 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	protected static final double NOMBRE_RECHULON = 5.0;
 	protected static final double NOMBRE_RECHULON2 = 2.0;
 
-	protected List<Animal> _animals_in_region;
+	protected List<Animal> _animals;
 
 	public Region() {
-		this._animals_in_region = new LinkedList<Animal>();
+		this._animals = new LinkedList<Animal>();
 	}
 
 	public final void add_animal(Animal a) {
-		this._animals_in_region.add(a);
+		this._animals.add(a);
 	}
 
 	public final void remove_animal(Animal a) {
-		this._animals_in_region.remove(a);
+		this._animals.remove(a);
 	}
 
 	public final List<Animal> getAnimals() {
-		return Collections.unmodifiableList(this._animals_in_region);
+		return Collections.unmodifiableList(this._animals);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	protected int count(Diet d) {
 		int i = 0;
 
-		for (Animal a : this._animals_in_region)
+		for (Animal a : this.getAnimals())
 			if (d.equals(a.get_diet()))
 				i++;
 
@@ -58,6 +58,6 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	public boolean contains(Animal a) {
-		return this._animals_in_region.contains(a);
+		return this._animals.contains(a);
 	}
 }
