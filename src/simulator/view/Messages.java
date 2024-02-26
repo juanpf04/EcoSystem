@@ -1,8 +1,6 @@
 package simulator.view;
 
 public class Messages {
-	
-	
 
 	// JSONObjects key names
 
@@ -65,11 +63,11 @@ public class Messages {
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
 	}
-	
+
 	public static final String invalid_delta_time(String delta_time) {
 		return Messages.INVALID_DELTA_TIME.formatted(delta_time);
 	}
-	
+
 	public static final String invalid_time(String time) {
 		return Messages.INVALID_TIME.formatted(time);
 	}
@@ -139,12 +137,12 @@ public class Messages {
 
 	public static final String BATCH_TAG = "batch";
 	public static final String GUI_TAG = "gui";
-	
+
 	// Execute mode tags
-	
+
 	public static final String BATCH_DESCRIPTION = "Batch mode";
 	public static final String GUI_DESCRIPTION = "Graphical User Interface mode";
-	
+
 	// View
 
 	public static final String TITLE = "[ECOSYSTEM]";

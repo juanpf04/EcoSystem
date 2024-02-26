@@ -2,7 +2,6 @@ package simulator.model;
 
 import java.lang.IllegalArgumentException;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.misc.Utils;
@@ -44,7 +43,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		if (init_speed <= 0)
 			throw new IllegalArgumentException(Messages.INVALID_INIT_SPEED);
 		if (mate_strategy == null)
-			throw new IllegalArgumentException(Messages.INVALID_MATE_STRATEGY);
+			throw new IllegalArgumentException(Messages.INVALID_STRATEGY);
 
 		this._genetic_code = genetic_code;
 		this._diet = diet;
@@ -233,7 +232,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 				Utils._rand.nextDouble(this._region_mngr.get_height()));
 	}
 
-	protected boolean is_out() {
+	@Override
+	public boolean is_out() {
 		return this.get_position().getX() < 0 || this.get_position().getX() >= this._region_mngr.get_width()
 				|| this.get_position().getY() < 0 || this.get_position().getY() >= this._region_mngr.get_height();
 	}

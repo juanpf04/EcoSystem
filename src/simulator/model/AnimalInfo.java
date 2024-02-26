@@ -25,4 +25,6 @@ public interface AnimalInfo extends JSONable {
 	public boolean is_pregnant();
 
 	public boolean is_alive();
+	
+	public boolean is_out();
 }

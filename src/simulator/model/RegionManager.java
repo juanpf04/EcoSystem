@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import simulator.misc.Vector2D;
 import simulator.view.Messages;
 
 import java.util.HashMap;
@@ -61,23 +60,23 @@ public class RegionManager implements AnimalMapView {
 
 	public void register_animal(Animal a) {
 		a.init(this);
-		int	i = (int) (a.get_position().getY() / this.get_region_height());
+		int i = (int) (a.get_position().getY() / this.get_region_height());
 		int j = (int) (a.get_position().getX() / this.get_region_width());
 		Region region = this._regions[i][j];
 		region.add_animal(a);
 		this._animal_region.put(a, region);
 	}
 
-	public void unregister_animal(Animal a) { //TODO revisaer
+	public void unregister_animal(Animal a) { // TODO revisaer
 		Region r = this._animal_region.remove(a);
-		if(r != null)
+		if (r != null)
 			r.remove_animal(a);
 	}
 
 	public void update_animal_region(Animal a) {
-		int	i = (int) (a.get_position().getY() / this.get_region_height());
+		int i = (int) (a.get_position().getY() / this.get_region_height());
 		int j = (int) (a.get_position().getX() / this.get_region_width());
-		
+
 		Region new_region = this._regions[i][j];
 		if (!new_region.contains(a)) {
 			new_region.add_animal(a);
@@ -143,19 +142,26 @@ public class RegionManager implements AnimalMapView {
 	public List<Region> get_regions_in_range(Animal a) {
 		List<Region> regions_in_range = new LinkedList<>();
 
-//		double sr = a.get_sight_range(), x = a.get_position().getX(), y = a.get_position().getY();
-//		int init_j = (int) ((x - sr) / this.get_region_width()),
-//				init_i = (int) ((y - sr) / this.get_region_height());
-//		int end_j = (int) ((x + sr) / this.get_region_width()), end_i = (int) ((y + sr) / this.get_region_height());
-//
-//		for (int i = init_i; i <= end_i; i++)
-//			for (int j = init_j; j <= end_j; j++)
-//				regions_in_range.add(this._regions[i][j]);
-		
-		for (Region[] regions : this._regions)
-			for (Region region : regions)
-				regions_in_range.add(region);
-		
+		double sr = a.get_sight_range();
+		double x = a.get_position().getX();
+		double y = a.get_position().getY();
+
+		int iy = (int) (a.get_position().getY() / this.get_region_height());
+		int jx = (int) (a.get_position().getX() / this.get_region_width());
+
+		int ini_i = (int) ((y - sr) / this.get_region_height());
+		int ini_j = (int) ((x - sr) / this.get_region_width());
+		int end_i = (int) ((y + sr) / this.get_region_height());
+		int end_j = (int) ((x + sr) / this.get_region_width());
+
+		for (int i = ini_i; i < end_i; i++)
+			for (int j = ini_j; j < end_j; j++)
+				regions_in_range.add(this._regions[i][j]);
+
+//		for (Region[] regions : this._regions)
+//			for (Region region : regions)
+//				regions_in_range.add(region);
+
 		return regions_in_range;
 	}
 
