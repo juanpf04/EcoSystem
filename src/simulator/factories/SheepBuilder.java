@@ -35,7 +35,7 @@ public class SheepBuilder extends Builder<Animal> {
 			danger_strategy = this._selection_strategy_factory.create_instance(data.getJSONObject("danger_strategy"));
 
 		if (data.has("pos")) {
-			JSONObject jo = data.getJSONObject("position");
+			JSONObject jo = data.getJSONObject("pos");
 			JSONArray jax = jo.getJSONArray("x_range"), jay = jo.getJSONArray("y_range");
 
 			double x = Utils._rand.nextDouble(jax.getDouble(0), jax.getDouble(1)),

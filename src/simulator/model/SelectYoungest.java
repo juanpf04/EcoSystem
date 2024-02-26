@@ -11,11 +11,9 @@ public class SelectYoungest implements SelectionStrategy {
 
 		Animal youngest_animal = as.get(0);
 
-		for (int i = 1; i < as.size(); i++) {
-			Animal animal = as.get(i);
-			if (animal.get_age() < youngest_animal.get_age())
+		for (Animal animal : as)
+			if (animal.get_age() < youngest_animal.get_age() && a != animal) // TODO PREGUNTAR
 				youngest_animal = animal;
-		}
 
 		return youngest_animal;
 	}

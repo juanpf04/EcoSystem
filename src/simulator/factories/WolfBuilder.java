@@ -35,7 +35,7 @@ public class WolfBuilder extends Builder<Animal> {
 			hunt_strategy = this._selection_strategy_factory.create_instance(data.getJSONObject("hunt_strategy"));
 
 		if (data.has("pos")) {
-			JSONObject jo = data.getJSONObject("position");
+			JSONObject jo = data.getJSONObject("pos");
 			JSONArray jax = jo.getJSONArray("x_range"), jay = jo.getJSONArray("y_range");
 
 			double x = Utils._rand.nextDouble(jax.getDouble(0), jax.getDouble(1)),

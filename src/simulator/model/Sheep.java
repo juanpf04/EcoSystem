@@ -1,7 +1,5 @@
 package simulator.model;
 
-import java.util.function.Predicate;
-
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 import simulator.view.Messages;

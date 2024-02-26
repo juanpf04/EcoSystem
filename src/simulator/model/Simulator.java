@@ -71,22 +71,15 @@ public class Simulator implements JSONable {
 	}
 
 	private void update_babys() {
-//		for (Animal a : this._animals)
-//			if (a.is_pregnant()) {
-//				Animal baby = a.deliver_baby();
-//				this.add_animal(baby);
-//				this._animals.add(baby);
-//			}
 		List<Animal> babies = new LinkedList<Animal>();
+		
 		for (Animal a : this._animals)
-			if (a.is_pregnant()) {
-				Animal baby = a.deliver_baby();
-				babies.add(baby);
-			}
-		for (Animal baby : babies) {
+			if (a.is_pregnant()) 
+				babies.add(a.deliver_baby());
+			
+		for (Animal baby : babies) 
 			this.add_animal(baby);
-			this._animals.add(baby);
-		}
+		
 	}
 
 	private void update_all_animals(double dt) {
@@ -97,13 +90,19 @@ public class Simulator implements JSONable {
 	}
 
 	private void remove_deaths() {
-		for (int i = this._animals.size() - 1; i >= 0; i--) {
-			Animal a = this._animals.get(i);
-			if (!a.is_alive()) {
-				this._animals.remove(a);
-				this._region_manager.unregister_animal(a);
-			}
-		}
+		List<Animal> deaths = new LinkedList<Animal>();
+		
+		for (Animal a : this._animals)
+			if (!a.is_alive()) 
+				deaths.add(a);
+			
+		for (Animal dead : deaths) 
+			this.remove_animal(dead);
+	}
+
+	private void remove_animal(Animal a) {
+		this._animals.remove(a);
+		this._region_manager.unregister_animal(a);
 	}
 
 	@Override

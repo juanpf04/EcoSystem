@@ -23,4 +23,6 @@ public interface AnimalInfo extends JSONable {
 	public Vector2D get_destination();
 
 	public boolean is_pregnant();
+
+	public boolean is_alive();
 }

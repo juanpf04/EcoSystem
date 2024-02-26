@@ -68,9 +68,9 @@ public class RegionManager implements AnimalMapView {
 		this._animal_region.put(a, region);
 	}
 
-	public void unregister_animal(Animal a) {
+	public void unregister_animal(Animal a) { //TODO revisaer
 		Region r = this._animal_region.remove(a);
-		if(r!= null)
+		if(r != null)
 			r.remove_animal(a);
 	}
 

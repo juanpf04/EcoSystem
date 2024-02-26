@@ -28,12 +28,14 @@ public class Messages {
 	public static final String INVALID_GENETIC_CODE = "Invalid genetic code";
 	public static final String INVALID_SIGHT_RANGE = "Sight range must be a positive number";
 	public static final String INVALID_INIT_SPEED = "Initial speed must be a positive number";
+	public static final String INVALID_AMOUNT = "The amount of animals must be a positive number";
 	public static final String INVALID_COLS = "columns must be a positive number";
 	public static final String INVALID_ROWS = "Rows must be a positive number";
 	public static final String INVALID_WIDTH = "Width must be a positive number";
 	public static final String INVALID_HEIGHT = "Height must be a positive number";
 	public static final String INVALID_INIT_FOOD = "Initial food must be a positive number";
 	public static final String INVALID_FACTOR = "Factor cannot be a negative number";
+	public static final String INVALID_SIMULATOR = "Simulator cannot be null";
 	public static final String INVALID_MATE_STRATEGY = "Mate strategy cannot be null";
 	public static final String INVALID_DANGER_STRATEGY = "Danger strategy cannot be null";
 	public static final String INVALID_HUNTING_STRATEGY = "Hunting strategy cannot be null";
@@ -102,4 +104,8 @@ public class Messages {
 	
 	
 	public static final String MENSAJE_PERSONALIZADO = "abahjab";
+	
+	// Window 
+	
+	public static final String TITLE = "[ECOSYSTEM]";
 }
