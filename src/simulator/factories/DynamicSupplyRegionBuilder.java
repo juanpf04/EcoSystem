@@ -9,7 +9,7 @@ import simulator.view.Messages;
 public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
 	public DynamicSupplyRegionBuilder() {
-		super(Messages.DYNAMIC_REGION_TAG, Messages.DESCRIPTION);
+		super(Messages.DYNAMIC_REGION_TAG, Messages.DYNAMIC_REGION_BUILDER_DESCRIPTION);
 	}
 
 	@Override

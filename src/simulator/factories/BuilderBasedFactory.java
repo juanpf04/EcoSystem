@@ -23,8 +23,8 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 	public BuilderBasedFactory(List<Builder<T>> builders) {
 		this();
 
-		if (builders == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (builders == null || builders.isEmpty())
+			throw new IllegalArgumentException(Messages.INVALID_BUILDERS);
 
 		for (Builder<T> b : builders)
 			this.add_builder(b);

@@ -32,7 +32,7 @@ import simulator.factories.*;
 public class Main {
 
 	private enum ExecMode {
-		BATCH("batch", "Batch mode"), GUI("gui", "Graphical User Interface mode");
+		BATCH(Messages.BATCH_TAG, Messages.BATCH_DESCRIPTION), GUI(Messages.GUI_TAG, Messages.GUI_DESCRIPTION);
 
 		private String _tag;
 		private String _desc;
@@ -67,7 +67,7 @@ public class Main {
 
 	// factories
 	//
-	private static Factory<SelectionStrategy> _selection_strategy_factory;
+	private static Factory<SelectionStrategy> _strategies_factory;
 	private static Factory<Animal> _animals_factory;
 	private static Factory<Region> _regions_factory;
 
@@ -144,7 +144,7 @@ public class Main {
 			_delta_time = Double.parseDouble(t);
 			assert (_delta_time >= 0);
 		} catch (Exception e) {
-			throw new ParseException("Invalid value for delta time: " + t);
+			throw new ParseException(Messages.invalid_delta_time(t));
 		}
 	}
 
@@ -159,14 +159,14 @@ public class Main {
 	private static void parse_in_file_option(CommandLine line) throws ParseException {
 		_in_file = line.getOptionValue(Messages.COMMAND_INPUT_SHORTCUT);
 		if (_mode == ExecMode.BATCH && _in_file == null) {
-			throw new ParseException("In batch mode an input configuration file is required");
+			throw new ParseException(Messages.IN_FILE_ERROR);
 		}
 	}
 
 	private static void parse_out_file_option(CommandLine line) throws ParseException {
 		_out_file = line.getOptionValue(Messages.COMMAND_OUTPUT_SHORTCUT);
-		if (_out_file == null) {
-			throw new ParseException("HACER");
+		if (_mode == ExecMode.BATCH && _out_file == null) {
+			throw new ParseException(Messages.OUT_FILE_ERROR);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class Main {
 			_time = Double.parseDouble(t);
 			assert (_time >= 0);
 		} catch (Exception e) {
-			throw new ParseException("Invalid value for time: " + t);
+			throw new ParseException(Messages.invalid_time(t));
 		}
 	}
 
@@ -192,12 +192,12 @@ public class Main {
 		selection_strategy_builders.add(new SelectFirstBuilder());
 		selection_strategy_builders.add(new SelectClosestBuilder());
 		selection_strategy_builders.add(new SelectYoungestBuilder());
-		_selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
+		_strategies_factory = new BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
 
 		// initialize the animals factory
 		List<Builder<Animal>> animal_builders = new LinkedList<>();
-		animal_builders.add(new SheepBuilder(_selection_strategy_factory));
-		animal_builders.add(new WolfBuilder(_selection_strategy_factory));
+		animal_builders.add(new SheepBuilder(_strategies_factory));
+		animal_builders.add(new WolfBuilder(_strategies_factory));
 		_animals_factory = new BuilderBasedFactory<Animal>(animal_builders);
 
 		// initialize the regions factory
@@ -227,7 +227,7 @@ public class Main {
 	}
 
 	private static void start_GUI_mode() throws Exception {
-		throw new UnsupportedOperationException("GUI mode is not ready yet ...");
+		throw new UnsupportedOperationException(Messages.GUI_ERROR);
 	}
 
 	private static void start(String[] args) throws Exception {
@@ -248,7 +248,7 @@ public class Main {
 		try {
 			start(args);
 		} catch (Exception e) {
-			System.err.println("Something went wrong ...");
+			System.err.println(Messages.SOMETHING_WENT_WRONG);
 			System.err.println();
 			e.printStackTrace();
 		}

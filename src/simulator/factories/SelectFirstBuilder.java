@@ -9,7 +9,7 @@ import simulator.view.Messages;
 public class SelectFirstBuilder extends Builder<SelectionStrategy> {
 
 	public SelectFirstBuilder() {
-		super(Messages.SELECT_FIRST_TAG, Messages.DESCRIPTION);
+		super(Messages.SELECT_FIRST_TAG, Messages.SELECT_FIRST_BUILDER_DESCRIPTION);
 	}
 
 	@Override

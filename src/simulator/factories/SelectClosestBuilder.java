@@ -9,7 +9,7 @@ import simulator.view.Messages;
 public class SelectClosestBuilder extends Builder<SelectionStrategy> {
 
 	public SelectClosestBuilder() {
-		super(Messages.SELECT_CLOSEST_TAG, Messages.DESCRIPTION);
+		super(Messages.SELECT_CLOSEST_TAG, Messages.SELECT_CLOSEST_BUILDER_DESCRIPTION);
 	}
 
 	@Override

@@ -13,12 +13,10 @@ public class SimulatorBuilder extends Builder<Simulator> {
 	private Factory<Region> _regions_factory;
 
 	public SimulatorBuilder(Factory<Animal> animals_factory, Factory<Region> regions_factory) {
-		super(Messages.SIMULATOR_TAG, Messages.DESCRIPTION);
+		super(Messages.SIMULATOR_TAG, Messages.SIMULATOR_BUILDER_DESCRIPTION);
 
-		if (animals_factory == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
-		if (regions_factory == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+		if (animals_factory == null || regions_factory == null)
+			throw new IllegalArgumentException(Messages.INVALID_FACTORY);
 
 		this._animals_factory = animals_factory;
 		this._regions_factory = regions_factory;
@@ -27,12 +25,11 @@ public class SimulatorBuilder extends Builder<Simulator> {
 	@Override
 	public Simulator create_instance(JSONObject data) {
 
-		int cols = data.getInt("cols");
-		int rows = data.getInt("rows");
-		int width = data.getInt("width");
-		int height = data.getInt("height");
+		int cols = data.getInt(Messages.COLUMNS_KEY);
+		int rows = data.getInt(Messages.ROWS_KEY);
+		int width = data.getInt(Messages.WIDTH_KEY);
+		int height = data.getInt(Messages.HEIGHT_KEY);
 
 		return new Simulator(cols, rows, width, height, _animals_factory, _regions_factory);
 	}
-
 }
