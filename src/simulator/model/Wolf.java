@@ -92,13 +92,13 @@ public class Wolf extends Animal {
 
 				this._desire += DESIRE_COST * dt;
 				this.adjust_desire();
-			}
 
 			if (this._hunt_target.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE) {
 				this._hunt_target._state = State.DEAD;
 				this._hunt_target = null;
 				this._energy += UMBRAL_ENERGY;
 				this.adjust_energy();
+			}
 			}
 
 			if (this._energy >= UMBRAL_ENERGY) {
@@ -111,9 +111,10 @@ public class Wolf extends Animal {
 			break;
 		case MATE:
 
-			if (this._mate_target != null && !this._mate_target.is_alive()
+			if (this._mate_target != null)
+				if(!this._mate_target.is_alive()
 					|| this._mate_target.distanceTo(this) > this.get_sight_range())
-				this._mate_target = null;
+					this._mate_target = null;
 
 			if (this._mate_target == null)
 				this._mate_target = this._mate_strategy.select(this,

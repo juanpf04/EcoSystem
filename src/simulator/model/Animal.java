@@ -77,6 +77,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range() + p2.get_sight_range()) / 2,
 				MUTATION_TOLERANCE);
 		this._speed = Utils.get_randomized_parameter((p1.get_speed() + p2.get_speed()) / 2, MUTATION_TOLERANCE);
+		
+		this._mate_strategy = p1._mate_strategy; // TODO preguntar 
 	}
 
 	public void init(AnimalMapView reg_mngr) {
@@ -231,8 +233,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected boolean is_out() {
-		return this.get_position().getX() >= 0 && this.get_position().getX() < this._region_mngr.get_width()
-				&& this.get_position().getY() >= 0 && this.get_position().getY() < this._region_mngr.get_height();
+		return this.get_position().getX() < 0 || this.get_position().getX() >= this._region_mngr.get_width()
+				|| this.get_position().getY() < 0 || this.get_position().getY() >= this._region_mngr.get_height();
 	}
 
 	protected void adjust_position() {

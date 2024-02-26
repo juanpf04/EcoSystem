@@ -44,29 +44,22 @@ public class Sheep extends Animal {
 		this._danger_strategy = p1._danger_strategy;
 		this._danger_source = null;
 	}
-	
-	/*
-	 * EJEMPLOS LAMDA FUNCION PREDICATE
-	 * 1.
-	 * (Animal a) -> {return this.get_genetic_code() == a.get_genetic_code();}
-	 * 
-	 * 2.
-	 * (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
-	 * 
-	 * 3.
-	 * new Predicate<Animal>() {
 
-				@Override
-				public boolean test(Animal t) {
-					return get_genetic_code() == t.get_genetic_code();
-				}
-			
-			});
+	/*
+	 * EJEMPLOS LAMDA FUNCION PREDICATE 1. (Animal a) -> {return
+	 * this.get_genetic_code() == a.get_genetic_code();}
+	 * 
+	 * 2. (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
+	 * 
+	 * 3. new Predicate<Animal>() {
+	 * 
+	 * @Override public boolean test(Animal t) { return get_genetic_code() ==
+	 * t.get_genetic_code(); }
+	 * 
+	 * });
 	 *
-	 * 4.
-	 * a -> this.get_genetic_code() == a.get_genetic_code()
+	 * 4. a -> this.get_genetic_code() == a.get_genetic_code()
 	 */
-	
 
 	@Override
 	protected void update_according_to_state(double dt) {
@@ -87,8 +80,8 @@ public class Sheep extends Animal {
 			this.adjust_desire();
 
 			if (this._danger_source == null)
-				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+				this._danger_source = this._danger_strategy.select(this, this._region_mngr.get_animals_in_range(this,
+						a -> this.get_genetic_code() != a.get_genetic_code()));
 
 			if (this._danger_source != null)
 				this._state = State.DANGER;
@@ -120,8 +113,8 @@ public class Sheep extends Animal {
 			}
 
 			if (this._danger_source == null || this._danger_source.distanceTo(this) <= this.get_sight_range()) {
-				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+				this._danger_source = this._danger_strategy.select(this, this._region_mngr.get_animals_in_range(this,
+						a -> this.get_genetic_code() != a.get_genetic_code()));
 
 				if (this._danger_source == null) {
 					if (this._desire <= UMBRAL_DESIRE)
@@ -134,14 +127,13 @@ public class Sheep extends Animal {
 		case MATE:
 
 			if (this._mate_target != null)
-				if(!this._mate_target.is_alive()
-					|| this._mate_target.distanceTo(this) > this.get_sight_range())
+				if (!this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
 					this._mate_target = null;
 
 			if (this._mate_target == null)
-				this._mate_target = this._mate_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
-			
+				this._mate_target = this._mate_strategy.select(this, this._region_mngr.get_animals_in_range(this,
+						a -> this.get_genetic_code() == a.get_genetic_code()));
+
 			if (this._mate_target == null)
 				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 			else {
@@ -168,8 +160,8 @@ public class Sheep extends Animal {
 
 			}
 			if (this._danger_source == null)
-				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+				this._danger_source = this._danger_strategy.select(this, this._region_mngr.get_animals_in_range(this,
+						a -> this.get_genetic_code() != a.get_genetic_code()));
 
 			if (this._danger_source != null)
 				this._state = State.DANGER;
