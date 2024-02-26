@@ -12,10 +12,6 @@ import java.util.LinkedList;
 
 public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 
-	protected static final double FOOD = 60.0;
-	protected static final double NOMBRE_RECHULON = 5.0;
-	protected static final double NOMBRE_RECHULON2 = 2.0;
-
 	protected List<Animal> _animals;
 
 	public Region() {

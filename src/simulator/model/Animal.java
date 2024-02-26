@@ -76,8 +76,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range() + p2.get_sight_range()) / 2,
 				MUTATION_TOLERANCE);
 		this._speed = Utils.get_randomized_parameter((p1.get_speed() + p2.get_speed()) / 2, MUTATION_TOLERANCE);
-		
-		this._mate_strategy = p2._mate_strategy; // TODO preguntar 
+
+		this._mate_strategy = p2._mate_strategy; // TODO preguntar
 	}
 
 	public void init(AnimalMapView reg_mngr) {
