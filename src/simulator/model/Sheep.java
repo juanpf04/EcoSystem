@@ -64,7 +64,7 @@ public class Sheep extends Animal {
 		switch (this.get_state()) {
 		case NORMAL:
 
-			if (this.get_destination().distanceTo(this.get_position()) <= DESTINATION_RANGE)
+			if (this.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE)
 				this.new_random_dest();
 
 			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
