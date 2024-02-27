@@ -163,7 +163,7 @@ public class Wolf extends Animal {
 	}
 
 	@Override
-	protected void update() {
+	protected void update_reference_animal() {
 		this._hunt_target = null;
 	}
 

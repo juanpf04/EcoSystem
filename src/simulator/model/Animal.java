@@ -17,7 +17,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected static final double MAX_ENERGY = 100.0;
 	protected static final double MIN_DESIRE = 0.0;
 	protected static final double MAX_DESIRE = 100.0;
-	
+
 	protected static final double DESTINATION_RANGE = 8.0;
 	protected static final double PROCREATION_RANGE = 8.0;
 	protected static final double SPEED_MULTIPLIER = 0.007;
@@ -134,9 +134,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 			if (this.get_state() == State.NORMAL) {
 				this._mate_target = null;
-				this.update();
+				this.update_reference_animal();
 			} else if (this.get_state() == State.MATE)
-				this.update();
+				this.update_reference_animal();
 			else if (this.get_state() == State.HUNGER || this.get_state() == State.DANGER)
 				this._mate_target = null;
 
@@ -150,7 +150,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		}
 	}
 
-	protected abstract void update();
+	protected abstract void update_reference_animal();
 
 	protected void adjust_energy() {
 		if (this.get_energy() < MIN_ENERGY)
@@ -168,7 +168,22 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	protected abstract double max_age();
 
-	protected abstract void update_according_to_state(double dt);
+	protected void update_according_to_state(double dt) {
+		switch (this.get_state()) {
+		case NORMAL:
+			break;
+		case DANGER:
+			break;
+		case DEAD:
+			break;
+		case HUNGER:
+			break;
+		case MATE:
+			break;
+		default:
+			break;
+		}
+	}
 
 	@Override
 	public State get_state() {

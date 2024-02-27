@@ -177,7 +177,7 @@ public class Sheep extends Animal {
 	}
 
 	@Override
-	protected void update() {
+	protected void update_reference_animal() {
 		this._danger_source = null;
 	}
 
