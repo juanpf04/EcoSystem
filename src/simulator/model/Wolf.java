@@ -65,7 +65,7 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_hunger(double dt) {
 		if (this._hunt_target == null ||  !this._hunt_target.is_alive()
-				|| this._hunt_target.distanceTo(this) > this.get_sight_range())
+				|| !this._hunt_target.in_sight_range(this))
 			this._hunt_target = this._hunting_strategy.select(this,
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.HERBIVORE));
 
@@ -93,8 +93,8 @@ public class Wolf extends Animal {
 			}
 		}
 
-		if (this.get_energy() > UMBRAL_ENERGY) {
-			if (this._desire < UMBRAL_DESIRE)
+		if (this.get_energy() >= UMBRAL_ENERGY) {
+			if (this._desire <= UMBRAL_DESIRE)
 				this._state = State.NORMAL;
 			else
 				this._state = State.MATE;
@@ -120,7 +120,7 @@ public class Wolf extends Animal {
 
 		if (this._energy < UMBRAL_ENERGY)
 			this._state = State.HUNGER;
-		else if (this._desire < UMBRAL_DESIRE)
+		else if (this._desire <= UMBRAL_DESIRE)
 			this._state = State.NORMAL;
 	}
 	

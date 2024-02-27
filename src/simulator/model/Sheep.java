@@ -85,12 +85,12 @@ public class Sheep extends Animal {
 			this.adjust_desire();
 		}
 
-		if (this._danger_source == null || this._danger_source.distanceTo(this) > this.get_sight_range()) {
+		if (this._danger_source == null || !this._danger_source.in_sight_range(this)) {
 			this._danger_source = this._danger_strategy.select(this,
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
 			if (this._danger_source == null) {
-				if (this._desire < UMBRAL_DESIRE)
+				if (this._desire <= UMBRAL_DESIRE)
 					this._state = State.NORMAL;
 				else 
 					this._state = State.MATE;
@@ -119,7 +119,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source != null) 
 			this._state = State.DANGER;
-		else if (this._desire < UMBRAL_DESIRE)
+		else if (this._desire <= UMBRAL_DESIRE)
 			this._state = State.NORMAL;
 	}
 	
