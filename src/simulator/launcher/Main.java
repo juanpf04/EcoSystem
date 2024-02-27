@@ -219,7 +219,8 @@ public class Main {
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
 		controller.run(_time, _delta_time, _sv, out);
-		out.close();
+		if (out != null)
+			out.close();
 	}
 
 	private static void start_GUI_mode() throws Exception {
