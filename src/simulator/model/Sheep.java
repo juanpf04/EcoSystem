@@ -57,14 +57,10 @@ public class Sheep extends Animal {
 			this._danger_source = this._danger_strategy.select(this,
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
-		if (this._danger_source != null) {
+		if (this._danger_source != null) 
 			this._state = State.DANGER;
-			this._mate_target = null;		
-		}
-		else if (this._desire > UMBRAL_DESIRE) {
+		else if (this._desire > UMBRAL_DESIRE) 
 			this._state = State.MATE;
-			this.update_reference_animal();
-		}
 	}
 
 	@Override
@@ -94,15 +90,10 @@ public class Sheep extends Animal {
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
 			if (this._danger_source == null) {
-				if (this._desire < UMBRAL_DESIRE) {
+				if (this._desire < UMBRAL_DESIRE)
 					this._state = State.NORMAL;
-					this._mate_target = null;
-					this.update_reference_animal();					
-				}
-				else {
+				else 
 					this._state = State.MATE;
-					this.update_reference_animal();					
-				}
 			}
 		}
 	}
@@ -126,15 +117,10 @@ public class Sheep extends Animal {
 			this._danger_source = this._danger_strategy.select(this,
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
-		if (this._danger_source != null) {
+		if (this._danger_source != null) 
 			this._state = State.DANGER;
-			this._mate_target = null;	
-		}
-		else if (this._desire < UMBRAL_DESIRE) {
+		else if (this._desire < UMBRAL_DESIRE)
 			this._state = State.NORMAL;
-			this._mate_target = null;
-			this.update_reference_animal();			
-		}
 	}
 	
 	@Override

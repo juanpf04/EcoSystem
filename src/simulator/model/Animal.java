@@ -129,8 +129,6 @@ public abstract class Animal implements Entity, AnimalInfo {
 			if (this.is_out()) {
 				this.adjust_position();
 				this._state = State.NORMAL;
-				this._mate_target = null;
-				this.update_reference_animal();
 			}
 
 			if (this.get_state() == State.NORMAL) {

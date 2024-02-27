@@ -72,13 +72,13 @@ public class RegionManager implements AnimalMapView {
 
 	public void update_animal_region(Animal a) {
 		Region region = this.get_region(a);
-		
+
 		if (region != this._animal_region.get(a)) {
 			region.add_animal(a);
 			this._animal_region.put(a, region).remove_animal(a);
 		}
 	}
-	
+
 	private Region get_region(Animal a) {
 		int i = (int) (a.get_position().getY() / this.get_region_height());
 		int j = (int) (a.get_position().getX() / this.get_region_width());
@@ -137,7 +137,7 @@ public class RegionManager implements AnimalMapView {
 					animals_in_range.add(animal);
 
 		animals_in_range.remove(a);
-		
+
 		return animals_in_range;
 	}
 
@@ -152,7 +152,7 @@ public class RegionManager implements AnimalMapView {
 		int ini_j = (int) ((x - sr) / this.get_region_width());
 		int end_i = (int) ((y + sr) / this.get_region_height());
 		int end_j = (int) ((x + sr) / this.get_region_width());
-		
+
 		ini_i = Math.max(ini_i, 0);
 		ini_j = Math.max(ini_j, 0);
 		end_i = Math.min(end_i, this.get_rows() - 1);
