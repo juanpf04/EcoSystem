@@ -10,19 +10,19 @@ public class Wolf extends Animal {
 	protected static final Diet DIET = Diet.CARNIVORE;
 	protected static final double INIT_SIGHT_RANGE = 50.0;
 	protected static final double INIT_SPEED = 60.0;
-	
+
 	protected static final double MAX_AGE = 14.0;
-	
+
 	protected static final double ENERGY_COST = 18.0;
 	protected static final double DESIRE_COST = 30.0;
 	protected static final double UMBRAL_ENERGY = 50.0;
-	
+
 	protected static final double HUNT_SPEED = 3.0;
 	protected static final double HUNT_ENERGY_COST = 1.2;
-	
+
 	protected static final double OESTRUS_SPEED = 3.0;
 	protected static final double OESTRUS_ENERGY_COST = 1.2;
-	
+
 	protected static final double ENERGY_TO_SUBTRACT = 10.0;
 
 	private Animal _hunt_target;
@@ -74,8 +74,8 @@ public class Wolf extends Animal {
 
 			if (this._hunt_target == null || (this._hunt_target != null && !this._hunt_target.is_alive())
 					|| this._hunt_target.distanceTo(this) > this.get_sight_range())
-				this._hunt_target = this._hunting_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+				this._hunt_target = this._hunting_strategy.select(this, this._region_mngr.get_animals_in_range(this,
+						a -> this.get_genetic_code() != a.get_genetic_code()));
 
 			if (this._hunt_target == null)
 				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
@@ -93,12 +93,12 @@ public class Wolf extends Animal {
 				this._desire += DESIRE_COST * dt;
 				this.adjust_desire();
 
-			if (this._hunt_target.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE) {
-				this._hunt_target._state = State.DEAD;
-				this._hunt_target = null;
-				this._energy += UMBRAL_ENERGY;
-				this.adjust_energy();
-			}
+				if (this._hunt_target.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE) {
+					this._hunt_target._state = State.DEAD;
+					this._hunt_target = null;
+					this._energy += UMBRAL_ENERGY;
+					this.adjust_energy();
+				}
 			}
 
 			if (this._energy >= UMBRAL_ENERGY) {
@@ -112,13 +112,12 @@ public class Wolf extends Animal {
 		case MATE:
 
 			if (this._mate_target != null)
-				if(!this._mate_target.is_alive()
-					|| this._mate_target.distanceTo(this) > this.get_sight_range())
+				if (!this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
 					this._mate_target = null;
 
 			if (this._mate_target == null)
-				this._mate_target = this._mate_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code())); 
+				this._mate_target = this._mate_strategy.select(this, this._region_mngr.get_animals_in_range(this,
+						a -> this.get_genetic_code() == a.get_genetic_code()));
 
 			if (this._mate_target == null)
 				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
