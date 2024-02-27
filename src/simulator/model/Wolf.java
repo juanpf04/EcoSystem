@@ -56,10 +56,15 @@ public class Wolf extends Animal {
 	protected void update_normal(double dt) {
 		super.update_normal(dt);
 
-		if (this._energy < UMBRAL_ENERGY)
+		if (this._energy < UMBRAL_ENERGY) {
 			this._state = State.HUNGER;
-		else if (this._desire > UMBRAL_DESIRE)
+			this._mate_target = null;
+			this.update_reference_animal();			
+		}
+		else if (this._desire > UMBRAL_DESIRE) {
 			this._state = State.MATE;
+			this.update_reference_animal();
+		}
 	}
 
 	@Override
@@ -94,10 +99,15 @@ public class Wolf extends Animal {
 		}
 
 		if (this.get_energy() > UMBRAL_ENERGY) {
-			if (this._desire < UMBRAL_DESIRE)
+			if (this._desire < UMBRAL_DESIRE) {
 				this._state = State.NORMAL;
-			else
+				this._mate_target = null;
+				this.update_reference_animal();				
+			}
+			else {
 				this._state = State.MATE;
+				this.update_reference_animal();
+			}
 		}
 	}
 
@@ -117,10 +127,15 @@ public class Wolf extends Animal {
 				this._mate_target = null;
 			}
 
-		if (this._energy < UMBRAL_ENERGY)
+		if (this._energy < UMBRAL_ENERGY) {
 			this._state = State.HUNGER;
-		else if (this._desire < UMBRAL_DESIRE)
+			this._mate_target = null;		
+		}
+		else if (this._desire < UMBRAL_DESIRE) {
 			this._state = State.NORMAL;
+			this._mate_target = null;
+			this.update_reference_animal();			
+		}
 	}
 	
 	@Override
