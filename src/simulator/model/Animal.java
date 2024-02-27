@@ -83,7 +83,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 				MUTATION_TOLERANCE);
 		this._speed = Utils.get_randomized_parameter((p1.get_speed() + p2.get_speed()) / 2, MUTATION_TOLERANCE);
 
-		this._mate_strategy = p2._mate_strategy; // TODO preguntar
+		this._mate_strategy = p2._mate_strategy;
 	}
 
 	public void init(AnimalMapView reg_mngr) {
@@ -150,25 +150,19 @@ public abstract class Animal implements Entity, AnimalInfo {
 		}
 	}
 
-	protected abstract void update_reference_animal();
-
-	protected void adjust_energy() {
-		if (this.get_energy() < MIN_ENERGY)
-			this._energy = MIN_ENERGY;
-		if (this.get_energy() > MAX_ENERGY)
-			this._energy = MAX_ENERGY;
-	}
-
-	protected void adjust_desire() {
-		if (this._desire < MIN_DESIRE)
-			this._desire = MIN_DESIRE;
-		if (this._desire > MAX_DESIRE)
-			this._desire = MAX_DESIRE;
-	}
-
-	protected abstract double max_age();
-
 	protected void update_normal(double dt) {
+		if (this.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE)
+			this.new_random_dest();
+
+		this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+
+		this._age += dt;
+
+		this._energy -= this.energy_cost() * dt;
+		this.adjust_energy();
+
+		this._desire += this.desire_cost() * dt;
+		this.adjust_desire();
 	}
 
 	protected void update_danger(double dt) {
@@ -181,9 +175,32 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected void update_mate(double dt) {
+		if (this._mate_target != null)
+			if (!this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
+				this._mate_target = null;
+
+		if (this._mate_target == null)
+			this._mate_target = this._mate_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
+
+		if (this._mate_target == null)
+			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+		else {
+			this._dest = _mate_target.get_position();
+
+			this.move(this.sex_speed() * _speed * dt * Math.exp((_energy - MAX_ENERGY) * SPEED_MULTIPLIER));
+
+			this._age += dt;
+
+			this._energy -= this.energy_cost() * this.get_state().get_energy_weighting() * dt;
+			this.adjust_energy();
+
+			this._desire += this.desire_cost() * dt;
+			this.adjust_desire();
+		}
 	}
 
-	/*
+	/*s
 	 * EJEMPLOS LAMBDA FUNCION PREDICATE 1. (Animal a) -> {return
 	 * this.get_genetic_code() == a.get_genetic_code();}
 	 * 
@@ -220,6 +237,16 @@ public abstract class Animal implements Entity, AnimalInfo {
 			break;
 		}
 	}
+	
+	protected abstract void update_reference_animal();
+
+	protected abstract double max_age();
+
+	protected abstract double energy_cost();
+
+	protected abstract double desire_cost();
+	
+	protected abstract double sex_speed();
 
 	@Override
 	public State get_state() {
@@ -304,6 +331,20 @@ public abstract class Animal implements Entity, AnimalInfo {
 			this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
 		while (this.get_position().getY() < 0)
 			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
+	}
+	
+	protected void adjust_energy() {
+		if (this.get_energy() < MIN_ENERGY)
+			this._energy = MIN_ENERGY;
+		if (this.get_energy() > MAX_ENERGY)
+			this._energy = MAX_ENERGY;
+	}
+
+	protected void adjust_desire() {
+		if (this._desire < MIN_DESIRE)
+			this._desire = MIN_DESIRE;
+		if (this._desire > MAX_DESIRE)
+			this._desire = MAX_DESIRE;
 	}
 
 	public boolean in_sight_range(Animal a) {

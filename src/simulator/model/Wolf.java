@@ -18,10 +18,7 @@ public class Wolf extends Animal {
 	protected static final double UMBRAL_ENERGY = 50.0;
 
 	protected static final double HUNT_SPEED = 3.0;
-	protected static final double HUNT_ENERGY_COST = 1.2;
-
 	protected static final double OESTRUS_SPEED = 3.0;
-	protected static final double OESTRUS_ENERGY_COST = 1.2;
 
 	protected static final double ENERGY_TO_SUBTRACT = 10.0;
 
@@ -54,23 +51,10 @@ public class Wolf extends Animal {
 	protected void update_reference_animal() {
 		this._hunt_target = null;
 	}
-	
+
 	@Override
 	protected void update_normal(double dt) {
 		super.update_normal(dt);
-		
-		if (this.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE)
-			this.new_random_dest();
-
-		this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
-
-		this._age += dt;
-
-		this._energy -= ENERGY_COST * dt;
-		this.adjust_energy();
-
-		this._desire += DESIRE_COST * dt;
-		this.adjust_desire();
 
 		if (this._energy < UMBRAL_ENERGY)
 			this._state = State.HUNGER;
@@ -78,27 +62,25 @@ public class Wolf extends Animal {
 		else if (this._desire > UMBRAL_DESIRE)
 			this._state = State.MATE;
 	}
-	
+
 	@Override
 	protected void update_hunger(double dt) {
-		super.update_hunger(dt);
-		
 		if (this._hunt_target == null || (this._hunt_target != null && !this._hunt_target.is_alive())
 				|| this._hunt_target.distanceTo(this) > this.get_sight_range())
-			this._hunt_target = this._hunting_strategy.select(this, this._region_mngr.get_animals_in_range(this,
-					a -> this.get_genetic_code() != a.get_genetic_code()));
+			this._hunt_target = this._hunting_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
 
 		if (this._hunt_target == null)
 			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 		else {
 			this._dest = _hunt_target.get_position();
 
-			this.move(HUNT_SPEED * this.get_speed() * dt
-					* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(
+					HUNT_SPEED * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
 			this._age += dt;
 
-			this._energy -= ENERGY_COST * HUNT_ENERGY_COST * dt;
+			this._energy -= ENERGY_COST * this.get_state().get_energy_weighting() * dt;
 			this.adjust_energy();
 
 			this._desire += DESIRE_COST * dt;
@@ -119,34 +101,12 @@ public class Wolf extends Animal {
 				this._state = State.MATE;
 		}
 	}
-	
+
 	@Override
 	protected void update_mate(double dt) {
 		super.update_mate(dt);
-		
+
 		if (this._mate_target != null)
-			if (!this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
-				this._mate_target = null;
-
-		if (this._mate_target == null)
-			this._mate_target = this._mate_strategy.select(this, this._region_mngr.get_animals_in_range(this,
-					a -> this.get_genetic_code() == a.get_genetic_code()));
-
-		if (this._mate_target == null)
-			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
-		else {
-			this._dest = _mate_target.get_position();
-
-			this.move(OESTRUS_SPEED * _speed * dt * Math.exp((_energy - MAX_ENERGY) * SPEED_MULTIPLIER));
-
-			this._age += dt;
-
-			this._energy -= ENERGY_COST * OESTRUS_ENERGY_COST * dt;
-			this.adjust_energy();
-
-			this._desire += DESIRE_COST * dt;
-			this.adjust_desire();
-
 			if (this.distanceTo(this._mate_target) <= PROCREATION_RANGE) {
 				this.reset_desire();
 				this._mate_target.reset_desire();
@@ -158,11 +118,25 @@ public class Wolf extends Animal {
 				this._mate_target = null;
 			}
 
-		}
 		if (this._energy < UMBRAL_ENERGY)
 			this._state = State.HUNGER;
 		else if (this._desire < UMBRAL_DESIRE)
 			this._state = State.NORMAL;
+	}
+
+	@Override
+	protected double energy_cost() {
+		return ENERGY_COST;
+	}
+
+	@Override
+	protected double desire_cost() {
+		return DESIRE_COST;
+	}
+
+	@Override
+	protected double sex_speed() {
+		return OESTRUS_SPEED;
 	}
 
 }
