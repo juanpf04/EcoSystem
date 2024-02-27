@@ -117,7 +117,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	@Override
 	public void update(double dt) {
-		if (this._state != State.DEAD) {
+		if (this.is_alive()) {
 
 			this.update_according_to_state(dt);
 
