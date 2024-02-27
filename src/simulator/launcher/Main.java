@@ -164,7 +164,7 @@ public class Main {
 
 	private static void parse_out_file_option(CommandLine line) throws ParseException {
 		_out_file = line.getOptionValue(Messages.COMMAND_OUTPUT_SHORTCUT);
-		if (_mode == ExecMode.BATCH && _out_file == null) {
+		if (line.hasOption(Messages.COMMAND_OUTPUT_SHORTCUT) && _out_file == null) {
 			throw new ParseException(Messages.OUT_FILE_ERROR);
 		}
 	}

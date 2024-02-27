@@ -61,9 +61,7 @@ public class RegionManager implements AnimalMapView {
 
 	public void register_animal(Animal a) {
 		a.init(this);
-		int i = (int) (a.get_position().getY() / this.get_region_height());
-		int j = (int) (a.get_position().getX() / this.get_region_width());
-		Region region = this._regions[i][j];
+		Region region = this.get_region(a);
 		region.add_animal(a);
 		this._animal_region.put(a, region);
 	}
@@ -73,15 +71,19 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	public void update_animal_region(Animal a) {
-		int i = (int) (a.get_position().getY() / this.get_region_height());
-		int j = (int) (a.get_position().getX() / this.get_region_width());
-
-		Region region = this._regions[i][j];
+		Region region = this.get_region(a);
 		
 		if (region != this._animal_region.get(a)) {
 			region.add_animal(a);
 			this._animal_region.put(a, region).remove_animal(a);
 		}
+	}
+	
+	private Region get_region(Animal a) {
+		int i = (int) (a.get_position().getY() / this.get_region_height());
+		int j = (int) (a.get_position().getX() / this.get_region_width());
+
+		return this._regions[i][j];
 	}
 
 	public void update_all_regions(double dt) {
