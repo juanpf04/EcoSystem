@@ -90,12 +90,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._region_mngr = reg_mngr;
 
 		if (this.get_position() == null)
-			this._pos = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()),
-					Utils._rand.nextDouble(this._region_mngr.get_height()));
+			this._pos = this.random_position();
 		else if (this.is_out())
 			this.adjust_position();
 
-		this.new_random_dest();
+		this._dest = this.random_position();
 	}
 
 	public Animal deliver_baby() {
@@ -143,7 +142,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 				this._mate_target = null;
 
 			if (this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
-				this._state = State.DEAD;
+				this.die();
 
 			if (this.is_alive()) {
 				this._energy += this._region_mngr.get_food(this, dt);
@@ -154,7 +153,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	protected void update_normal(double dt) {
 		if (this.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE)
-			this.new_random_dest();
+			this._dest = this.random_position();
 
 		this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
@@ -190,7 +189,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		else {
 			this._dest = this._mate_target.get_position();
 
-			this.move(this.sex_speed() * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(this.sex_speed() * this.get_speed() * dt
+					* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
 			this._age += dt;
 
@@ -202,8 +202,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		}
 	}
 
-	/*s
-	 * EJEMPLOS LAMBDA FUNCION PREDICATE 1. (Animal a) -> {return
+	/*
+	 * s EJEMPLOS LAMBDA FUNCION PREDICATE 1. (Animal a) -> {return
 	 * this.get_genetic_code() == a.get_genetic_code();}
 	 * 
 	 * 2. (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
@@ -239,7 +239,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			break;
 		}
 	}
-	
+
 	protected abstract void update_reference_animal();
 
 	protected abstract double max_age();
@@ -247,7 +247,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected abstract double energy_cost();
 
 	protected abstract double desire_cost();
-	
+
 	protected abstract double sex_speed();
 
 	@Override
@@ -313,8 +313,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._desire = MIN_DESIRE;
 	}
 
-	protected void new_random_dest() {
-		this._dest = new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()),
+	protected Vector2D random_position() {
+		return new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()),
 				Utils._rand.nextDouble(this._region_mngr.get_height()));
 	}
 
@@ -334,7 +334,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		while (this.get_position().getY() < 0)
 			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
 	}
-	
+
 	protected void adjust_energy() {
 		if (this.get_energy() < MIN_ENERGY)
 			this._energy = MIN_ENERGY;

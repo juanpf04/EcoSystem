@@ -136,6 +136,8 @@ public class RegionManager implements AnimalMapView {
 				if (animal.in_sight_range(a) && filter.test(animal))
 					animals_in_range.add(animal);
 
+		animals_in_range.remove(a);
+		
 		return animals_in_range;
 	}
 
