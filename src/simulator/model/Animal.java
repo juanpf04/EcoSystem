@@ -168,17 +168,53 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	protected abstract double max_age();
 
-	protected void update_according_to_state(double dt) {
+	protected void update_normal(double dt) {
+	}
+
+	protected void update_danger(double dt) {
+	}
+
+	protected void update_dead(double dt) {
+	}
+
+	protected void update_hunger(double dt) {
+	}
+
+	protected void update_mate(double dt) {
+	}
+
+	/*
+	 * EJEMPLOS LAMBDA FUNCION PREDICATE 1. (Animal a) -> {return
+	 * this.get_genetic_code() == a.get_genetic_code();}
+	 * 
+	 * 2. (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
+	 * 
+	 * 3. new Predicate<Animal>() {
+	 * 
+	 * @Override public boolean test(Animal t) { return get_genetic_code() ==
+	 * t.get_genetic_code(); }
+	 * 
+	 * });
+	 *
+	 * 4. a -> this.get_genetic_code() == a.get_genetic_code()
+	 */
+
+	private void update_according_to_state(double dt) {
 		switch (this.get_state()) {
 		case NORMAL:
+			this.update_normal(dt);
 			break;
 		case DANGER:
+			this.update_danger(dt);
 			break;
 		case DEAD:
+			this.update_dead(dt);
 			break;
 		case HUNGER:
+			this.update_hunger(dt);
 			break;
 		case MATE:
+			this.update_hunger(dt);
 			break;
 		default:
 			break;
