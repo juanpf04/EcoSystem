@@ -10,19 +10,19 @@ public class Wolf extends Animal {
 	protected static final Diet DIET = Diet.CARNIVORE;
 	protected static final double INIT_SIGHT_RANGE = 50.0;
 	protected static final double INIT_SPEED = 60.0;
+	
 	protected static final double MAX_AGE = 14.0;
-	protected static final double DESTINATION_RANGE = 8.0;
-	protected static final double PROCREATION_RANGE = 8.0;
-	protected static final double SPEED_MULTIPLIER = 0.007;
+	
 	protected static final double ENERGY_COST = 18.0;
 	protected static final double DESIRE_COST = 30.0;
-	protected static final double UMBRAL_DESIRE = 65.0;
 	protected static final double UMBRAL_ENERGY = 50.0;
+	
 	protected static final double HUNT_SPEED = 3.0;
 	protected static final double HUNT_ENERGY_COST = 1.2;
+	
 	protected static final double OESTRUS_SPEED = 3.0;
 	protected static final double OESTRUS_ENERGY_COST = 1.2;
-	protected static final double PREGNANT_PROBABILITY = 0.9;
+	
 	protected static final double ENERGY_TO_SUBTRACT = 10.0;
 
 	private Animal _hunt_target;
@@ -139,7 +139,7 @@ public class Wolf extends Animal {
 					this.reset_desire();
 					this._mate_target.reset_desire();
 
-					if (!this.is_pregnant() && Utils._rand.nextDouble() <= PREGNANT_PROBABILITY)
+					if (!this.is_pregnant() && Utils._rand.nextDouble() < PREGNANT_PROBABILITY)
 						this._baby = new Wolf(this, this._mate_target);
 
 					this._energy -= ENERGY_TO_SUBTRACT;

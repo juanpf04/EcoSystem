@@ -17,6 +17,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected static final double MAX_ENERGY = 100.0;
 	protected static final double MIN_DESIRE = 0.0;
 	protected static final double MAX_DESIRE = 100.0;
+	
+	protected static final double DESTINATION_RANGE = 8.0;
+	protected static final double PROCREATION_RANGE = 8.0;
+	protected static final double SPEED_MULTIPLIER = 0.007;
+	protected static final double UMBRAL_DESIRE = 65.0;
+	protected static final double PREGNANT_PROBABILITY = 0.9;
 
 	protected String _genetic_code;
 	protected Diet _diet;

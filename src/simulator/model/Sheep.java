@@ -10,18 +10,18 @@ public class Sheep extends Animal {
 	protected static final Diet DIET = Diet.HERBIVORE;
 	protected static final double INIT_SIGHT_RANGE = 40.0;
 	protected static final double INIT_SPEED = 35.0;
+	
 	protected static final double MAX_AGE = 8.0;
-	protected static final double DESTINATION_RANGE = 8.0;
-	protected static final double PROCREATION_RANGE = 8.0;
-	protected static final double SPEED_MULTIPLIER = 0.007;
+	
 	protected static final double ENERGY_COST = 20.0;
 	protected static final double DESIRE_COST = 40.0;
-	protected static final double UMBRAL_DESIRE = 65.0;
+	
 	protected static final double FLEE_SPEED = 2.0;
 	protected static final double FLEE_ENERGY_COST = 1.2;
+	
 	protected static final double OESTRUS_SPEED = 2.0;
 	protected static final double OESTRUS_ENERGY_COST = 1.2;
-	protected static final double PREGNANT_PROBABILITY = 0.9;
+	
 
 	private Animal _danger_source;
 	private SelectionStrategy _danger_strategy;
@@ -150,7 +150,7 @@ public class Sheep extends Animal {
 				if (this.distanceTo(this._mate_target) <= PROCREATION_RANGE) {
 					this.reset_desire();
 
-					if (!this.is_pregnant() && Utils._rand.nextDouble() <= PREGNANT_PROBABILITY)
+					if (!this.is_pregnant() && Utils._rand.nextDouble() < PREGNANT_PROBABILITY)
 						this._baby = new Sheep(this, this._mate_target);
 
 					this._mate_target = null;
