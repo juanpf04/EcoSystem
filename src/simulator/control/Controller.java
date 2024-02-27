@@ -76,8 +76,10 @@ public class Controller {
 			view.close();
 
 		jo.put(Messages.OUT_KEY, this._sim.as_JSON());
-		PrintStream p = new PrintStream(out);
-		p.println(jo);
+		if(out != null) {			
+			PrintStream p = new PrintStream(out);
+			p.println(jo);
+		}
 	}
 
 	private List<ObjInfo> to_animals_info(List<? extends AnimalInfo> animals) {

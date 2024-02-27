@@ -90,7 +90,7 @@ public class Simulator implements JSONable {
 	private void remove_deaths() {
 		List<Animal> deaths = new LinkedList<Animal>();
 		
-		for (Animal a : this._animals)
+		for (Animal a : this._animals) //TODO Iterator
 			if (!a.is_alive()) 
 				deaths.add(a);
 			

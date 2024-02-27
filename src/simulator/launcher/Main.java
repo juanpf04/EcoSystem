@@ -164,9 +164,6 @@ public class Main {
 
 	private static void parse_out_file_option(CommandLine line) throws ParseException {
 		_out_file = line.getOptionValue(Messages.COMMAND_OUTPUT_SHORTCUT);
-		if (line.hasOption(Messages.COMMAND_OUTPUT_SHORTCUT) && _out_file == null) {
-			throw new ParseException(Messages.OUT_FILE_ERROR);
-		}
 	}
 
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
@@ -214,8 +211,8 @@ public class Main {
 		InputStream in = new FileInputStream(new File(_in_file));
 		JSONObject data = load_JSON_file(in);
 
-		OutputStream out = new FileOutputStream(_out_file);
-		
+		OutputStream out = _out_file != null ? new FileOutputStream(_out_file) : null;
+
 		SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
 		Simulator simulator = sb.create_instance(data);
 

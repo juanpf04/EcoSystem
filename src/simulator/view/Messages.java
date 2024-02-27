@@ -58,8 +58,7 @@ public class Messages {
 	public static final String SOMETHING_WENT_WRONG = "Something went wrong ...";
 	public static final String GUI_ERROR = "GUI mode is not ready yet ...";
 	public static final String IN_FILE_ERROR = "In batch mode an input configuration file is required";
-	public static final String OUT_FILE_ERROR = "In batch mode an output configuration file is required";
-
+	
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
 	}
