@@ -77,6 +77,7 @@ public class RegionManager implements AnimalMapView {
 		int j = (int) (a.get_position().getX() / this.get_region_width());
 
 		Region region = this._regions[i][j];
+		
 		if (region != this._animal_region.get(a)) {
 			region.add_animal(a);
 			this._animal_region.put(a, region).remove_animal(a);
@@ -136,8 +137,7 @@ public class RegionManager implements AnimalMapView {
 		return animals_in_range;
 	}
 
-	// TODO
-	public List<Region> get_regions_in_range(Animal a) {
+	private List<Region> get_regions_in_range(Animal a) {
 		List<Region> regions_in_range = new LinkedList<>();
 
 		double sr = a.get_sight_range();
