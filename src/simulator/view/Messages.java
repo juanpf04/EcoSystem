@@ -58,6 +58,8 @@ public class Messages {
 	public static final String SOMETHING_WENT_WRONG = "Something went wrong ...";
 	public static final String GUI_ERROR = "GUI mode is not ready yet ...";
 	public static final String IN_FILE_ERROR = "In batch mode an input configuration file is required";
+	public static final String ILLEGAL_SHEEP_STATE = "A sheep cannot hunt";
+	public static final String ILLEGAL_WOLF_STATE = "A wolf cannot be in danger";
 	
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);

@@ -58,22 +58,21 @@ public class Wolf extends Animal {
 
 		if (this._energy < UMBRAL_ENERGY)
 			this._state = State.HUNGER;
-
 		else if (this._desire > UMBRAL_DESIRE)
 			this._state = State.MATE;
 	}
 
 	@Override
 	protected void update_hunger(double dt) {
-		if (this._hunt_target == null || (this._hunt_target != null && !this._hunt_target.is_alive())
+		if (this._hunt_target == null ||  !this._hunt_target.is_alive()
 				|| this._hunt_target.distanceTo(this) > this.get_sight_range())
 			this._hunt_target = this._hunting_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.HERBIVORE));
 
 		if (this._hunt_target == null)
 			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 		else {
-			this._dest = _hunt_target.get_position();
+			this._dest = this._hunt_target.get_position();
 
 			this.move(
 					HUNT_SPEED * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
@@ -86,16 +85,16 @@ public class Wolf extends Animal {
 			this._desire += DESIRE_COST * dt;
 			this.adjust_desire();
 
-			if (this._hunt_target.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE) {
-				this._hunt_target._state = State.DEAD;
+			if (this._hunt_target.distanceTo(this) < DESTINATION_RANGE) {
+				this._hunt_target.die();
 				this._hunt_target = null;
 				this._energy += UMBRAL_ENERGY;
 				this.adjust_energy();
 			}
 		}
 
-		if (this._energy >= UMBRAL_ENERGY) {
-			if (this._desire <= UMBRAL_DESIRE)
+		if (this.get_energy() > UMBRAL_ENERGY) {
+			if (this._desire < UMBRAL_DESIRE)
 				this._state = State.NORMAL;
 			else
 				this._state = State.MATE;
@@ -107,7 +106,7 @@ public class Wolf extends Animal {
 		super.update_mate(dt);
 
 		if (this._mate_target != null)
-			if (this.distanceTo(this._mate_target) <= PROCREATION_RANGE) {
+			if (this.distanceTo(this._mate_target) < PROCREATION_RANGE) {
 				this.reset_desire();
 				this._mate_target.reset_desire();
 
@@ -122,6 +121,11 @@ public class Wolf extends Animal {
 			this._state = State.HUNGER;
 		else if (this._desire < UMBRAL_DESIRE)
 			this._state = State.NORMAL;
+	}
+	
+	@Override
+	protected void update_danger(double dt) {
+		throw new IllegalStateException(Messages.ILLEGAL_WOLF_STATE);
 	}
 
 	@Override

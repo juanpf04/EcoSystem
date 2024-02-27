@@ -130,6 +130,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 			if (this.is_out()) {
 				this.adjust_position();
 				this._state = State.NORMAL;
+				this._mate_target = null;
+				this.update_reference_animal();
 			}
 
 			if (this.get_state() == State.NORMAL) {
@@ -188,7 +190,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		else {
 			this._dest = this._mate_target.get_position();
 
-			this.move(this.sex_speed() * _speed * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(this.sex_speed() * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
 			this._age += dt;
 
@@ -231,7 +233,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			this.update_hunger(dt);
 			break;
 		case MATE:
-			this.update_hunger(dt);
+			this.update_mate(dt);
 			break;
 		default:
 			break;
@@ -349,5 +351,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	public boolean in_sight_range(Animal a) {
 		return this.distanceTo(a) <= a.get_sight_range();
+	}
+
+	public void die() {
+		this._state = State.DEAD;
 	}
 }
