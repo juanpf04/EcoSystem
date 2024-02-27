@@ -55,7 +55,7 @@ public class RegionManager implements AnimalMapView {
 			r.add_animal(a);
 			this._animal_region.put(a, r);
 		}
-		
+
 		this._regions[row][col] = r;
 	}
 
@@ -148,14 +148,15 @@ public class RegionManager implements AnimalMapView {
 		int ini_j = (int) ((x - sr) / this.get_region_width());
 		int end_i = (int) ((y + sr) / this.get_region_height());
 		int end_j = (int) ((x + sr) / this.get_region_width());
+		
+		ini_i = Math.max(ini_i, 0);
+		ini_j = Math.max(ini_j, 0);
+		end_i = Math.min(end_i, this.get_rows() - 1);
+		end_j = Math.min(end_j, this.get_cols() - 1);
 
-//		for (int i = ini_i; i < end_i; i++)
-//			for (int j = ini_j; j < end_j; j++)
-//				regions_in_range.add(this._regions[i][j]);
-
-		for (Region[] regions : this._regions)
-			for (Region region : regions)
-				regions_in_range.add(region);
+		for (int i = ini_i; i <= end_i; i++)
+			for (int j = ini_j; j <= end_j; j++)
+				regions_in_range.add(this._regions[i][j]);
 
 		return regions_in_range;
 	}
