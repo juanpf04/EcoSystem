@@ -186,9 +186,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 		if (this._mate_target == null)
 			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 		else {
-			this._dest = _mate_target.get_position();
+			this._dest = this._mate_target.get_position();
 
-			this.move(this.sex_speed() * _speed * dt * Math.exp((_energy - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(this.sex_speed() * _speed * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
 			this._age += dt;
 

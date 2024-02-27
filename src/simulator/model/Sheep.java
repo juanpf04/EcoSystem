@@ -55,11 +55,13 @@ public class Sheep extends Animal {
 
 		if (this._danger_source == null)
 			this._danger_source = this._danger_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
-		if (this._danger_source != null)
+		if (this._danger_source != null) {
 			this._state = State.DANGER;
-		else if (this._desire > UMBRAL_DESIRE)
+			this._mate_target = null;
+		}
+		else if (this._desire > UMBRAL_DESIRE) 
 			this._state = State.MATE;
 	}
 
@@ -85,14 +87,16 @@ public class Sheep extends Animal {
 			this.adjust_desire();
 		}
 
-		if (this._danger_source == null || this._danger_source.distanceTo(this) <= this.get_sight_range()) {
+		if (this._danger_source == null || this._danger_source.distanceTo(this) > this.get_sight_range()) {
 			this._danger_source = this._danger_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
 			if (this._danger_source == null) {
-				if (this._desire <= UMBRAL_DESIRE)
+				if (this._desire < UMBRAL_DESIRE) {
 					this._state = State.NORMAL;
-				else
+					this._mate_target = null;
+				}
+				else 
 					this._state = State.MATE;
 			}
 		}
@@ -103,8 +107,9 @@ public class Sheep extends Animal {
 		super.update_mate(dt);
 
 		if (this._mate_target != null)
-			if (this.distanceTo(this._mate_target) <= PROCREATION_RANGE) {
+			if (this.distanceTo(this._mate_target) < PROCREATION_RANGE) {
 				this.reset_desire();
+				this._mate_target.reset_desire();
 
 				if (!this.is_pregnant() && Utils._rand.nextDouble() < PREGNANT_PROBABILITY)
 					this._baby = new Sheep(this, this._mate_target);
@@ -114,12 +119,16 @@ public class Sheep extends Animal {
 
 		if (this._danger_source == null)
 			this._danger_source = this._danger_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
-		if (this._danger_source != null)
+		if (this._danger_source != null) {
 			this._state = State.DANGER;
-		else if (this._desire < UMBRAL_DESIRE)
+			this._mate_target = null;
+		}
+		else if (this._desire < UMBRAL_DESIRE) {
 			this._state = State.NORMAL;
+			this._mate_target = null;
+		}
 	}
 
 	@Override
