@@ -191,7 +191,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
 		if (this._mate_target != null)
-			if (!this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
+			if (!this._mate_target.is_alive() || !this._mate_target.in_sight_range(this))
 				this._mate_target = null;
 
 		if (this._mate_target == null)
@@ -199,7 +199,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
 
 		if (this._mate_target == null)
-			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.update_normal(dt);
 		else {
 			this._dest = this._mate_target.get_position();
 

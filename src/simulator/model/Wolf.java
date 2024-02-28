@@ -75,7 +75,7 @@ public class Wolf extends Animal {
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.HERBIVORE));
 
 		if (this._hunt_target == null)
-			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			super.update_normal(dt);
 		else {
 			this._dest = this._hunt_target.get_position();
 
