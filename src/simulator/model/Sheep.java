@@ -13,11 +13,11 @@ public class Sheep extends Animal {
 
 	protected static final double MAX_AGE = 8.0;
 
-	protected static final double ENERGY_COST = 20.0;
+	protected static final double ENERGY_COST = -20.0;
 	protected static final double DESIRE_COST = 40.0;
 
-	protected static final double FLEE_SPEED = 2.0;
-	protected static final double OESTRUS_SPEED = 2.0;
+	protected static final double DANGER_SPEED = 2.0;
+	protected static final double SEX_SPEED = 2.0;
 
 	private Animal _danger_source;
 	private SelectionStrategy _danger_strategy;
@@ -61,34 +61,34 @@ public class Sheep extends Animal {
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
 		if (this._danger_source != null)
-			this._state = State.DANGER;
+			this.set_danger();
 		else if (this._desire > UMBRAL_DESIRE)
-			this._state = State.MATE;
+			this.set_mate();
 	}
 
 	@Override
 	protected void update_danger(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
+		super.update_danger(dt);
 
-		if (this._danger_source != null && !this._danger_source.is_alive())
+		if (this._danger_source != null && this.dead())
 			this._danger_source = null;
 
 		if (this._danger_source == null)
-			super.update_normal(dt);
+			super.advance(dt);
 		else {
 			this._dest = this.get_position().plus(this.get_position().minus(_danger_source.get_position()).direction());
 
 			this.move(
-					FLEE_SPEED * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+					DANGER_SPEED * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
-			this._age += dt;
+			this.grow(dt);
 
-			this._energy -= ENERGY_COST * this.get_state().get_energy_weighting() * dt;
-			this.adjust_energy();
+			this.update_energy(this.energy_cost() * this.get_state().get_energy_weighting() * dt);
 
-			this._desire += DESIRE_COST * dt;
-			this.adjust_desire();
+			this.update_desire(this.desire_cost() * dt);
 		}
 
 		if (this._danger_source == null || !this._danger_source.in_sight_range(this)) {
@@ -96,10 +96,10 @@ public class Sheep extends Animal {
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
 			if (this._danger_source == null) {
-				if (this._desire <= UMBRAL_DESIRE)
-					this._state = State.NORMAL;
+				if (this._desire < UMBRAL_DESIRE)
+					this.set_normal();
 				else
-					this._state = State.MATE;
+					this.set_mate();
 			}
 		}
 	}
@@ -127,9 +127,9 @@ public class Sheep extends Animal {
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
 		if (this._danger_source != null)
-			this._state = State.DANGER;
-		else if (this._desire <= UMBRAL_DESIRE)
-			this._state = State.NORMAL;
+			this.set_danger();
+		else if (this._desire < UMBRAL_DESIRE)
+			this.set_normal();
 	}
 
 	@Override
@@ -152,6 +152,6 @@ public class Sheep extends Animal {
 
 	@Override
 	protected double sex_speed() {
-		return OESTRUS_SPEED;
+		return SEX_SPEED;
 	}
 }

@@ -58,10 +58,10 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._speed = Utils.get_randomized_parameter(init_speed, SPEED_TOLERANCE);
 		this._mate_strategy = mate_strategy;
 		this._pos = pos;
-		this._state = State.NORMAL;
+		this.set_normal();
 		this._energy = MAX_ENERGY;
 		this._age = 0.0;
-		this._desire = MIN_DESIRE;
+		this.reset_desire();
 		this._dest = null;
 		this._mate_target = null;
 		this._baby = null;
@@ -76,8 +76,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._baby = null;
 		this._mate_target = null;
 		this._region_mngr = null;
-		this._state = State.NORMAL;
-		this._desire = MIN_DESIRE;
+		this.set_normal();
+		this.reset_desire();
 		this._genetic_code = p1.get_genetic_code();
 		this._diet = p1.get_diet();
 		this._energy = (p1.get_energy() + p2.get_energy()) / 2;
@@ -126,6 +126,22 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 		return jo;
 	}
+	
+	protected void advance(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
+		if (this.get_destination().distanceTo(this.get_position()) < ACTION_RANGE)
+			this._dest = this.random_position();
+
+		this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+
+		this.grow(dt);
+
+		this.update_energy(this.energy_cost() * dt);
+
+		this.update_desire(this.desire_cost() * dt);
+	}
 
 	@Override
 	public void update(double dt) {
@@ -138,23 +154,22 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 			if (this.is_out()) {
 				this.adjust_position();
-				this._state = State.NORMAL;
+				this.set_normal();
 			}
 
-			if (this.get_state() == State.NORMAL) {
+			if (this.normal()) {
 				this._mate_target = null;
 				this.update_reference_animal();
-			} else if (this.get_state() == State.MATE)
+			} else if (this.mate())
 				this.update_reference_animal();
-			else if (this.get_state() == State.HUNGER || this.get_state() == State.DANGER)
+			else if (this.hunger()|| this.danger())
 				this._mate_target = null;
 
 			if (this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
-				this.die();
+				this.set_dead();
 
 			if (this.is_alive()) {
-				this._energy += this._region_mngr.get_food(this, dt);
-				this.adjust_energy();
+				this.update_energy(this._region_mngr.get_food(this, dt));
 			}
 		}
 	}
@@ -163,27 +178,22 @@ public abstract class Animal implements Entity, AnimalInfo {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		if (this.get_destination().distanceTo(this.get_position()) < ACTION_RANGE)
-			this._dest = this.random_position();
-
-		this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
-
-		this._age += dt;
-
-		this._energy -= this.energy_cost() * dt;
-		this.adjust_energy();
-
-		this._desire += this.desire_cost() * dt;
-		this.adjust_desire();
+		this.advance(dt);
 	}
 
 	protected void update_danger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 	}
 
 	protected void update_dead(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 	}
 
 	protected void update_hunger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 	}
 
 	protected void update_mate(double dt) {
@@ -191,7 +201,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
 		if (this._mate_target != null)
-			if (!this._mate_target.is_alive() || !this._mate_target.in_sight_range(this))
+			if (this._mate_target.dead() || !this._mate_target.in_sight_range(this))
 				this._mate_target = null;
 
 		if (this._mate_target == null)
@@ -206,13 +216,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 			this.move(this.sex_speed() * this.get_speed() * dt
 					* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
-			this._age += dt;
+			this.grow(dt);
 
-			this._energy -= this.energy_cost() * this.get_state().get_energy_weighting() * dt;
-			this.adjust_energy();
+			this.update_energy(this.energy_cost() * this.get_state().get_energy_weighting() * dt);
 
-			this._desire += this.desire_cost() * dt;
-			this.adjust_desire();
+			this.update_desire(this.desire_cost() * dt);
 		}
 	}
 
@@ -301,6 +309,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public double get_energy() {
 		return this._energy;
 	}
+	
+	@Override
+	public double get_desire() {
+		return this._desire;
+	}
 
 	@Override
 	public double get_age() {
@@ -326,11 +339,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	@Override
 	public boolean is_alive() {
-		return this.get_state() != State.DEAD;
-	}
-
-	protected void reset_desire() {
-		this._desire = MIN_DESIRE;
+		return !this.dead();
 	}
 
 	protected Vector2D random_position() {
@@ -355,18 +364,20 @@ public abstract class Animal implements Entity, AnimalInfo {
 			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
 	}
 
-	protected void adjust_energy() {
-		if (this.get_energy() < MIN_ENERGY)
-			this._energy = MIN_ENERGY;
-		if (this.get_energy() > MAX_ENERGY)
-			this._energy = MAX_ENERGY;
+	protected void update_energy(double energy) {
+		this._energy = Utils.constrain_value_in_range(this.get_energy() + energy, MIN_ENERGY, MAX_ENERGY);
 	}
 
-	protected void adjust_desire() {
-		if (this._desire < MIN_DESIRE)
-			this._desire = MIN_DESIRE;
-		if (this._desire > MAX_DESIRE)
-			this._desire = MAX_DESIRE;
+	protected void update_desire(double desire) {
+		this._desire = Utils.constrain_value_in_range(this.get_desire() + desire, MIN_DESIRE, MAX_DESIRE);
+	}
+	
+	protected void reset_desire() {
+		this._desire = MIN_DESIRE;
+	}
+	
+	protected void grow(double dt) {
+		this._age += dt;
 	}
 
 	public boolean in_sight_range(Animal a) {
@@ -376,7 +387,48 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return this.distanceTo(a) <= a.get_sight_range();
 	}
 
-	public void die() {
+	protected void set_dead() {
 		this._state = State.DEAD;
+	}
+	
+	protected void set_normal() {
+		this._state = State.NORMAL;
+	}
+	
+	protected void set_mate() {
+		this._state = State.MATE;
+	}
+	
+	protected void set_danger() {
+		this._state = State.DANGER;
+	}
+	
+	protected void set_hunger() {
+		this._state = State.HUNGER;
+	}
+	
+	@Override
+	public boolean dead() {
+		return this.get_state() == State.DEAD;
+	}
+	
+	@Override
+	public boolean normal() {
+		return this.get_state() == State.NORMAL;
+	}
+	
+	@Override
+	public boolean mate() {
+		return this.get_state() == State.MATE;
+	}
+	
+	@Override
+	public boolean danger() {
+		return this.get_state() == State.DANGER;
+	}
+	
+	@Override
+	public boolean hunger() {
+		return this.get_state() == State.HUNGER;
 	}
 }

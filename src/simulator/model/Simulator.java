@@ -125,7 +125,7 @@ public class Simulator implements JSONable {
 		List<Animal> deaths = new LinkedList<Animal>();
 
 		for (Animal a : this._animals)
-			if (!a.is_alive())
+			if (a.dead())
 				deaths.add(a);
 
 		for (Animal dead : deaths)
