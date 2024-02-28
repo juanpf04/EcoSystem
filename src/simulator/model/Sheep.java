@@ -10,14 +10,13 @@ public class Sheep extends Animal {
 	protected static final Diet DIET = Diet.HERBIVORE;
 	protected static final double INIT_SIGHT_RANGE = 40.0;
 	protected static final double INIT_SPEED = 35.0;
-
 	protected static final double MAX_AGE = 8.0;
 
 	protected static final double ENERGY_COST = -20.0;
 	protected static final double DESIRE_COST = 40.0;
 
 	protected static final double DANGER_SPEED = 2.0;
-	protected static final double SEX_SPEED = 2.0;
+	protected static final double MATE_SPEED = 2.0;
 
 	private Animal _danger_source;
 	private SelectionStrategy _danger_strategy;
@@ -62,7 +61,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source != null)
 			this.set_danger();
-		else if (this._desire > UMBRAL_DESIRE)
+		else if (this._desire > HEAT_DESIRE)
 			this.set_mate();
 	}
 
@@ -96,7 +95,7 @@ public class Sheep extends Animal {
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
 			if (this._danger_source == null) {
-				if (this._desire < UMBRAL_DESIRE)
+				if (this._desire < HEAT_DESIRE)
 					this.set_normal();
 				else
 					this.set_mate();
@@ -128,7 +127,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source != null)
 			this.set_danger();
-		else if (this._desire < UMBRAL_DESIRE)
+		else if (this._desire < HEAT_DESIRE)
 			this.set_normal();
 	}
 
@@ -137,7 +136,7 @@ public class Sheep extends Animal {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		throw new IllegalStateException(Messages.ILLEGAL_SHEEP_STATE);
+		throw new IllegalStateException(Messages.illegal_state(this.get_genetic_code(), this.get_state()));
 	}
 
 	@Override
@@ -151,7 +150,7 @@ public class Sheep extends Animal {
 	}
 
 	@Override
-	protected double sex_speed() {
-		return SEX_SPEED;
+	protected double mate_speed() {
+		return MATE_SPEED;
 	}
 }

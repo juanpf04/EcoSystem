@@ -1,5 +1,7 @@
 package simulator.view;
 
+import simulator.model.State;
+
 public class Messages {
 
 	// JSONObjects key names
@@ -68,12 +70,15 @@ public class Messages {
 	public static final String SOMETHING_WENT_WRONG = "Something went wrong ...";
 	public static final String GUI_ERROR = "GUI mode is not ready yet ...";
 	public static final String IN_FILE_ERROR = "In batch mode an input configuration file is required.";
-	public static final String ILLEGAL_SHEEP_STATE = "A sheep cannot hunt.";
-	public static final String ILLEGAL_WOLF_STATE = "A wolf cannot be in danger.";
 	public static final String ILLEGAL_WIDTH_OPERATION = "The width has to be divisible by the number of columns.";
 	public static final String ILLEGAL_HEIGHT_OPERATION = "The height has to be divisible by the number of rows.";
 	public static final String DELTA_TIME_ERROR = "Delta time must be a positive number.";
 	public static final String TIME_ERROR = "Time must be a positive number.";
+	public static final String ILLEGAL_STATE = "%s cannot be in %s state.";
+
+	public static final String illegal_state(String name, State state) {
+		return Messages.ILLEGAL_STATE.formatted(name, state.toString().toLowerCase());
+	}
 
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);

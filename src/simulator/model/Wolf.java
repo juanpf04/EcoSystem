@@ -10,17 +10,16 @@ public class Wolf extends Animal {
 	protected static final Diet DIET = Diet.CARNIVORE;
 	protected static final double INIT_SIGHT_RANGE = 50.0;
 	protected static final double INIT_SPEED = 60.0;
-
 	protected static final double MAX_AGE = 14.0;
 
 	protected static final double ENERGY_COST = -18.0;
 	protected static final double DESIRE_COST = 30.0;
+	
 	protected static final double HUNT_ENERGY = 50.0;
-
 	protected static final double HUNT_SPEED = 3.0;
-	protected static final double OESTRUS_SPEED = 3.0;
+	protected static final double MATE_SPEED = 3.0;
 
-	protected static final double SEX_COST = -10.0;
+	protected static final double MATING_COST = -10.0;
 
 	private Animal _hunt_target;
 	private SelectionStrategy _hunting_strategy;
@@ -61,7 +60,7 @@ public class Wolf extends Animal {
 
 		if (this._energy < HUNT_ENERGY)
 			this._state = State.HUNGER;
-		else if (this._desire > UMBRAL_DESIRE)
+		else if (this._desire > HEAT_DESIRE)
 			this._state = State.MATE;
 	}
 
@@ -98,7 +97,7 @@ public class Wolf extends Animal {
 		}
 
 		if (this.get_energy() > HUNT_ENERGY) {
-			if (this._desire < UMBRAL_DESIRE)
+			if (this._desire < HEAT_DESIRE)
 				this._state = State.NORMAL;
 			else
 				this._state = State.MATE;
@@ -120,13 +119,13 @@ public class Wolf extends Animal {
 				if (!this.is_pregnant() && Utils._rand.nextDouble() < PREGNANT_PROBABILITY)
 					this._baby = new Wolf(this, this._mate_target);
 
-				this.update_energy(SEX_COST);
+				this.update_energy(MATING_COST);
 				this._mate_target = null;
 			}
 
 		if (this._energy < HUNT_ENERGY)
 			this._state = State.HUNGER;
-		else if (this._desire < UMBRAL_DESIRE)
+		else if (this._desire < HEAT_DESIRE)
 			this._state = State.NORMAL;
 	}
 
@@ -135,7 +134,7 @@ public class Wolf extends Animal {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		throw new IllegalStateException(Messages.ILLEGAL_WOLF_STATE);
+		throw new IllegalStateException(Messages.illegal_state(this.get_genetic_code(), this.get_state()));
 	}
 
 	@Override
@@ -149,8 +148,8 @@ public class Wolf extends Animal {
 	}
 
 	@Override
-	protected double sex_speed() {
-		return OESTRUS_SPEED;
+	protected double mate_speed() {
+		return MATE_SPEED;
 	}
 
 }

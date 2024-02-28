@@ -11,16 +11,22 @@ import simulator.view.Messages;
 public abstract class Animal implements Entity, AnimalInfo {
 
 	protected static final double SPEED_TOLERANCE = 0.1;
+	
 	protected static final double FACTOR = 60.0;
+	
 	protected static final double MUTATION_TOLERANCE = 0.2;
+	
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
+	
 	protected static final double MIN_DESIRE = 0.0;
 	protected static final double MAX_DESIRE = 100.0;
 
 	protected static final double ACTION_RANGE = 8.0;
+	
 	protected static final double SPEED_MULTIPLIER = 0.007;
-	protected static final double UMBRAL_DESIRE = 65.0;
+	
+	protected static final double HEAT_DESIRE = 65.0;
 	protected static final double PREGNANT_PROBABILITY = 0.9;
 
 	protected String _genetic_code;
@@ -213,7 +219,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		else {
 			this._dest = this._mate_target.get_position();
 
-			this.move(this.sex_speed() * this.get_speed() * dt
+			this.move(this.mate_speed() * this.get_speed() * dt
 					* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
 			this.grow(dt);
@@ -273,7 +279,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	protected abstract double desire_cost();
 
-	protected abstract double sex_speed();
+	protected abstract double mate_speed();
 
 	@Override
 	public State get_state() {
