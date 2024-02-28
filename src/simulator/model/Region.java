@@ -19,10 +19,16 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	public final void add_animal(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		
 		this._animals.add(a);
 	}
 
 	public final void remove_animal(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		
 		this._animals.remove(a);
 	}
 
@@ -44,6 +50,9 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	protected int count(Diet d) {
+		if (d == null)
+			throw new IllegalArgumentException(Messages.INVALID_DIET);
+		
 		int i = 0;
 
 		for (Animal a : this.getAnimals())

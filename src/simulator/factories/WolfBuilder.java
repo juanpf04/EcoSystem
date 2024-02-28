@@ -25,6 +25,9 @@ public class WolfBuilder extends Builder<Animal> {
 
 	@Override
 	protected Wolf create_instance(JSONObject data) {
+		if(data == null)
+			throw new IllegalArgumentException(Messages.INVALID_JSON);
+		
 		SelectionStrategy mate_strategy = new SelectFirst(), hunt_strategy = new SelectFirst();
 		Vector2D position = null;
 
@@ -50,9 +53,10 @@ public class WolfBuilder extends Builder<Animal> {
 	@Override
 	protected void fill_in_data(JSONObject o) {
 		SelectFirstBuilder b = new SelectFirstBuilder();
+		JSONObject data = new JSONObject();
 		
-		o.put(Messages.MATE_STRATEGY_KEY, b.get_info());
-		o.put(Messages.HUNT_STRATEGY_KEY, b.get_info());
+		data.put(Messages.MATE_STRATEGY_KEY, b.get_info());
+		data.put(Messages.HUNT_STRATEGY_KEY, b.get_info());
 		
 		JSONObject jo = new JSONObject();
 		
@@ -63,6 +67,8 @@ public class WolfBuilder extends Builder<Animal> {
 		jo.put(Messages.X_RANGE_KEY, ja);
 		jo.put(Messages.Y_RANGE_KEY, ja);		
 		
-		o.put(Messages.POSITION_KEY, jo);
+		data.put(Messages.POSITION_KEY, jo);
+		
+		o = new JSONObject(data.toString());
 	}
 }

@@ -3,6 +3,8 @@ package simulator.model;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import javax.management.OperationsException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,6 +40,12 @@ public class RegionManager implements AnimalMapView {
 		this._rows = rows;
 		this._width = width;
 		this._height = height;
+
+		if (this.get_width() % this.get_cols() != 0)
+			throw new ArithmeticException(Messages.ILLEGAL_WIDTH_OPERATION);
+		if (this.get_height() % this.get_rows() != 0)
+			throw new ArithmeticException(Messages.ILLEGAL_HEIGHT_OPERATION);
+
 		this._region_width = this._width / this._cols;
 		this._region_height = this._height / this._rows;
 
@@ -51,6 +59,13 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	public void set_region(int row, int col, Region r) {
+		if (row < 0 || row >= this.get_rows())
+			throw new IllegalArgumentException(Messages.INVALID_ROW);
+		if (col < 0 || col >= this.get_cols())
+			throw new IllegalArgumentException(Messages.INVALID_COL);
+		if (r == null)
+			throw new IllegalArgumentException(Messages.INVALID_REGION);
+		
 		for (Animal a : this._regions[row][col].getAnimals()) {
 			r.add_animal(a);
 			this._animal_region.put(a, r);
@@ -60,6 +75,9 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	public void register_animal(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		a.init(this);
 		Region region = this.get_region(a);
 		region.add_animal(a);
@@ -67,10 +85,16 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	public void unregister_animal(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		this._animal_region.remove(a).remove_animal(a);
 	}
 
 	public void update_animal_region(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		Region region = this.get_region(a);
 
 		if (region != this._animal_region.get(a)) {
@@ -80,6 +104,9 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	private Region get_region(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		int i = (int) (a.get_position().getY() / this.get_region_height());
 		int j = (int) (a.get_position().getX() / this.get_region_width());
 
@@ -87,6 +114,9 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	public void update_all_regions(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		for (Region[] regions : this._regions)
 			for (Region region : regions)
 				region.update(dt);
@@ -124,11 +154,21 @@ public class RegionManager implements AnimalMapView {
 
 	@Override
 	public double get_food(Animal a, double dt) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
 		return this._animal_region.get(a).get_food(a, dt);
 	}
 
 	@Override
 	public List<Animal> get_animals_in_range(Animal a, Predicate<Animal> filter) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		if (filter == null)
+			throw new IllegalArgumentException(Messages.INVALID_PREDICATE);
+
 		List<Animal> animals_in_range = new LinkedList<Animal>();
 
 		for (Region region : this.get_regions_in_range(a))
@@ -142,6 +182,9 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	private List<Region> get_regions_in_range(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		List<Region> regions_in_range = new LinkedList<>();
 
 		double sr = a.get_sight_range();

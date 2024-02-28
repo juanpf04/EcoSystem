@@ -14,6 +14,7 @@ public abstract class Builder<T> {
 			throw new IllegalArgumentException(Messages.INVALID_TYPE);
 		if (desc == null || desc.isBlank())
 			throw new IllegalArgumentException(Messages.INVALID_DESC);
+		
 		this._type_tag = type_tag;
 		this._desc = desc;
 	}

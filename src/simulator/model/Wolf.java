@@ -54,6 +54,9 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_normal(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		super.update_normal(dt);
 
 		if (this._energy < UMBRAL_ENERGY)
@@ -64,6 +67,9 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_hunger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		if (this._hunt_target == null ||  !this._hunt_target.is_alive()
 				|| !this._hunt_target.in_sight_range(this))
 			this._hunt_target = this._hunting_strategy.select(this,
@@ -103,6 +109,9 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_mate(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		super.update_mate(dt);
 
 		if (this._mate_target != null)
@@ -126,6 +135,9 @@ public class Wolf extends Animal {
 	
 	@Override
 	protected void update_danger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		throw new IllegalStateException(Messages.ILLEGAL_WOLF_STATE);
 	}
 

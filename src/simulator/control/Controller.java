@@ -28,6 +28,8 @@ public class Controller {
 	}
 
 	public void load_data(JSONObject data) {
+		if(data == null || data.isEmpty())
+			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
 		if (data.has(Messages.REGIONS_KEY)) {
 			JSONArray ja = data.getJSONArray(Messages.REGIONS_KEY);
@@ -56,6 +58,11 @@ public class Controller {
 	}
 
 	public void run(double t, double dt, boolean sv, OutputStream out) {
+		if (t <= 0)
+			throw new IllegalArgumentException(Messages.TIME_ERROR);
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		JSONObject jo = new JSONObject();
 		jo.put(Messages.IN_KEY, this._sim.as_JSON());
 

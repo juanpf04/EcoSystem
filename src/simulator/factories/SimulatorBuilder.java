@@ -24,6 +24,8 @@ public class SimulatorBuilder extends Builder<Simulator> {
 
 	@Override
 	public Simulator create_instance(JSONObject data) {
+		if (data == null || data.isEmpty())
+			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
 		int cols = data.getInt(Messages.COLUMNS_KEY);
 		int rows = data.getInt(Messages.ROWS_KEY);
@@ -31,5 +33,10 @@ public class SimulatorBuilder extends Builder<Simulator> {
 		int height = data.getInt(Messages.HEIGHT_KEY);
 
 		return new Simulator(cols, rows, width, height, _animals_factory, _regions_factory);
+	}
+
+	@Override
+	protected void fill_in_data(JSONObject o) {
+		// TODO
 	}
 }

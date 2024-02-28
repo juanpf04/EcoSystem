@@ -50,6 +50,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 			throw new IllegalArgumentException(Messages.INVALID_INIT_SPEED);
 		if (mate_strategy == null)
 			throw new IllegalArgumentException(Messages.INVALID_STRATEGY);
+		if(diet == null)
+			throw new IllegalArgumentException(Messages.INVALID_DIET);
 
 		this._genetic_code = genetic_code;
 		this._diet = diet;
@@ -68,6 +70,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected Animal(Animal p1, Animal p2) {
+		if (p1 == null || p2 == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		
 		this._dest = null;
 		this._baby = null;
 		this._mate_target = null;
@@ -87,6 +92,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	public void init(AnimalMapView reg_mngr) {
+		if (reg_mngr == null)
+			throw new IllegalArgumentException(Messages.INVALID_REGION_MANAGER);
+		
 		this._region_mngr = reg_mngr;
 
 		if (this.get_position() == null)
@@ -122,6 +130,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	@Override
 	public void update(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		if (this.is_alive()) {
 
 			this.update_according_to_state(dt);
@@ -150,6 +161,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected void update_normal(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		if (this.get_destination().distanceTo(this.get_position()) < DESTINATION_RANGE)
 			this._dest = this.random_position();
 
@@ -174,6 +188,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected void update_mate(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		if (this._mate_target != null)
 			if (!this._mate_target.is_alive() || this._mate_target.distanceTo(this) > this.get_sight_range())
 				this._mate_target = null;
@@ -217,6 +234,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	 */
 
 	private void update_according_to_state(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+		
 		switch (this.get_state()) {
 		case NORMAL:
 			this.update_normal(dt);
@@ -299,6 +319,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	public double distanceTo(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		
 		return this.get_position().distanceTo(a.get_position());
 	}
 
@@ -348,6 +371,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	public boolean in_sight_range(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		
 		return this.distanceTo(a) <= a.get_sight_range();
 	}
 
