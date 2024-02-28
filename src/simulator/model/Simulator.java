@@ -8,7 +8,6 @@ import simulator.factories.Factory;
 import simulator.view.Messages;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Simulator implements JSONable {
