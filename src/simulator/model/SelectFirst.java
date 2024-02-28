@@ -12,7 +12,7 @@ public class SelectFirst implements SelectionStrategy {
 			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
 		if (as == null)
 			throw new IllegalArgumentException(Messages.INVALID_LIST);
-		
+
 		if (as.isEmpty())
 			return null;
 

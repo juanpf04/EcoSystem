@@ -3,8 +3,6 @@ package simulator.model;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import javax.management.OperationsException;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -65,7 +63,7 @@ public class RegionManager implements AnimalMapView {
 			throw new IllegalArgumentException(Messages.INVALID_COL);
 		if (r == null)
 			throw new IllegalArgumentException(Messages.INVALID_REGION);
-		
+
 		for (Animal a : this._regions[row][col].getAnimals()) {
 			r.add_animal(a);
 			this._animal_region.put(a, r);
@@ -116,7 +114,7 @@ public class RegionManager implements AnimalMapView {
 	public void update_all_regions(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		for (Region[] regions : this._regions)
 			for (Region region : regions)
 				region.update(dt);

@@ -74,7 +74,7 @@ public class Messages {
 	public static final String ILLEGAL_HEIGHT_OPERATION = "The height has to be divisible by the number of rows.";
 	public static final String DELTA_TIME_ERROR = "Delta time must be a positive number.";
 	public static final String TIME_ERROR = "Time must be a positive number.";
-	
+
 	public static final String unrecognized_info(String info) {
 		return Messages.UNRECOGNIZED_INFO.formatted(info);
 	}

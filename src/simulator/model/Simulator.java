@@ -47,7 +47,7 @@ public class Simulator implements JSONable {
 			throw new IllegalArgumentException(Messages.INVALID_COL);
 		if (r == null)
 			throw new IllegalArgumentException(Messages.INVALID_REGION);
-		
+
 		this._region_manager.set_region(row, col, r);
 	}
 
@@ -56,25 +56,24 @@ public class Simulator implements JSONable {
 			throw new IllegalArgumentException(Messages.INVALID_ROW);
 		if (col < 0 || col >= this.get_map_info().get_cols())
 			throw new IllegalArgumentException(Messages.INVALID_COL);
-		if(r_json == null || r_json.isEmpty())
+		if (r_json == null || r_json.isEmpty())
 			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
-		
 		this.set_region(row, col, this._regions_factory.create_instance(r_json));
 	}
 
 	private void add_animal(Animal a) {
 		if (a == null)
 			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
-		
+
 		this._animals.add(a);
 		this._region_manager.register_animal(a);
 	}
 
 	public void add_animal(JSONObject a_json) {
-		if(a_json == null || a_json.isEmpty())
+		if (a_json == null || a_json.isEmpty())
 			throw new IllegalArgumentException(Messages.INVALID_JSON);
-		
+
 		this.add_animal(this._animals_factory.create_instance(a_json));
 	}
 
@@ -93,7 +92,7 @@ public class Simulator implements JSONable {
 	public void advance(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		this._time += dt;
 		this.remove_deaths();
 		this.update_all_animals(dt);
@@ -116,7 +115,7 @@ public class Simulator implements JSONable {
 	private void update_all_animals(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		for (Animal a : this._animals) {
 			a.update(dt);
 			this._region_manager.update_animal_region(a);
@@ -126,28 +125,18 @@ public class Simulator implements JSONable {
 	private void remove_deaths() {
 		List<Animal> deaths = new LinkedList<Animal>();
 
-		for (Animal a : this._animals) // TODO Iterator
+		for (Animal a : this._animals)
 			if (!a.is_alive())
 				deaths.add(a);
 
 		for (Animal dead : deaths)
 			this.remove_animal(dead);
-
-//		Iterator<Animal> it = this._animals.iterator();
-//		
-//		while(it.hasNext()){
-//			Animal a = it.next();
-//			if (!a.is_alive()) {
-//				this.remove_animal(a);
-//				it.remove();
-//			}
-//		}
 	}
 
 	private void remove_animal(Animal a) {
 		if (a == null)
 			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
-		
+
 		this._animals.remove(a);
 		this._region_manager.unregister_animal(a);
 	}

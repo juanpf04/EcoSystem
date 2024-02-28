@@ -53,16 +53,16 @@ public class Sheep extends Animal {
 	protected void update_normal(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		super.update_normal(dt);
 
 		if (this._danger_source == null)
 			this._danger_source = this._danger_strategy.select(this,
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
-		if (this._danger_source != null) 
+		if (this._danger_source != null)
 			this._state = State.DANGER;
-		else if (this._desire > UMBRAL_DESIRE) 
+		else if (this._desire > UMBRAL_DESIRE)
 			this._state = State.MATE;
 	}
 
@@ -70,7 +70,7 @@ public class Sheep extends Animal {
 	protected void update_danger(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		if (this._danger_source != null && !this._danger_source.is_alive())
 			this._danger_source = null;
 
@@ -98,7 +98,7 @@ public class Sheep extends Animal {
 			if (this._danger_source == null) {
 				if (this._desire <= UMBRAL_DESIRE)
 					this._state = State.NORMAL;
-				else 
+				else
 					this._state = State.MATE;
 			}
 		}
@@ -108,11 +108,11 @@ public class Sheep extends Animal {
 	protected void update_mate(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		super.update_mate(dt);
-		
+
 		if (this._mate_target != null)
-			if (this.distanceTo(this._mate_target) < PROCREATION_RANGE) {
+			if (this.distanceTo(this._mate_target) < ACTION_RANGE) {
 				this.reset_desire();
 				this._mate_target.reset_desire();
 
@@ -126,17 +126,17 @@ public class Sheep extends Animal {
 			this._danger_source = this._danger_strategy.select(this,
 					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
 
-		if (this._danger_source != null) 
+		if (this._danger_source != null)
 			this._state = State.DANGER;
 		else if (this._desire <= UMBRAL_DESIRE)
 			this._state = State.NORMAL;
 	}
-	
+
 	@Override
 	protected void update_hunger(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		throw new IllegalStateException(Messages.ILLEGAL_SHEEP_STATE);
 	}
 

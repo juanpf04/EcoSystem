@@ -18,7 +18,7 @@ public class DefaultRegion extends Region {
 			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		return a.get_diet().get_herbivorous_region_weighting() * FOOD
 				* Math.exp(-Math.max(0, this.count(Diet.HERBIVORE) - ANIMALS_MARGIN) * ANIMALS_WEIGHTING) * dt;
 	}

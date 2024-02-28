@@ -14,9 +14,9 @@ public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
 	@Override
 	protected DynamicSupplyRegion create_instance(JSONObject data) {
-		if(data == null)
+		if (data == null)
 			throw new IllegalArgumentException(Messages.INVALID_JSON);
-		
+
 		double food = data.optDouble(Messages.FOOD_KEY, 1000.0);
 		double factor = data.optDouble(Messages.FACTOR_KEY, 2.0);
 
@@ -26,10 +26,10 @@ public class DynamicSupplyRegionBuilder extends Builder<Region> {
 	@Override
 	protected void fill_in_data(JSONObject o) {
 		JSONObject jo = new JSONObject();
-		
+
 		jo.put(Messages.FACTOR_KEY, 2.5);
 		jo.put(Messages.FOOD_KEY, 1250.0);
-		
+
 		o = new JSONObject(jo.toString());
 	}
 }

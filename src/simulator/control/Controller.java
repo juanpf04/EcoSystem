@@ -28,7 +28,7 @@ public class Controller {
 	}
 
 	public void load_data(JSONObject data) {
-		if(data == null || data.isEmpty())
+		if (data == null || data.isEmpty())
 			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
 		if (data.has(Messages.REGIONS_KEY)) {
@@ -62,7 +62,7 @@ public class Controller {
 			throw new IllegalArgumentException(Messages.TIME_ERROR);
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		JSONObject jo = new JSONObject();
 		jo.put(Messages.IN_KEY, this._sim.as_JSON());
 
@@ -83,7 +83,7 @@ public class Controller {
 			view.close();
 
 		jo.put(Messages.OUT_KEY, this._sim.as_JSON());
-		if(out != null) {			
+		if (out != null) {
 			PrintStream p = new PrintStream(out);
 			p.println(jo);
 		}

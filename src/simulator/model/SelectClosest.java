@@ -12,14 +12,14 @@ public class SelectClosest implements SelectionStrategy {
 			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
 		if (as == null)
 			throw new IllegalArgumentException(Messages.INVALID_LIST);
-		
+
 		if (as.isEmpty())
 			return null;
 
 		Animal closest = as.get(0);
 
-		for (Animal animal : as) 
-			if (a.distanceTo(animal) < a.distanceTo(closest)) 
+		for (Animal animal : as)
+			if (a.distanceTo(animal) < a.distanceTo(closest))
 				closest = animal;
 
 		return closest;
