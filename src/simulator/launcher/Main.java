@@ -218,6 +218,7 @@ public class Main {
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
 		controller.run(_time, _delta_time, _simple_viewer, out);
+		
 		if (out != null)
 			out.close();
 	}
