@@ -98,9 +98,9 @@ public class Wolf extends Animal {
 
 		if (this.get_energy() > HUNT_ENERGY) {
 			if (this._desire < HEAT_DESIRE)
-				this._state = State.NORMAL;
+				this.set_normal();
 			else
-				this._state = State.MATE;
+				this.set_mate();
 		}
 	}
 

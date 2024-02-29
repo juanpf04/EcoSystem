@@ -72,7 +72,7 @@ public class Sheep extends Animal {
 		
 		super.update_danger(dt);
 
-		if (this._danger_source != null && this.dead())
+		if (this._danger_source != null && this._danger_source.dead())
 			this._danger_source = null;
 
 		if (this._danger_source == null)
