@@ -8,6 +8,7 @@ import simulator.factories.Factory;
 import simulator.view.Messages;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Simulator implements JSONable {
@@ -122,14 +123,24 @@ public class Simulator implements JSONable {
 	}
 
 	private void remove_deaths() {
-		List<Animal> deaths = new LinkedList<Animal>();
-
-		for (Animal a : this._animals)
-			if (a.dead())
-				deaths.add(a);
-
-		for (Animal dead : deaths)
-			this.remove_animal(dead);
+//		List<Animal> deaths = new LinkedList<Animal>();
+//
+//		for (Animal a : this._animals)
+//			if (a.dead())
+//				deaths.add(a);
+//
+//		for (Animal dead : deaths)
+//			this.remove_animal(dead);
+		
+		Iterator<Animal> it = this._animals.iterator();
+		
+		while(it.hasNext()) {
+			Animal a = it.next();
+			if(a.dead()) {
+				it.remove();
+				this.remove_animal(a);
+			}
+		}
 	}
 
 	private void remove_animal(Animal a) {
