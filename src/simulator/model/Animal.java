@@ -11,21 +11,21 @@ import simulator.view.Messages;
 public abstract class Animal implements Entity, AnimalInfo {
 
 	protected static final double SPEED_TOLERANCE = 0.1;
-	
+
 	protected static final double FACTOR = 60.0;
-	
+
 	protected static final double MUTATION_TOLERANCE = 0.2;
-	
+
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
-	
+
 	protected static final double MIN_DESIRE = 0.0;
 	protected static final double MAX_DESIRE = 100.0;
 
 	protected static final double ACTION_RANGE = 8.0;
-	
+
 	protected static final double SPEED_MULTIPLIER = 0.007;
-	
+
 	protected static final double HEAT_DESIRE = 65.0;
 	protected static final double PREGNANT_PROBABILITY = 0.9;
 
@@ -132,11 +132,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 		return jo;
 	}
-	
+
 	protected void advance(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		if (this.get_destination().distanceTo(this.get_position()) < ACTION_RANGE)
 			this._dest = this.random_position();
 
@@ -168,7 +168,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 				this.update_reference_animal();
 			} else if (this.mate())
 				this.update_reference_animal();
-			else if (this.hunger()|| this.danger())
+			else if (this.hunger() || this.danger())
 				this._mate_target = null;
 
 			if (this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
@@ -315,7 +315,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public double get_energy() {
 		return this._energy;
 	}
-	
+
 	@Override
 	public double get_desire() {
 		return this._desire;
@@ -377,11 +377,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected void update_desire(double desire) {
 		this._desire = Utils.constrain_value_in_range(this.get_desire() + desire, MIN_DESIRE, MAX_DESIRE);
 	}
-	
+
 	protected void reset_desire() {
 		this._desire = MIN_DESIRE;
 	}
-	
+
 	protected void grow(double dt) {
 		this._age += dt;
 	}
@@ -396,43 +396,43 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected void set_dead() {
 		this._state = State.DEAD;
 	}
-	
+
 	protected void set_normal() {
 		this._state = State.NORMAL;
 	}
-	
+
 	protected void set_mate() {
 		this._state = State.MATE;
 	}
-	
+
 	protected void set_danger() {
 		this._state = State.DANGER;
 	}
-	
+
 	protected void set_hunger() {
 		this._state = State.HUNGER;
 	}
-	
+
 	@Override
 	public boolean dead() {
 		return this.get_state() == State.DEAD;
 	}
-	
+
 	@Override
 	public boolean normal() {
 		return this.get_state() == State.NORMAL;
 	}
-	
+
 	@Override
 	public boolean mate() {
 		return this.get_state() == State.MATE;
 	}
-	
+
 	@Override
 	public boolean danger() {
 		return this.get_state() == State.DANGER;
 	}
-	
+
 	@Override
 	public boolean hunger() {
 		return this.get_state() == State.HUNGER;

@@ -17,7 +17,7 @@ public interface AnimalInfo extends JSONable {
 	public double get_sight_range();
 
 	public double get_energy();
-	
+
 	public double get_desire();
 
 	public double get_age();
@@ -29,14 +29,14 @@ public interface AnimalInfo extends JSONable {
 	public boolean is_alive();
 
 	public boolean is_out();
-	
+
 	public boolean dead();
-	
+
 	public boolean normal();
-	
+
 	public boolean mate();
-	
+
 	public boolean danger();
-	
+
 	public boolean hunger();
 }

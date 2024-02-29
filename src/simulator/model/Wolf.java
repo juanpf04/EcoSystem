@@ -14,7 +14,7 @@ public class Wolf extends Animal {
 
 	protected static final double ENERGY_COST = -18.0;
 	protected static final double DESIRE_COST = 30.0;
-	
+
 	protected static final double HUNT_ENERGY = 50.0;
 	protected static final double HUNT_SPEED = 3.0;
 	protected static final double MATE_SPEED = 3.0;
@@ -68,7 +68,7 @@ public class Wolf extends Animal {
 	protected void update_hunger(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		super.update_hunger(dt);
 
 		if (this._hunt_target == null || !this._hunt_target.is_alive() || !this._hunt_target.in_sight_range(this))

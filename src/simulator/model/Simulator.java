@@ -109,7 +109,7 @@ public class Simulator implements JSONable {
 				babies.add(baby);
 				this._region_manager.register_animal(baby);
 			}
-		
+
 		this._animals.addAll(babies);
 	}
 
@@ -125,10 +125,10 @@ public class Simulator implements JSONable {
 
 	private void remove_deaths() {
 		Iterator<Animal> it = this._animals.iterator();
-		
-		while(it.hasNext()) {
+
+		while (it.hasNext()) {
 			Animal a = it.next();
-			if(a.dead()) {
+			if (a.dead()) {
 				it.remove();
 				this.remove_animal(a);
 			}

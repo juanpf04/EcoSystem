@@ -167,7 +167,7 @@ public class Main {
 	}
 
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
-			_simple_viewer = line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT);
+		_simple_viewer = line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT);
 	}
 
 	private static void parse_time_option(CommandLine line) throws ParseException {

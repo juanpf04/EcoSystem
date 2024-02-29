@@ -69,7 +69,7 @@ public class Sheep extends Animal {
 	protected void update_danger(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-		
+
 		super.update_danger(dt);
 
 		if (this._danger_source != null && this._danger_source.dead())
@@ -80,8 +80,8 @@ public class Sheep extends Animal {
 		else {
 			this._dest = this.get_position().plus(this.get_position().minus(_danger_source.get_position()).direction());
 
-			this.move(
-					DANGER_SPEED * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(DANGER_SPEED * this.get_speed() * dt
+					* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
 
 			this.grow(dt);
 
