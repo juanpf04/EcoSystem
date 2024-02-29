@@ -158,7 +158,7 @@ public class Messages {
 	public static final String BATCH_TAG = "batch";
 	public static final String GUI_TAG = "gui";
 
-	// Execute mode tags
+	// Execute mode descriptions
 
 	public static final String BATCH_DESCRIPTION = "Batch mode";
 	public static final String GUI_DESCRIPTION = "Graphical User Interface mode";
