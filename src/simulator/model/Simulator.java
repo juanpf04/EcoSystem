@@ -104,12 +104,13 @@ public class Simulator implements JSONable {
 		List<Animal> babies = new LinkedList<Animal>();
 
 		for (Animal a : this._animals)
-			if (a.is_pregnant())
-				babies.add(a.deliver_baby());
-
-		for (Animal baby : babies)
-			this.add_animal(baby);
-
+			if (a.is_pregnant()) {
+				Animal baby = a.deliver_baby();
+				babies.add(baby);
+				this._region_manager.register_animal(baby);
+			}
+		
+		this._animals.addAll(babies);
 	}
 
 	private void update_all_animals(double dt) {
@@ -123,15 +124,6 @@ public class Simulator implements JSONable {
 	}
 
 	private void remove_deaths() {
-//		List<Animal> deaths = new LinkedList<Animal>();
-//
-//		for (Animal a : this._animals)
-//			if (a.dead())
-//				deaths.add(a);
-//
-//		for (Animal dead : deaths)
-//			this.remove_animal(dead);
-		
 		Iterator<Animal> it = this._animals.iterator();
 		
 		while(it.hasNext()) {

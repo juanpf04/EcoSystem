@@ -62,7 +62,7 @@ public class Main {
 	private static String _in_file = null;
 	private static String _out_file = null;
 	private static ExecMode _mode = ExecMode.BATCH;
-	private static boolean _sv = false;
+	private static boolean _simple_viewer = false;
 
 	// factories
 	//
@@ -167,8 +167,7 @@ public class Main {
 	}
 
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
-		if (line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT))
-			_sv = true;
+			_simple_viewer = line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT);
 	}
 
 	private static void parse_time_option(CommandLine line) throws ParseException {
@@ -218,7 +217,7 @@ public class Main {
 
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
-		controller.run(_time, _delta_time, _sv, out);
+		controller.run(_time, _delta_time, _simple_viewer, out);
 		if (out != null)
 			out.close();
 	}
