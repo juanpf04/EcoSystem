@@ -168,11 +168,9 @@ public class RegionManager implements AnimalMapView {
 			throw new IllegalArgumentException(Messages.INVALID_PREDICATE);
 
 		List<Animal> animals_in_range = new LinkedList<Animal>();
-
+		
 		for (Region region : this.get_regions_in_range(a))
-			for (Animal animal : region.getAnimals())
-				if (animal.in_sight_range(a) && filter.test(animal))
-					animals_in_range.add(animal);
+			animals_in_range.addAll(region.get_animals(animal -> animal.in_sight_range(a) && filter.test(animal)));
 
 		animals_in_range.remove(a);
 

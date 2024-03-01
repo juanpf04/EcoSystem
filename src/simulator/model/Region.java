@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,16 +50,13 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		return jo;
 	}
 
-	protected int count(Diet d) {
-		if (d == null)
-			throw new IllegalArgumentException(Messages.INVALID_DIET);
-
-		int i = 0;
-
-		for (Animal a : this.getAnimals())
-			if (d.equals(a.get_diet()))
-				i++;
-
-		return i;
+	public List<Animal> get_animals(Predicate<Animal> filter) {
+		List<Animal> animals = new LinkedList<Animal>();
+		
+		for(Animal animal: this.getAnimals())
+			if(filter.test(animal))
+				animals.add(animal);
+		
+		return animals;
 	}
 }
