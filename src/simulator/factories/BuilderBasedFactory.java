@@ -37,7 +37,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 
 	@Override
 	public T create_instance(JSONObject info) {
-		if (info == null) 
+		if (info == null)
 			throw new IllegalArgumentException(Messages.INVALID_INFO);
 
 		Builder<T> b = this._builders.get(info.getString(Messages.TYPE_KEY));
@@ -48,7 +48,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 			if (t != null)
 				return t;
 		}
-		
+
 		throw new IllegalArgumentException(Messages.unrecognized_info(info.toString()));
 	}
 

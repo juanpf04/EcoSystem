@@ -52,11 +52,11 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 
 	public List<Animal> get_animals(Predicate<Animal> filter) {
 		List<Animal> animals = new LinkedList<Animal>();
-		
-		for(Animal animal: this.getAnimals())
-			if(filter.test(animal))
+
+		for (Animal animal : this.getAnimals())
+			if (filter.test(animal))
 				animals.add(animal);
-		
+
 		return animals;
 	}
 }
