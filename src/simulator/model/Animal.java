@@ -437,4 +437,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public boolean hunger() {
 		return this.get_state() == State.HUNGER;
 	}
+	
+	@Override
+	public boolean carnivore() {
+		return this.get_diet() == Diet.CARNIVORE;
+	}
+	
+	@Override
+	public boolean herbivore() {
+		return this.get_diet() == Diet.HERBIVORE;
+	}
 }

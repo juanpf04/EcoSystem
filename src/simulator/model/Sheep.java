@@ -57,7 +57,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source == null)
 			this._danger_source = this._danger_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
 
 		if (this._danger_source != null)
 			this.set_danger();
@@ -92,7 +92,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source == null || !this._danger_source.in_sight_range(this)) {
 			this._danger_source = this._danger_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
 
 			if (this._danger_source == null) {
 				if (this._desire < HEAT_DESIRE)
@@ -123,7 +123,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source == null)
 			this._danger_source = this._danger_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> a.get_diet() == Diet.CARNIVORE));
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
 
 		if (this._danger_source != null)
 			this.set_danger();

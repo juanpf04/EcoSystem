@@ -39,4 +39,8 @@ public interface AnimalInfo extends JSONable {
 	public boolean danger();
 
 	public boolean hunger();
+	
+	public boolean carnivore();
+	
+	public boolean herbivore();
 }

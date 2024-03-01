@@ -19,8 +19,8 @@ public class DefaultRegion extends Region {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		return a.get_diet().get_herbivorous_region_weighting() * FOOD * Math.exp(
-				-Math.max(0, this.get_animals(animal -> animal.get_diet() == Diet.HERBIVORE).size() - ANIMALS_MARGIN)
+		return a.get_diet().get_herbivorous_region_weighting() * FOOD
+				* Math.exp(-Math.max(0, this.get_animals(animal -> animal.herbivore()).size() - ANIMALS_MARGIN)
 						* ANIMALS_WEIGHTING)
 				* dt;
 	}
