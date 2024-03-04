@@ -79,8 +79,7 @@ public class Sheep extends Animal {
 		else {
 			this._dest = this.get_position().plus(this.get_position().minus(_danger_source.get_position()).direction());
 
-			this.move(DANGER_SPEED * this.get_speed() * dt
-					* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(DANGER_SPEED * this.get_speed(dt));
 
 			this.grow(dt);
 

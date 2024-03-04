@@ -13,19 +13,15 @@ public abstract class Animal implements Entity, AnimalInfo {
 	private static final double SPEED_TOLERANCE = 0.1;
 	private static final double MUTATION_TOLERANCE = 0.2;
 	private static final double FACTOR = 60.0;
+	private static final double ACTION_RANGE = 8.0;
+	private static final double SPEED_MULTIPLIER = 0.007;
+	private static final double HEAT_DESIRE = 65.0;
+	private static final double PREGNANT_PROBABILITY = 0.9;
 
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
-
 	protected static final double MIN_DESIRE = 0.0;
 	protected static final double MAX_DESIRE = 100.0;
-
-	private static final double ACTION_RANGE = 8.0;
-
-	protected static final double SPEED_MULTIPLIER = 0.007;
-
-	private static final double HEAT_DESIRE = 65.0;
-	private static final double PREGNANT_PROBABILITY = 0.9;
 
 	protected String _genetic_code;
 	protected Diet _diet;
@@ -137,13 +133,20 @@ public abstract class Animal implements Entity, AnimalInfo {
 		if (this.in_action_range(this.get_destination()))
 			this._dest = this.random_position();
 
-		this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+		this.move(this.get_speed(dt));
 
 		this.grow(dt);
 
 		this.update_energy(this.energy_cost() * dt);
 
 		this.update_desire(this.desire_cost() * dt);
+	}
+
+	protected double get_speed(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		return this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER);
 	}
 
 	/*
@@ -250,8 +253,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		else {
 			this._dest = this._mate_target.get_position();
 
-			this.move(this.mate_speed() * this.get_speed() * dt
-					* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(this.mate_speed() * this.get_speed(dt));
 
 			this.grow(dt);
 

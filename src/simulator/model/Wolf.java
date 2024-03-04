@@ -69,8 +69,7 @@ public class Wolf extends Animal {
 		else {
 			this._dest = this._hunt_target.get_position();
 
-			this.move(
-					HUNT_SPEED * this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+			this.move(HUNT_SPEED * this.get_speed(dt));
 
 			this.grow(dt);
 
