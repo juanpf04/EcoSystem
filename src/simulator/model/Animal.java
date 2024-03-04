@@ -318,6 +318,16 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this.update_desire(this.desire_cost() * dt);
 	}
 
+	protected void update_status(double dt, double speed) {
+		this.move(speed * this.get_speed(dt));
+
+		this.grow(dt);
+
+		this.update_energy(this.get_state().get_energy_weighting() * this.energy_cost() * dt);
+
+		this.update_desire(this.desire_cost() * dt);
+	}
+
 	protected void update_normal(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
@@ -342,13 +352,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		else {
 			this._dest = this._mate_target.get_position();
 
-			this.move(this.mate_speed() * this.get_speed(dt));
-
-			this.grow(dt);
-
-			this.update_energy(this.energy_cost() * this.get_state().get_energy_weighting() * dt);
-
-			this.update_desire(this.desire_cost() * dt);
+			this.update_status(dt, this.mate_speed());
 		}
 	}
 

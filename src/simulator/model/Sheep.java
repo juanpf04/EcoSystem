@@ -99,13 +99,7 @@ public class Sheep extends Animal {
 		else {
 			this._dest = this.get_position().plus(this.get_position().minus(_danger_source.get_position()).direction());
 
-			this.move(DANGER_SPEED * this.get_speed(dt));
-
-			this.grow(dt);
-
-			this.update_energy(this.energy_cost() * this.get_state().get_energy_weighting() * dt);
-
-			this.update_desire(this.desire_cost() * dt);
+			this.update_status(dt, DANGER_SPEED);
 		}
 
 		if (this._danger_source == null || !this._danger_source.in_sight_range(this)) {

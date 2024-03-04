@@ -104,13 +104,7 @@ public class Wolf extends Animal {
 		else {
 			this._dest = this._hunt_target.get_position();
 
-			this.move(HUNT_SPEED * this.get_speed(dt));
-
-			this.grow(dt);
-
-			this.update_energy(this.energy_cost() * this.get_state().get_energy_weighting() * dt);
-
-			this.update_desire(this.desire_cost() * dt);
+			this.update_status(dt, HUNT_SPEED);
 
 			if (this.in_action_range(this._hunt_target)) {
 				this._hunt_target.set_dead();
