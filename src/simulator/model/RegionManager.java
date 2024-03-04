@@ -110,7 +110,7 @@ public class RegionManager implements AnimalMapView {
 
 		return this.get_region(i, j);
 	}
-	
+
 	private Region get_region(int row, int col) {
 		return this._regions[row][col];
 	}
@@ -123,6 +123,8 @@ public class RegionManager implements AnimalMapView {
 			for (Region region : regions)
 				region.update(dt);
 	}
+
+	// MapInfo
 
 	@Override
 	public int get_cols() {
@@ -154,6 +156,8 @@ public class RegionManager implements AnimalMapView {
 		return this._region_height;
 	}
 
+	// FoodSupplier
+
 	@Override
 	public double get_food(Animal a, double dt) {
 		if (a == null)
@@ -163,6 +167,8 @@ public class RegionManager implements AnimalMapView {
 
 		return this._animal_region.get(a).get_food(a, dt);
 	}
+
+	// AnimalMapView
 
 	@Override
 	public List<Animal> get_animals_in_range(Animal a, Predicate<Animal> filter) {
@@ -180,6 +186,8 @@ public class RegionManager implements AnimalMapView {
 
 		return animals_in_range;
 	}
+
+	// Auxiliary
 
 	private List<Region> get_regions_in_range(Animal a) {
 		if (a == null)
@@ -202,6 +210,8 @@ public class RegionManager implements AnimalMapView {
 
 		return regions_in_range;
 	}
+
+	// JSONable
 
 	@Override
 	public JSONObject as_JSON() {
