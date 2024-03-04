@@ -249,7 +249,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
 
 		if (this._mate_target == null)
-			this.update_normal(dt);
+			this.advance(dt);
 		else {
 			this._dest = this._mate_target.get_position();
 
