@@ -17,6 +17,7 @@ public class WolfBuilder extends Builder<Animal> {
 
 	public WolfBuilder(Factory<SelectionStrategy> selection_strategy_factory) {
 		super(Messages.WOLF_TAG, Messages.WOLF_BUILDER_DESCRIPTION);
+
 		if (selection_strategy_factory == null)
 			throw new IllegalArgumentException(Messages.INVALID_FACTORY);
 
@@ -61,8 +62,8 @@ public class WolfBuilder extends Builder<Animal> {
 		data.put(Messages.HUNT_STRATEGY_KEY, b.get_info());
 
 		JSONObject jo = new JSONObject();
-
 		JSONArray ja = new JSONArray();
+
 		ja.put(100.0);
 		ja.put(200.0);
 

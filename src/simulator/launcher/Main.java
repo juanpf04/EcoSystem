@@ -41,10 +41,12 @@ public class Main {
 			_desc = modeDesc;
 		}
 
+		@SuppressWarnings("unused") // TODO remove
 		public String get_tag() {
 			return _tag;
 		}
 
+		@SuppressWarnings("unused") // TODO remove
 		public String get_desc() {
 			return _desc;
 		}

@@ -17,6 +17,7 @@ public class SheepBuilder extends Builder<Animal> {
 
 	public SheepBuilder(Factory<SelectionStrategy> strategies_factory) {
 		super(Messages.SHEEP_TAG, Messages.SHEEP_BUILDER_DESCRIPTION);
+
 		if (strategies_factory == null)
 			throw new IllegalArgumentException(Messages.INVALID_FACTORY);
 
@@ -60,8 +61,8 @@ public class SheepBuilder extends Builder<Animal> {
 		data.put(Messages.DANGER_STRATEGY_KEY, b.get_info());
 
 		JSONObject jo = new JSONObject();
-
 		JSONArray ja = new JSONArray();
+
 		ja.put(100.0);
 		ja.put(200.0);
 
