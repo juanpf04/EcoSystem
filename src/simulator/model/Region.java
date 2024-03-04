@@ -37,6 +37,18 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		return Collections.unmodifiableList(this._animals);
 	}
 
+	public List<Animal> get_animals(Predicate<Animal> filter) {
+		List<Animal> animals = new LinkedList<Animal>();
+
+		for (Animal animal : this.getAnimals())
+			if (filter.test(animal))
+				animals.add(animal);
+
+		return animals;
+	}
+
+	// JSONable
+
 	@Override
 	public JSONObject as_JSON() {
 		JSONObject jo = new JSONObject();
@@ -50,13 +62,4 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		return jo;
 	}
 
-	public List<Animal> get_animals(Predicate<Animal> filter) {
-		List<Animal> animals = new LinkedList<Animal>();
-
-		for (Animal animal : this.getAnimals())
-			if (filter.test(animal))
-				animals.add(animal);
-
-		return animals;
-	}
 }

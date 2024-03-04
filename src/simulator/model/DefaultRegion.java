@@ -4,9 +4,9 @@ import simulator.view.Messages;
 
 public class DefaultRegion extends Region {
 
-	protected static final double FOOD = 60.0;
-	protected static final double ANIMALS_MARGIN = 5.0;
-	protected static final double ANIMALS_WEIGHTING = 2.0;
+	private static final double FOOD = 60.0;
+	private static final double ANIMALS_MARGIN = 5.0;
+	private static final double ANIMALS_WEIGHTING = 2.0;
 
 	@Override
 	public void update(double dt) {
@@ -24,4 +24,5 @@ public class DefaultRegion extends Region {
 						* ANIMALS_WEIGHTING)
 				* dt;
 	}
+
 }

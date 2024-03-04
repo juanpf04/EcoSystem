@@ -143,6 +143,8 @@ public class Simulator implements JSONable {
 		this._region_manager.unregister_animal(a);
 	}
 
+	// JSONable
+
 	@Override
 	public JSONObject as_JSON() {
 		JSONObject jo = new JSONObject();
@@ -152,4 +154,5 @@ public class Simulator implements JSONable {
 
 		return jo;
 	}
+
 }
