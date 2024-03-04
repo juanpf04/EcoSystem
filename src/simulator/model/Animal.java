@@ -10,11 +10,9 @@ import simulator.view.Messages;
 
 public abstract class Animal implements Entity, AnimalInfo {
 
-	protected static final double SPEED_TOLERANCE = 0.1;
-
-	protected static final double FACTOR = 60.0;
-
-	protected static final double MUTATION_TOLERANCE = 0.2;
+	private static final double SPEED_TOLERANCE = 0.1;
+	private static final double MUTATION_TOLERANCE = 0.2;
+	private static final double FACTOR = 60.0;
 
 	protected static final double MIN_ENERGY = 0.0;
 	protected static final double MAX_ENERGY = 100.0;
@@ -22,12 +20,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected static final double MIN_DESIRE = 0.0;
 	protected static final double MAX_DESIRE = 100.0;
 
-	protected static final double ACTION_RANGE = 8.0;
+	private static final double ACTION_RANGE = 8.0;
 
 	protected static final double SPEED_MULTIPLIER = 0.007;
 
-	protected static final double HEAT_DESIRE = 65.0;
-	protected static final double PREGNANT_PROBABILITY = 0.9;
+	private static final double HEAT_DESIRE = 65.0;
+	private static final double PREGNANT_PROBABILITY = 0.9;
 
 	protected String _genetic_code;
 	protected Diet _diet;
@@ -92,7 +90,6 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._sight_range = Utils.get_randomized_parameter((p1.get_sight_range() + p2.get_sight_range()) / 2,
 				MUTATION_TOLERANCE);
 		this._speed = Utils.get_randomized_parameter((p1.get_speed() + p2.get_speed()) / 2, MUTATION_TOLERANCE);
-
 		this._mate_strategy = p2._mate_strategy;
 	}
 
@@ -137,7 +134,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		if (this.get_destination().distanceTo(this.get_position()) < ACTION_RANGE)
+		if (this.in_action_range(this.get_destination()))
 			this._dest = this.random_position();
 
 		this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
@@ -149,6 +146,22 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this.update_desire(this.desire_cost() * dt);
 	}
 
+	/*
+	 * s EJEMPLOS LAMBDA FUNCION PREDICATE 1. (Animal a) -> {return
+	 * this.get_genetic_code() == a.get_genetic_code();}
+	 * 
+	 * 2. (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
+	 * 
+	 * 3. new Predicate<Animal>() {
+	 * 
+	 * @Override public boolean test(Animal t) { return get_genetic_code() ==
+	 * t.get_genetic_code(); }
+	 * 
+	 * });
+	 *
+	 * 4. a -> this.get_genetic_code() == a.get_genetic_code()
+	 */
+
 	@Override
 	public void update(double dt) {
 		if (dt <= 0)
@@ -156,7 +169,25 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 		if (this.is_alive()) {
 
-			this.update_according_to_state(dt);
+			switch (this.get_state()) {
+			case NORMAL:
+				this.update_normal(dt);
+				break;
+			case DANGER:
+				this.update_danger(dt);
+				break;
+			case DEAD:
+				this.update_dead(dt);
+				break;
+			case HUNGER:
+				this.update_hunger(dt);
+				break;
+			case MATE:
+				this.update_mate(dt);
+				break;
+			default:
+				break;
+			}
 
 			if (this.is_out()) {
 				this.adjust_position();
@@ -230,47 +261,6 @@ public abstract class Animal implements Entity, AnimalInfo {
 		}
 	}
 
-	/*
-	 * s EJEMPLOS LAMBDA FUNCION PREDICATE 1. (Animal a) -> {return
-	 * this.get_genetic_code() == a.get_genetic_code();}
-	 * 
-	 * 2. (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
-	 * 
-	 * 3. new Predicate<Animal>() {
-	 * 
-	 * @Override public boolean test(Animal t) { return get_genetic_code() ==
-	 * t.get_genetic_code(); }
-	 * 
-	 * });
-	 *
-	 * 4. a -> this.get_genetic_code() == a.get_genetic_code()
-	 */
-
-	private void update_according_to_state(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		switch (this.get_state()) {
-		case NORMAL:
-			this.update_normal(dt);
-			break;
-		case DANGER:
-			this.update_danger(dt);
-			break;
-		case DEAD:
-			this.update_dead(dt);
-			break;
-		case HUNGER:
-			this.update_hunger(dt);
-			break;
-		case MATE:
-			this.update_mate(dt);
-			break;
-		default:
-			break;
-		}
-	}
-
 	protected abstract void update_reference_animal();
 
 	protected abstract double max_age();
@@ -334,6 +324,16 @@ public abstract class Animal implements Entity, AnimalInfo {
 	@Override
 	public boolean is_pregnant() {
 		return this._baby != null;
+	}
+
+	@Override
+	public boolean can_pregnant() {
+		return Utils._rand.nextDouble() < PREGNANT_PROBABILITY;
+	}
+
+	@Override
+	public boolean on_heat() {
+		return this.get_desire() > HEAT_DESIRE;
 	}
 
 	public double distanceTo(Animal a) {
@@ -446,5 +446,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 	@Override
 	public boolean herbivore() {
 		return this.get_diet() == Diet.HERBIVORE;
+	}
+
+	protected boolean in_action_range(Vector2D other) {
+		return this.get_position().distanceTo(other) < ACTION_RANGE;
+	}
+
+	protected boolean in_action_range(Animal other) {
+		return this.in_action_range(other.get_position());
 	}
 }

@@ -1,6 +1,5 @@
 package simulator.model;
 
-import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 import simulator.view.Messages;
 
@@ -61,7 +60,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source != null)
 			this.set_danger();
-		else if (this._desire > HEAT_DESIRE)
+		else if (this.on_heat())
 			this.set_mate();
 	}
 
@@ -95,10 +94,10 @@ public class Sheep extends Animal {
 					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
 
 			if (this._danger_source == null) {
-				if (this._desire < HEAT_DESIRE)
-					this.set_normal();
-				else
+				if (this.on_heat())
 					this.set_mate();
+				else
+					this.set_normal();
 			}
 		}
 	}
@@ -111,11 +110,11 @@ public class Sheep extends Animal {
 		super.update_mate(dt);
 
 		if (this._mate_target != null)
-			if (this.distanceTo(this._mate_target) < ACTION_RANGE) {
+			if (this.in_action_range(this._mate_target)) {
 				this.reset_desire();
 				this._mate_target.reset_desire();
 
-				if (!this.is_pregnant() && Utils._rand.nextDouble() < PREGNANT_PROBABILITY)
+				if (!this.is_pregnant() && this.can_pregnant())
 					this._baby = new Sheep(this, this._mate_target);
 
 				this._mate_target = null;
@@ -127,7 +126,7 @@ public class Sheep extends Animal {
 
 		if (this._danger_source != null)
 			this.set_danger();
-		else if (this._desire < HEAT_DESIRE)
+		else if (!this.on_heat())
 			this.set_normal();
 	}
 
