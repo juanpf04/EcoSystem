@@ -64,7 +64,7 @@ public class RegionManager implements AnimalMapView {
 		if (r == null)
 			throw new IllegalArgumentException(Messages.INVALID_REGION);
 
-		for (Animal a : this._regions[row][col].getAnimals()) {
+		for (Animal a : this.get_region(row, col).getAnimals()) {
 			r.add_animal(a);
 			this._animal_region.put(a, r);
 		}
@@ -108,7 +108,11 @@ public class RegionManager implements AnimalMapView {
 		int i = (int) (a.get_position().getY() / this.get_region_height());
 		int j = (int) (a.get_position().getX() / this.get_region_width());
 
-		return this._regions[i][j];
+		return this.get_region(i, j);
+	}
+	
+	private Region get_region(int row, int col) {
+		return this._regions[row][col];
 	}
 
 	public void update_all_regions(double dt) {
@@ -194,7 +198,7 @@ public class RegionManager implements AnimalMapView {
 
 		for (int i = ini_i; i <= end_i; i++)
 			for (int j = ini_j; j <= end_j; j++)
-				regions_in_range.add(this._regions[i][j]);
+				regions_in_range.add(this.get_region(i, j));
 
 		return regions_in_range;
 	}
@@ -209,7 +213,7 @@ public class RegionManager implements AnimalMapView {
 				JSONObject jo1 = new JSONObject();
 				jo1.put(Messages.ROW_KEY, i);
 				jo1.put(Messages.COLUMN_KEY, j);
-				jo1.put(Messages.DATA_KEY, this._regions[i][j].as_JSON());
+				jo1.put(Messages.DATA_KEY, this.get_region(i, j).as_JSON());
 				ja.put(jo1);
 			}
 
