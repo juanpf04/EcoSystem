@@ -40,6 +40,8 @@ public class Wolf extends Animal {
 		this._hunt_target = null;
 	}
 
+	// Update
+
 	@Override
 	protected void update_normal(double dt) {
 		if (dt <= 0)
@@ -51,6 +53,39 @@ public class Wolf extends Animal {
 			this.set_hunger();
 		else if (this.on_heat())
 			this.set_mate();
+	}
+
+	@Override
+	protected void update_mate(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		super.update_mate(dt);
+
+		if (this._mate_target != null)
+			if (this.in_action_range(this._mate_target)) {
+				this.reset_desire();
+				this._mate_target.reset_desire();
+
+				if (!this.is_pregnant() && this.can_pregnant())
+					this._baby = new Wolf(this, this._mate_target);
+
+				this.update_energy(MATING_COST);
+				this._mate_target = null;
+			}
+
+		if (this.hungry())
+			this.set_hunger();
+		else if (!this.on_heat())
+			this.set_normal();
+	}
+
+	@Override
+	protected void update_danger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		throw new IllegalStateException(Messages.illegal_state(this.get_genetic_code(), this.get_state()));
 	}
 
 	@Override
@@ -92,42 +127,16 @@ public class Wolf extends Animal {
 		}
 	}
 
-	@Override
-	protected void update_mate(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		super.update_mate(dt);
-
-		if (this._mate_target != null)
-			if (this.in_action_range(this._mate_target)) {
-				this.reset_desire();
-				this._mate_target.reset_desire();
-
-				if (!this.is_pregnant() && this.can_pregnant())
-					this._baby = new Wolf(this, this._mate_target);
-
-				this.update_energy(MATING_COST);
-				this._mate_target = null;
-			}
-
-		if (this.hungry())
-			this.set_hunger();
-		else if (!this.on_heat())
-			this.set_normal();
-	}
-
-	@Override
-	protected void update_danger(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		throw new IllegalStateException(Messages.illegal_state(this.get_genetic_code(), this.get_state()));
-	}
+	// Auxiliary
 
 	@Override
 	protected void update_reference_animal() {
 		this._hunt_target = null;
+	}
+
+	@Override
+	protected double max_age() {
+		return MAX_AGE;
 	}
 
 	@Override
@@ -143,11 +152,6 @@ public class Wolf extends Animal {
 	@Override
 	protected double mate_speed() {
 		return MATE_SPEED;
-	}
-
-	@Override
-	protected double max_age() {
-		return MAX_AGE;
 	}
 
 	private boolean hungry() {

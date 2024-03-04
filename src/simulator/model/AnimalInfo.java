@@ -14,6 +14,8 @@ public interface AnimalInfo extends JSONable {
 
 	public double get_speed();
 
+	public double get_speed(double dt);
+
 	public double get_sight_range();
 
 	public double get_energy();
@@ -26,15 +28,13 @@ public interface AnimalInfo extends JSONable {
 
 	public boolean is_pregnant();
 
+	public boolean can_pregnant();
+
 	public boolean on_heat();
 
-	public boolean can_pregnant();
-	
 	public boolean is_alive();
 
 	public boolean is_out();
-
-	public boolean dead();
 
 	public boolean normal();
 
@@ -43,6 +43,8 @@ public interface AnimalInfo extends JSONable {
 	public boolean danger();
 
 	public boolean hunger();
+	
+	public boolean dead();
 
 	public boolean carnivore();
 

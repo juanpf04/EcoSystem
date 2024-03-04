@@ -114,40 +114,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 				.plus(this.get_destination().minus(this.get_position()).direction().scale(speed));
 	}
 
-	@Override
-	public JSONObject as_JSON() {
-		JSONObject jo = new JSONObject();
-
-		jo.put(Messages.POSITION_KEY, this.get_position().asJSONArray());
-		jo.put(Messages.GENETIC_CODE_KEY, this.get_genetic_code());
-		jo.put(Messages.DIET_KEY, this.get_diet().toString());
-		jo.put(Messages.ANIMAL_STATE_KEY, this.get_state().toString());
-
-		return jo;
-	}
-
-	protected void advance(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		if (this.in_action_range(this.get_destination()))
-			this._dest = this.random_position();
-
-		this.move(this.get_speed(dt));
-
-		this.grow(dt);
-
-		this.update_energy(this.energy_cost() * dt);
-
-		this.update_desire(this.desire_cost() * dt);
-	}
-
-	protected double get_speed(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		return this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER);
-	}
+	// Entity
 
 	@Override
 	public void update(double dt) {
@@ -198,64 +165,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		}
 	}
 
-	protected void update_normal(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		this.advance(dt);
-	}
-
-	protected void update_danger(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-	}
-
-	protected void update_dead(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-	}
-
-	protected void update_hunger(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-	}
-
-	protected void update_mate(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		if (this._mate_target != null)
-			if (this._mate_target.dead() || !this._mate_target.in_sight_range(this))
-				this._mate_target = null;
-
-		if (this._mate_target == null)
-			this._mate_target = this._mate_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
-
-		if (this._mate_target == null)
-			this.advance(dt);
-		else {
-			this._dest = this._mate_target.get_position();
-
-			this.move(this.mate_speed() * this.get_speed(dt));
-
-			this.grow(dt);
-
-			this.update_energy(this.energy_cost() * this.get_state().get_energy_weighting() * dt);
-
-			this.update_desire(this.desire_cost() * dt);
-		}
-	}
-
-	protected abstract void update_reference_animal();
-
-	protected abstract double max_age();
-
-	protected abstract double energy_cost();
-
-	protected abstract double desire_cost();
-
-	protected abstract double mate_speed();
+	// AnimalInfo
 
 	@Override
 	public State get_state() {
@@ -280,6 +190,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 	@Override
 	public double get_speed() {
 		return this._speed;
+	}
+
+	@Override
+	public double get_speed(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		return this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER);
 	}
 
 	@Override
@@ -322,86 +240,15 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return this.get_desire() > HEAT_DESIRE;
 	}
 
-	public double distanceTo(Animal a) {
-		if (a == null)
-			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
-
-		return this.get_position().distanceTo(a.get_position());
-	}
-
 	@Override
 	public boolean is_alive() {
 		return !this.dead();
-	}
-
-	protected Vector2D random_position() {
-		return new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()),
-				Utils._rand.nextDouble(this._region_mngr.get_height()));
 	}
 
 	@Override
 	public boolean is_out() {
 		return this.get_position().getX() < 0 || this.get_position().getX() >= this._region_mngr.get_width()
 				|| this.get_position().getY() < 0 || this.get_position().getY() >= this._region_mngr.get_height();
-	}
-
-	protected void adjust_position() {
-		while (this.get_position().getX() >= this._region_mngr.get_width())
-			this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0));
-		while (this.get_position().getX() < 0)
-			this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
-		while (this.get_position().getY() >= this._region_mngr.get_height())
-			this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
-		while (this.get_position().getY() < 0)
-			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
-	}
-
-	protected void update_energy(double energy) {
-		this._energy = Utils.constrain_value_in_range(this.get_energy() + energy, MIN_ENERGY, MAX_ENERGY);
-	}
-
-	protected void update_desire(double desire) {
-		this._desire = Utils.constrain_value_in_range(this.get_desire() + desire, MIN_DESIRE, MAX_DESIRE);
-	}
-
-	protected void reset_desire() {
-		this._desire = MIN_DESIRE;
-	}
-
-	protected void grow(double dt) {
-		this._age += dt;
-	}
-
-	public boolean in_sight_range(Animal a) {
-		if (a == null)
-			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
-
-		return this.distanceTo(a) <= a.get_sight_range();
-	}
-
-	protected void set_dead() {
-		this._state = State.DEAD;
-	}
-
-	protected void set_normal() {
-		this._state = State.NORMAL;
-	}
-
-	protected void set_mate() {
-		this._state = State.MATE;
-	}
-
-	protected void set_danger() {
-		this._state = State.DANGER;
-	}
-
-	protected void set_hunger() {
-		this._state = State.HUNGER;
-	}
-
-	@Override
-	public boolean dead() {
-		return this.get_state() == State.DEAD;
 	}
 
 	@Override
@@ -425,6 +272,11 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	@Override
+	public boolean dead() {
+		return this.get_state() == State.DEAD;
+	}
+
+	@Override
 	public boolean carnivore() {
 		return this.get_diet() == Diet.CARNIVORE;
 	}
@@ -434,6 +286,127 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return this.get_diet() == Diet.HERBIVORE;
 	}
 
+	// JSONable
+
+	@Override
+	public JSONObject as_JSON() {
+		JSONObject jo = new JSONObject();
+
+		jo.put(Messages.POSITION_KEY, this.get_position().asJSONArray());
+		jo.put(Messages.GENETIC_CODE_KEY, this.get_genetic_code());
+		jo.put(Messages.DIET_KEY, this.get_diet().toString());
+		jo.put(Messages.ANIMAL_STATE_KEY, this.get_state().toString());
+
+		return jo;
+	}
+
+	// Auxiliary
+
+	protected void advance(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		if (this.in_action_range(this.get_destination()))
+			this._dest = this.random_position();
+
+		this.move(this.get_speed(dt));
+
+		this.grow(dt);
+
+		this.update_energy(this.energy_cost() * dt);
+
+		this.update_desire(this.desire_cost() * dt);
+	}
+
+	protected void update_normal(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		this.advance(dt);
+	}
+
+	protected void update_mate(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		if (this._mate_target != null)
+			if (this._mate_target.dead() || !this._mate_target.in_sight_range(this))
+				this._mate_target = null;
+
+		if (this._mate_target == null)
+			this._mate_target = this._mate_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
+
+		if (this._mate_target == null)
+			this.advance(dt);
+		else {
+			this._dest = this._mate_target.get_position();
+
+			this.move(this.mate_speed() * this.get_speed(dt));
+
+			this.grow(dt);
+
+			this.update_energy(this.energy_cost() * this.get_state().get_energy_weighting() * dt);
+
+			this.update_desire(this.desire_cost() * dt);
+		}
+	}
+
+	protected void update_danger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+	}
+
+	protected void update_hunger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+	}
+
+	protected void update_dead(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+	}
+
+	protected abstract void update_reference_animal();
+
+	protected void update_energy(double energy) {
+		this._energy = Utils.constrain_value_in_range(this.get_energy() + energy, MIN_ENERGY, MAX_ENERGY);
+	}
+
+	protected void update_desire(double desire) {
+		this._desire = Utils.constrain_value_in_range(this.get_desire() + desire, MIN_DESIRE, MAX_DESIRE);
+	}
+
+	protected void reset_desire() {
+		this._desire = MIN_DESIRE;
+	}
+
+	protected void grow(double dt) {
+		this._age += dt;
+	}
+
+	protected abstract double max_age();
+
+	protected abstract double energy_cost();
+
+	protected abstract double desire_cost();
+
+	protected abstract double mate_speed();
+
+	public double distanceTo(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		return this.get_position().distanceTo(a.get_position());
+	}
+
+	public boolean in_sight_range(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		return this.distanceTo(a) <= a.get_sight_range();
+	}
+
 	protected boolean in_action_range(Vector2D other) {
 		return this.get_position().distanceTo(other) < ACTION_RANGE;
 	}
@@ -441,4 +414,41 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected boolean in_action_range(Animal other) {
 		return this.in_action_range(other.get_position());
 	}
+
+	protected Vector2D random_position() {
+		return new Vector2D(Utils._rand.nextDouble(this._region_mngr.get_width()),
+				Utils._rand.nextDouble(this._region_mngr.get_height()));
+	}
+
+	protected void adjust_position() {
+		while (this.get_position().getX() >= this._region_mngr.get_width())
+			this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0));
+		while (this.get_position().getX() < 0)
+			this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
+		while (this.get_position().getY() >= this._region_mngr.get_height())
+			this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
+		while (this.get_position().getY() < 0)
+			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
+	}
+
+	protected void set_dead() {
+		this._state = State.DEAD;
+	}
+
+	protected void set_normal() {
+		this._state = State.NORMAL;
+	}
+
+	protected void set_mate() {
+		this._state = State.MATE;
+	}
+
+	protected void set_danger() {
+		this._state = State.DANGER;
+	}
+
+	protected void set_hunger() {
+		this._state = State.HUNGER;
+	}
+
 }

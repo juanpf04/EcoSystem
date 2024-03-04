@@ -37,15 +37,7 @@ public class Sheep extends Animal {
 		this._danger_source = null;
 	}
 
-	@Override
-	protected double max_age() {
-		return MAX_AGE;
-	}
-
-	@Override
-	protected void update_reference_animal() {
-		this._danger_source = null;
-	}
+	// Update
 
 	@Override
 	protected void update_normal(double dt) {
@@ -62,6 +54,34 @@ public class Sheep extends Animal {
 			this.set_danger();
 		else if (this.on_heat())
 			this.set_mate();
+	}
+
+	@Override
+	protected void update_mate(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		super.update_mate(dt);
+
+		if (this._mate_target != null)
+			if (this.in_action_range(this._mate_target)) {
+				this.reset_desire();
+				this._mate_target.reset_desire();
+
+				if (!this.is_pregnant() && this.can_pregnant())
+					this._baby = new Sheep(this, this._mate_target);
+
+				this._mate_target = null;
+			}
+
+		if (this._danger_source == null)
+			this._danger_source = this._danger_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
+
+		if (this._danger_source != null)
+			this.set_danger();
+		else if (!this.on_heat())
+			this.set_normal();
 	}
 
 	@Override
@@ -102,39 +122,23 @@ public class Sheep extends Animal {
 	}
 
 	@Override
-	protected void update_mate(double dt) {
-		if (dt <= 0)
-			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
-
-		super.update_mate(dt);
-
-		if (this._mate_target != null)
-			if (this.in_action_range(this._mate_target)) {
-				this.reset_desire();
-				this._mate_target.reset_desire();
-
-				if (!this.is_pregnant() && this.can_pregnant())
-					this._baby = new Sheep(this, this._mate_target);
-
-				this._mate_target = null;
-			}
-
-		if (this._danger_source == null)
-			this._danger_source = this._danger_strategy.select(this,
-					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
-
-		if (this._danger_source != null)
-			this.set_danger();
-		else if (!this.on_heat())
-			this.set_normal();
-	}
-
-	@Override
 	protected void update_hunger(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
 		throw new IllegalStateException(Messages.illegal_state(this.get_genetic_code(), this.get_state()));
+	}
+
+	// Auxiliary
+
+	@Override
+	protected void update_reference_animal() {
+		this._danger_source = null;
+	}
+
+	@Override
+	protected double max_age() {
+		return MAX_AGE;
 	}
 
 	@Override
@@ -151,4 +155,5 @@ public class Sheep extends Animal {
 	protected double mate_speed() {
 		return MATE_SPEED;
 	}
+
 }
