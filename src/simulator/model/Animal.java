@@ -149,22 +149,6 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER);
 	}
 
-	/*
-	 * s EJEMPLOS LAMBDA FUNCION PREDICATE 1. (Animal a) -> {return
-	 * this.get_genetic_code() == a.get_genetic_code();}
-	 * 
-	 * 2. (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
-	 * 
-	 * 3. new Predicate<Animal>() {
-	 * 
-	 * @Override public boolean test(Animal t) { return get_genetic_code() ==
-	 * t.get_genetic_code(); }
-	 * 
-	 * });
-	 *
-	 * 4. a -> this.get_genetic_code() == a.get_genetic_code()
-	 */
-
 	@Override
 	public void update(double dt) {
 		if (dt <= 0)
