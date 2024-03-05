@@ -2,21 +2,26 @@ package simulator.model;
 
 import java.util.List;
 
+import simulator.view.Messages;
+
 public class SelectYoungest implements SelectionStrategy {
 
 	@Override
 	public Animal select(Animal a, List<Animal> as) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		if (as == null)
+			throw new IllegalArgumentException(Messages.INVALID_LIST);
+
 		if (as.isEmpty())
 			return null;
 
-		Animal youngest_animal = as.get(0);
+		Animal youngest = as.get(0);
 
-		for (int i = 1; i < as.size(); i++) {
-			Animal animal = as.get(i);
-			if (animal.get_age() < youngest_animal.get_age())
-				youngest_animal = animal;
-		}
+		for (Animal animal : as)
+			if (animal.get_age() < youngest.get_age())
+				youngest = animal;
 
-		return youngest_animal;
+		return youngest;
 	}
 }

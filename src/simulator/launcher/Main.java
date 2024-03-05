@@ -3,7 +3,6 @@ package simulator.launcher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -32,7 +31,7 @@ import simulator.factories.*;
 public class Main {
 
 	private enum ExecMode {
-		BATCH("batch", "Batch mode"), GUI("gui", "Graphical User Interface mode");
+		BATCH(Messages.BATCH_TAG, Messages.BATCH_DESCRIPTION), GUI(Messages.GUI_TAG, Messages.GUI_DESCRIPTION);
 
 		private String _tag;
 		private String _desc;
@@ -42,10 +41,12 @@ public class Main {
 			_desc = modeDesc;
 		}
 
+		@SuppressWarnings("unused") // TODO remove
 		public String get_tag() {
 			return _tag;
 		}
 
+		@SuppressWarnings("unused") // TODO remove
 		public String get_desc() {
 			return _desc;
 		}
@@ -63,13 +64,13 @@ public class Main {
 	private static String _in_file = null;
 	private static String _out_file = null;
 	private static ExecMode _mode = ExecMode.BATCH;
-	private static boolean _sv = false;
+	private static boolean _simple_viewer = false;
 
 	// factories
 	//
-	private static Factory<SelectionStrategy> _selection_strategy_factory;
-	private static Factory<Animal> _animal_factory;
-	private static Factory<Region> _region_factory;
+	private static Factory<SelectionStrategy> _strategies_factory;
+	private static Factory<Animal> _animals_factory;
+	private static Factory<Region> _regions_factory;
 
 	private static void parse_args(String[] args) {
 
@@ -144,7 +145,7 @@ public class Main {
 			_delta_time = Double.parseDouble(t);
 			assert (_delta_time >= 0);
 		} catch (Exception e) {
-			throw new ParseException("Invalid value for delta time: " + t);
+			throw new ParseException(Messages.invalid_delta_time(t));
 		}
 	}
 
@@ -159,20 +160,16 @@ public class Main {
 	private static void parse_in_file_option(CommandLine line) throws ParseException {
 		_in_file = line.getOptionValue(Messages.COMMAND_INPUT_SHORTCUT);
 		if (_mode == ExecMode.BATCH && _in_file == null) {
-			throw new ParseException("In batch mode an input configuration file is required");
+			throw new ParseException(Messages.IN_FILE_ERROR);
 		}
 	}
 
 	private static void parse_out_file_option(CommandLine line) throws ParseException {
 		_out_file = line.getOptionValue(Messages.COMMAND_OUTPUT_SHORTCUT);
-		if (_out_file == null) {
-			throw new ParseException("HACER");
-		}
 	}
 
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
-		if (line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT))
-			_sv = true;
+		_simple_viewer = line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT);
 	}
 
 	private static void parse_time_option(CommandLine line) throws ParseException {
@@ -181,7 +178,7 @@ public class Main {
 			_time = Double.parseDouble(t);
 			assert (_time >= 0);
 		} catch (Exception e) {
-			throw new ParseException("Invalid value for time: " + t);
+			throw new ParseException(Messages.invalid_time(t));
 		}
 	}
 
@@ -192,19 +189,19 @@ public class Main {
 		selection_strategy_builders.add(new SelectFirstBuilder());
 		selection_strategy_builders.add(new SelectClosestBuilder());
 		selection_strategy_builders.add(new SelectYoungestBuilder());
-		_selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
+		_strategies_factory = new BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
 
 		// initialize the animals factory
 		List<Builder<Animal>> animal_builders = new LinkedList<>();
-		animal_builders.add(new SheepBuilder(_selection_strategy_factory));
-		animal_builders.add(new WolfBuilder(_selection_strategy_factory));
-		_animal_factory = new BuilderBasedFactory<Animal>(animal_builders);
+		animal_builders.add(new SheepBuilder(_strategies_factory));
+		animal_builders.add(new WolfBuilder(_strategies_factory));
+		_animals_factory = new BuilderBasedFactory<Animal>(animal_builders);
 
 		// initialize the regions factory
 		List<Builder<Region>> region_builders = new LinkedList<>();
 		region_builders.add(new DefaultRegionBuilder());
 		region_builders.add(new DynamicSupplyRegionBuilder());
-		_region_factory = new BuilderBasedFactory<Region>(region_builders);
+		_regions_factory = new BuilderBasedFactory<Region>(region_builders);
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
@@ -215,21 +212,21 @@ public class Main {
 		InputStream in = new FileInputStream(new File(_in_file));
 		JSONObject data = load_JSON_file(in);
 
-		// TODO
-		OutputStream out = new FileOutputStream(_out_file);
-		data.get("blablbla");
-		out.close();
-		
-		init_factories();
-		Simulator simulator = new Simulator(0, 0, 0, 0, _animal_factory, _region_factory);
+		OutputStream out = _out_file != null ? new FileOutputStream(_out_file) : null;
+
+		SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
+		Simulator simulator = sb.create_instance(data);
 
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
-		controller.run(_time, _delta_time, _sv, out);
+		controller.run(_time, _delta_time, _simple_viewer, out);
+
+		if (out != null)
+			out.close();
 	}
 
 	private static void start_GUI_mode() throws Exception {
-		throw new UnsupportedOperationException("GUI mode is not ready yet ...");
+		throw new UnsupportedOperationException(Messages.GUI_ERROR);
 	}
 
 	private static void start(String[] args) throws Exception {
@@ -250,7 +247,7 @@ public class Main {
 		try {
 			start(args);
 		} catch (Exception e) {
-			System.err.println("Something went wrong ...");
+			System.err.println(Messages.SOMETHING_WENT_WRONG);
 			System.err.println();
 			e.printStackTrace();
 		}

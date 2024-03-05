@@ -20,10 +20,16 @@ public class Controller {
 	private Simulator _sim;
 
 	public Controller(Simulator sim) {
+
+		if (sim == null)
+			throw new IllegalArgumentException(Messages.INVALID_SIMULATOR);
+
 		this._sim = sim;
 	}
 
-	public void load_data(JSONObject data) { // preguntar expciones
+	public void load_data(JSONObject data) {
+		if (data == null || data.isEmpty())
+			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
 		if (data.has(Messages.REGIONS_KEY)) {
 			JSONArray ja = data.getJSONArray(Messages.REGIONS_KEY);
@@ -41,20 +47,29 @@ public class Controller {
 
 		for (int i = 0; i < ja.length(); i++) {
 			JSONObject jo = ja.getJSONObject(i);
-			int n = jo.getInt(Messages.AMOUNT_KEY);
-			for (int j = 0; j < n; j++)
+			int amount = jo.getInt(Messages.AMOUNT_KEY);
+
+			if (amount <= 0)
+				throw new IllegalArgumentException(Messages.INVALID_AMOUNT);
+
+			for (int j = 0; j < amount; j++)
 				this._sim.add_animal(jo.getJSONObject(Messages.SPEC_KEY));
 		}
 	}
 
 	public void run(double t, double dt, boolean sv, OutputStream out) {
+		if (t <= 0)
+			throw new IllegalArgumentException(Messages.TIME_ERROR);
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
 		JSONObject jo = new JSONObject();
 		jo.put(Messages.IN_KEY, this._sim.as_JSON());
 
 		SimpleObjectViewer view = null;
 		if (sv) {
 			MapInfo m = _sim.get_map_info();
-			view = new SimpleObjectViewer("[ECOSYSTEM]", m.get_width(), m.get_height(), m.get_cols(), m.get_rows());
+			view = new SimpleObjectViewer(Messages.TITLE, m.get_width(), m.get_height(), m.get_cols(), m.get_rows());
 			view.update(to_animals_info(this._sim.get_animals()), this._sim.get_time(), dt);
 		}
 
@@ -68,8 +83,10 @@ public class Controller {
 			view.close();
 
 		jo.put(Messages.OUT_KEY, this._sim.as_JSON());
-		PrintStream p = new PrintStream(out);
-		p.println(jo);
+		if (out != null) {
+			PrintStream p = new PrintStream(out);
+			p.println(jo);
+		}
 	}
 
 	private List<ObjInfo> to_animals_info(List<? extends AnimalInfo> animals) {

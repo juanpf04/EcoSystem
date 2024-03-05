@@ -14,6 +14,7 @@ public abstract class Builder<T> {
 			throw new IllegalArgumentException(Messages.INVALID_TYPE);
 		if (desc == null || desc.isBlank())
 			throw new IllegalArgumentException(Messages.INVALID_DESC);
+
 		this._type_tag = type_tag;
 		this._desc = desc;
 	}
@@ -24,11 +25,11 @@ public abstract class Builder<T> {
 
 	public JSONObject get_info() {
 		JSONObject info = new JSONObject();
-		info.put("type", this._type_tag);
-		info.put("desc", this._desc);
+		info.put(Messages.TYPE_KEY, this._type_tag);
+		info.put(Messages.DESCRIPTION_KEY, this._desc);
 		JSONObject data = new JSONObject();
 		fill_in_data(data);
-		info.put("data", data);
+		info.put(Messages.DATA_KEY, data);
 		return info;
 	}
 

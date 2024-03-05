@@ -1,8 +1,5 @@
 package simulator.model;
 
-import java.util.function.Predicate;
-
-import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 import simulator.view.Messages;
 
@@ -13,17 +10,12 @@ public class Sheep extends Animal {
 	protected static final double INIT_SIGHT_RANGE = 40.0;
 	protected static final double INIT_SPEED = 35.0;
 	protected static final double MAX_AGE = 8.0;
-	protected static final double DESTINATION_RANGE = 8.0;
-	protected static final double PROCREATION_RANGE = 8.0;
-	protected static final double SPEED_MULTIPLIER = 0.007;
-	protected static final double ENERGY_COST = 20.0;
+
+	protected static final double ENERGY_COST = -20.0;
 	protected static final double DESIRE_COST = 40.0;
-	protected static final double UMBRAL_DESIRE = 65.0;
-	protected static final double FLEE_SPEED = 2.0;
-	protected static final double FLEE_ENERGY_COST = 1.2;
-	protected static final double OESTRUS_SPEED = 2.0;
-	protected static final double OESTRUS_ENERGY_COST = 1.2;
-	protected static final double PREGNANT_PROBABILITY = 0.9;
+
+	protected static final double DANGER_SPEED = 2.0;
+	protected static final double MATE_SPEED = 2.0;
 
 	private Animal _danger_source;
 	private SelectionStrategy _danger_strategy;
@@ -32,7 +24,7 @@ public class Sheep extends Animal {
 		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE, INIT_SPEED, mate_strategy, pos);
 
 		if (danger_strategy == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_STRATEGY);
 
 		this._danger_strategy = danger_strategy;
 		this._danger_source = null;
@@ -44,141 +36,98 @@ public class Sheep extends Animal {
 		this._danger_strategy = p1._danger_strategy;
 		this._danger_source = null;
 	}
-	
-	/*
-	 * EJEMPLOS LAMDA FUNCION PREDICATE
-	 * 1.
-	 * (Animal a) -> {return this.get_genetic_code() == a.get_genetic_code();}
-	 * 
-	 * 2.
-	 * (Animal a) -> this.get_genetic_code() == a.get_genetic_code()
-	 * 
-	 * 3.
-	 * new Predicate<Animal>() {
 
-				@Override
-				public boolean test(Animal t) {
-					return get_genetic_code() == t.get_genetic_code();
-				}
-			
-			});
-	 *
-	 * 4.
-	 * a -> this.get_genetic_code() == a.get_genetic_code()
-	 */
-	
+	// Update
 
 	@Override
-	protected void update_according_to_state(double dt) {
-		switch (this.get_state()) {
-		case NORMAL:
+	protected void update_normal(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-			if (this.get_destination().distanceTo(this.get_position()) <= DESTINATION_RANGE)
-				this.new_random_dest();
+		super.update_normal(dt);
 
-			this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
+		if (this._danger_source == null)
+			this._danger_source = this._danger_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
 
-			this._age += dt;
+		if (this._danger_source != null)
+			this.set_danger();
+		else if (this.on_heat())
+			this.set_mate();
+	}
 
-			this._energy -= ENERGY_COST * dt;
-			this.adjust_energy();
+	@Override
+	protected void update_mate(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-			this._desire += DESIRE_COST * dt;
-			this.adjust_desire();
+		super.update_mate(dt);
 
-			if (this._danger_source == null)
-				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
+		if (this._mate_target != null)
+			if (this.in_action_range(this._mate_target)) {
+				this.reset_desire();
+				this._mate_target.reset_desire();
 
-			if (this._danger_source != null)
-				this._state = State.DANGER;
-			else if (this._desire > UMBRAL_DESIRE)
-				this._state = State.MATE;
+				if (!this.is_pregnant() && this.can_pregnant())
+					this._baby = new Sheep(this, this._mate_target);
 
-			break;
-		case DANGER:
-
-			if (this._danger_source != null && !this._danger_source.is_alive())
-				this._danger_source = null;
-
-			if (this._danger_source == null)
-				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
-			else {
-				this._dest = this.get_position()
-						.plus(this.get_position().minus(_danger_source.get_position()).direction());
-
-				this.move(FLEE_SPEED * this.get_speed() * dt
-						* Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
-
-				this._age += dt;
-
-				this._energy -= ENERGY_COST * FLEE_ENERGY_COST * dt;
-				this.adjust_energy();
-
-				this._desire += DESIRE_COST * dt;
-				this.adjust_desire();
-			}
-
-			if (this._danger_source == null || this._danger_source.distanceTo(this) <= this.get_sight_range()) {
-				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
-
-				if (this._danger_source == null) {
-					if (this._desire <= UMBRAL_DESIRE)
-						this._state = State.NORMAL;
-					else
-						this._state = State.MATE;
-				}
-			}
-			break;
-		case MATE:
-
-			if (this._mate_target != null && !this._mate_target.is_alive()
-					|| this._mate_target.distanceTo(this) > this.get_sight_range())
 				this._mate_target = null;
-
-			if (this._mate_target == null)
-				this._mate_target = this._mate_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() == a.get_genetic_code()));
-			
-			if (this._mate_target == null)
-				this.move(this.get_speed() * dt * Math.exp((this.get_energy() - MAX_ENERGY) * SPEED_MULTIPLIER));
-			else {
-				this._dest = this._mate_target.get_position();
-
-				this.move(OESTRUS_SPEED * _speed * dt * Math.exp((_energy - MAX_ENERGY) * SPEED_MULTIPLIER));
-
-				this._age += dt;
-
-				this._energy -= ENERGY_COST * OESTRUS_ENERGY_COST * dt;
-				this.adjust_energy();
-
-				this._desire += DESIRE_COST * dt;
-				this.adjust_desire();
-
-				if (this.distanceTo(this._mate_target) <= PROCREATION_RANGE) {
-					this.reset_desire();
-
-					if (!this.is_pregnant() && Utils._rand.nextDouble() <= PREGNANT_PROBABILITY)
-						this._baby = new Sheep(this, this._mate_target);
-
-					this._mate_target = null;
-				}
-
 			}
-			if (this._danger_source == null)
-				this._danger_source = this._danger_strategy.select(this,
-						this._region_mngr.get_animals_in_range(this, a -> this.get_genetic_code() != a.get_genetic_code()));
 
-			if (this._danger_source != null)
-				this._state = State.DANGER;
-			else if (this._desire < UMBRAL_DESIRE)
-				this._state = State.NORMAL;
+		if (this._danger_source == null)
+			this._danger_source = this._danger_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
 
-			break;
-		default:
-			break;
+		if (this._danger_source != null)
+			this.set_danger();
+		else if (!this.on_heat())
+			this.set_normal();
+	}
+
+	@Override
+	protected void update_danger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		super.update_danger(dt);
+
+		if (this._danger_source != null && this._danger_source.dead())
+			this._danger_source = null;
+
+		if (this._danger_source == null)
+			super.advance(dt);
+		else {
+			this._dest = this.get_position().plus(this.get_position().minus(_danger_source.get_position()).direction());
+
+			this.update_status(dt, DANGER_SPEED);
 		}
+
+		if (this._danger_source == null || !this._danger_source.in_sight_range(this)) {
+			this._danger_source = this._danger_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
+
+			if (this._danger_source == null) {
+				if (this.on_heat())
+					this.set_mate();
+				else
+					this.set_normal();
+			}
+		}
+	}
+
+	@Override
+	protected void update_hunger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		throw new IllegalStateException(Messages.illegal_state(this.get_genetic_code(), this.get_state()));
+	}
+
+	// Auxiliary
+
+	@Override
+	protected void update_reference_animal() {
+		this._danger_source = null;
 	}
 
 	@Override
@@ -187,8 +136,18 @@ public class Sheep extends Animal {
 	}
 
 	@Override
-	protected void update() {
-		this._danger_source = null;
+	protected double energy_cost() {
+		return ENERGY_COST;
+	}
+
+	@Override
+	protected double desire_cost() {
+		return DESIRE_COST;
+	}
+
+	@Override
+	protected double mate_speed() {
+		return MATE_SPEED;
 	}
 
 }

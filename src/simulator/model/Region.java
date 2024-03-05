@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,27 +13,41 @@ import java.util.LinkedList;
 
 public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 
-	protected static final double FOOD = 60.0;
-	protected static final double NOMBRE_RECHULON = 5.0;
-	protected static final double NOMBRE_RECHULON2 = 2.0;
-
-	protected List<Animal> _animals_in_region;
+	protected List<Animal> _animals;
 
 	public Region() {
-		this._animals_in_region = new LinkedList<Animal>();
+		this._animals = new LinkedList<Animal>();
 	}
 
 	public final void add_animal(Animal a) {
-		this._animals_in_region.add(a);
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		this._animals.add(a);
 	}
 
 	public final void remove_animal(Animal a) {
-		this._animals_in_region.remove(a);
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		this._animals.remove(a);
 	}
 
 	public final List<Animal> getAnimals() {
-		return Collections.unmodifiableList(this._animals_in_region);
+		return Collections.unmodifiableList(this._animals);
 	}
+
+	public List<Animal> get_animals(Predicate<Animal> filter) {
+		List<Animal> animals = new LinkedList<Animal>();
+
+		for (Animal animal : this.getAnimals())
+			if (filter.test(animal))
+				animals.add(animal);
+
+		return animals;
+	}
+
+	// JSONable
 
 	@Override
 	public JSONObject as_JSON() {
@@ -47,17 +62,4 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		return jo;
 	}
 
-	protected int count(Diet d) {
-		int i = 0;
-
-		for (Animal a : this._animals_in_region)
-			if (d.equals(a.get_diet()))
-				i++;
-
-		return i;
-	}
-
-	public boolean contains(Animal a) {
-		return this._animals_in_region.contains(a);
-	}
 }

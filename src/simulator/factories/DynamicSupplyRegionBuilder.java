@@ -9,25 +9,27 @@ import simulator.view.Messages;
 public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
 	public DynamicSupplyRegionBuilder() {
-		super(Messages.DEFAULT_REGION_TYPE, Messages.MENSAJE_PERSONALIZADO);
+		super(Messages.DYNAMIC_REGION_TAG, Messages.DYNAMIC_REGION_BUILDER_DESCRIPTION);
 	}
 
 	@Override
 	protected DynamicSupplyRegion create_instance(JSONObject data) {
-		double factor = 2.0, food = 1000.0;
+		if (data == null)
+			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
-		if (data.has("factor"))
-			factor = data.getDouble("factor");
-
-		if (data.has("food"))
-			food = data.getDouble("food");
+		double food = data.optDouble(Messages.FOOD_KEY, 1000.0);
+		double factor = data.optDouble(Messages.FACTOR_KEY, 2.0);
 
 		return new DynamicSupplyRegion(food, factor);
 	}
 
 	@Override
 	protected void fill_in_data(JSONObject o) {
-		o.put("factor", 2.5);
-		o.put("food", 1250.0);
+		JSONObject jo = new JSONObject();
+
+		jo.put(Messages.FACTOR_KEY, 2.5);
+		jo.put(Messages.FOOD_KEY, 1250.0);
+
+		o = new JSONObject(jo.toString());
 	}
 }

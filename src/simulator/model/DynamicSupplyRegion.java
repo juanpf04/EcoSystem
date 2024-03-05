@@ -3,7 +3,7 @@ package simulator.model;
 import simulator.misc.Utils;
 import simulator.view.Messages;
 
-public class DynamicSupplyRegion extends Region {
+public class DynamicSupplyRegion extends DefaultRegion {
 
 	private static final double PROBABILITY_OF_GROWTH = 0.5;
 
@@ -14,9 +14,9 @@ public class DynamicSupplyRegion extends Region {
 		super();
 
 		if (init_food <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_INIT_FOOD);
 		if (factor < 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_FACTOR);
 
 		this._food = init_food;
 		this._factor = factor;
@@ -24,18 +24,22 @@ public class DynamicSupplyRegion extends Region {
 
 	@Override
 	public void update(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
 		if (Utils._rand.nextDouble() < PROBABILITY_OF_GROWTH)
 			this._food += dt * this._factor;
 	}
 
 	@Override
 	public double get_food(Animal a, double dt) {
-		double f = 0.0;
-		if (a.get_diet().equals(Diet.HERBIVORE))
-			f = Math.min(this._food, FOOD
-					* Math.exp(-Math.max(0, this.count(Diet.HERBIVORE) - NOMBRE_RECHULON) * NOMBRE_RECHULON2) * dt);
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		this._food -= f;
-		return f;
+		double food = Math.min(_food, super.get_food(a, dt));
+		this._food -= food;
+		return food;
 	}
 }

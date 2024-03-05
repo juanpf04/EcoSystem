@@ -1,6 +1,12 @@
 package simulator.model;
 
+import simulator.view.Messages;
+
 public class DefaultRegion extends Region {
+
+	private static final double FOOD = 60.0;
+	private static final double ANIMALS_MARGIN = 5.0;
+	private static final double ANIMALS_WEIGHTING = 2.0;
 
 	@Override
 	public void update(double dt) {
@@ -8,9 +14,15 @@ public class DefaultRegion extends Region {
 
 	@Override
 	public double get_food(Animal a, double dt) {
-		if (a.get_diet().equals(Diet.CARNIVORE))
-			return 0.0;
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		return FOOD * Math.exp(-Math.max(0, this.count(Diet.HERBIVORE) - NOMBRE_RECHULON) * NOMBRE_RECHULON2) * dt;
+		return a.get_diet().get_herbivorous_region_weighting() * FOOD
+				* Math.exp(-Math.max(0, this.get_animals(animal -> animal.herbivore()).size() - ANIMALS_MARGIN)
+						* ANIMALS_WEIGHTING)
+				* dt;
 	}
+
 }

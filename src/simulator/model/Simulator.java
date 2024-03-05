@@ -8,6 +8,7 @@ import simulator.factories.Factory;
 import simulator.view.Messages;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Simulator implements JSONable {
@@ -20,10 +21,17 @@ public class Simulator implements JSONable {
 
 	public Simulator(int cols, int rows, int width, int height, Factory<Animal> animals_factory,
 			Factory<Region> regions_factory) {
-		if (animals_factory == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
-		if (regions_factory == null)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+
+		if (cols <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_COLS);
+		if (rows <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_ROWS);
+		if (width <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_WIDTH);
+		if (height <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_HEIGHT);
+		if (animals_factory == null || regions_factory == null)
+			throw new IllegalArgumentException(Messages.INVALID_FACTORY);
 
 		this._animals_factory = animals_factory;
 		this._regions_factory = regions_factory;
@@ -32,20 +40,40 @@ public class Simulator implements JSONable {
 		this._time = 0.0;
 	}
 
-	public void set_region(int row, int col, Region r) { // cambiar a private despues de probar
+	private void set_region(int row, int col, Region r) {
+		if (row < 0 || row >= this.get_map_info().get_rows())
+			throw new IllegalArgumentException(Messages.INVALID_ROW);
+		if (col < 0 || col >= this.get_map_info().get_cols())
+			throw new IllegalArgumentException(Messages.INVALID_COL);
+		if (r == null)
+			throw new IllegalArgumentException(Messages.INVALID_REGION);
+
 		this._region_manager.set_region(row, col, r);
 	}
 
 	public void set_region(int row, int col, JSONObject r_json) {
+		if (row < 0 || row >= this.get_map_info().get_rows())
+			throw new IllegalArgumentException(Messages.INVALID_ROW);
+		if (col < 0 || col >= this.get_map_info().get_cols())
+			throw new IllegalArgumentException(Messages.INVALID_COL);
+		if (r_json == null || r_json.isEmpty())
+			throw new IllegalArgumentException(Messages.INVALID_JSON);
+
 		this.set_region(row, col, this._regions_factory.create_instance(r_json));
 	}
 
-	public void add_animal(Animal a) { // cambiar a private despues de probar
+	private void add_animal(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		this._animals.add(a);
 		this._region_manager.register_animal(a);
 	}
 
 	public void add_animal(JSONObject a_json) {
+		if (a_json == null || a_json.isEmpty())
+			throw new IllegalArgumentException(Messages.INVALID_JSON);
+
 		this.add_animal(this._animals_factory.create_instance(a_json));
 	}
 
@@ -62,6 +90,9 @@ public class Simulator implements JSONable {
 	}
 
 	public void advance(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
 		this._time += dt;
 		this.remove_deaths();
 		this.update_all_animals(dt);
@@ -70,15 +101,22 @@ public class Simulator implements JSONable {
 	}
 
 	private void update_babys() {
+		List<Animal> babies = new LinkedList<Animal>();
+
 		for (Animal a : this._animals)
 			if (a.is_pregnant()) {
 				Animal baby = a.deliver_baby();
-				this.add_animal(baby);
-				this._animals.add(baby);
+				babies.add(baby);
+				this._region_manager.register_animal(baby);
 			}
+
+		this._animals.addAll(babies);
 	}
 
 	private void update_all_animals(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
 		for (Animal a : this._animals) {
 			a.update(dt);
 			this._region_manager.update_animal_region(a);
@@ -86,14 +124,26 @@ public class Simulator implements JSONable {
 	}
 
 	private void remove_deaths() {
-		for (int i = this._animals.size() - 1; i >= 0; i--) {
-			Animal a = this._animals.get(i);
-			if (!a.is_alive()) {
-				this._animals.remove(a);
-				this._region_manager.unregister_animal(a);
+		Iterator<Animal> it = this._animals.iterator();
+
+		while (it.hasNext()) {
+			Animal a = it.next();
+			if (a.dead()) {
+				it.remove();
+				this.remove_animal(a);
 			}
 		}
 	}
+
+	private void remove_animal(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		this._animals.remove(a);
+		this._region_manager.unregister_animal(a);
+	}
+
+	// JSONable
 
 	@Override
 	public JSONObject as_JSON() {
@@ -104,4 +154,5 @@ public class Simulator implements JSONable {
 
 		return jo;
 	}
+
 }

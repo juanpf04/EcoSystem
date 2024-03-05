@@ -26,18 +26,24 @@ public class RegionManager implements AnimalMapView {
 	public RegionManager(int cols, int rows, int width, int height) {
 
 		if (cols <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_COLS);
 		if (rows <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_ROWS);
 		if (width <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_WIDTH);
 		if (height <= 0)
-			throw new IllegalArgumentException(Messages.MENSAJE_PERSONALIZADO);
+			throw new IllegalArgumentException(Messages.INVALID_HEIGHT);
 
 		this._cols = cols;
 		this._rows = rows;
 		this._width = width;
 		this._height = height;
+
+		if (this.get_width() % this.get_cols() != 0)
+			throw new ArithmeticException(Messages.ILLEGAL_WIDTH_OPERATION);
+		if (this.get_height() % this.get_rows() != 0)
+			throw new ArithmeticException(Messages.ILLEGAL_HEIGHT_OPERATION);
+
 		this._region_width = this._width / this._cols;
 		this._region_height = this._height / this._rows;
 
@@ -51,42 +57,74 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	public void set_region(int row, int col, Region r) {
-		for (Animal a : this._regions[row][col].getAnimals()) {
+		if (row < 0 || row >= this.get_rows())
+			throw new IllegalArgumentException(Messages.INVALID_ROW);
+		if (col < 0 || col >= this.get_cols())
+			throw new IllegalArgumentException(Messages.INVALID_COL);
+		if (r == null)
+			throw new IllegalArgumentException(Messages.INVALID_REGION);
+
+		for (Animal a : this.get_region(row, col).getAnimals()) {
 			r.add_animal(a);
 			this._animal_region.put(a, r);
 		}
+
 		this._regions[row][col] = r;
 	}
 
 	public void register_animal(Animal a) {
-		int j = (int) (a.get_position().getX() / this.get_region_width()) - 1,
-				i = (int) (a.get_position().getY() / this.get_region_height()) - 1;
-		Region region = this._regions[i][j];
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		a.init(this);
+		Region region = this.get_region(a);
 		region.add_animal(a);
 		this._animal_region.put(a, region);
-		a.init(this);
 	}
 
 	public void unregister_animal(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		this._animal_region.remove(a).remove_animal(a);
 	}
 
 	public void update_animal_region(Animal a) {
-		int j = (int) (a.get_position().getX() / this.get_region_width()) - 1,
-				i = (int) (a.get_position().getY() / this.get_region_height()) - 1;
-		Region new_region = this._regions[i][j];
-		if (!new_region.contains(a)) {
-			new_region.add_animal(a);
-			Region old_region = this._animal_region.put(a, new_region);
-			old_region.remove_animal(a);
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		Region region = this.get_region(a);
+
+		if (region != this._animal_region.get(a)) {
+			region.add_animal(a);
+			this._animal_region.put(a, region).remove_animal(a);
 		}
 	}
 
+	private Region get_region(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
+		int i = (int) (a.get_position().getY() / this.get_region_height());
+		int j = (int) (a.get_position().getX() / this.get_region_width());
+
+		return this.get_region(i, j);
+	}
+
+	private Region get_region(int row, int col) {
+		return this._regions[row][col];
+	}
+
 	public void update_all_regions(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
 		for (Region[] regions : this._regions)
 			for (Region region : regions)
 				region.update(dt);
 	}
+
+	// MapInfo
 
 	@Override
 	public int get_cols() {
@@ -118,38 +156,62 @@ public class RegionManager implements AnimalMapView {
 		return this._region_height;
 	}
 
+	// FoodSupplier
+
 	@Override
 	public double get_food(Animal a, double dt) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
 		return this._animal_region.get(a).get_food(a, dt);
 	}
 
+	// AnimalMapView
+
 	@Override
 	public List<Animal> get_animals_in_range(Animal a, Predicate<Animal> filter) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+		if (filter == null)
+			throw new IllegalArgumentException(Messages.INVALID_PREDICATE);
+
 		List<Animal> animals_in_range = new LinkedList<Animal>();
 
 		for (Region region : this.get_regions_in_range(a))
-			for (Animal animal : region.getAnimals())
-				if (animal.in_sight_range(a) && filter.test(animal))
-					animals_in_range.add(animal);
+			animals_in_range.addAll(region.get_animals(animal -> animal.in_sight_range(a) && filter.test(animal)));
+
+		animals_in_range.remove(a);
 
 		return animals_in_range;
 	}
 
-	// TODO
-	public List<Region> get_regions_in_range(Animal a) {
+	// Auxiliary
+
+	private List<Region> get_regions_in_range(Animal a) {
+		if (a == null)
+			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
+
 		List<Region> regions_in_range = new LinkedList<>();
 
-		double sr = a.get_sight_range(), x = a.get_position().getX(), y = a.get_position().getY();
-		int init_j = (int) (x - sr / this.get_region_width()) - 1,
-				init_i = (int) (y - sr / this.get_region_height()) - 1;
-		int end_j = (int) (x + sr / this.get_region_width()), end_i = (int) (y + sr / this.get_region_height());
+		double sr = a.get_sight_range();
+		double x = a.get_position().getX();
+		double y = a.get_position().getY();
 
-		for (int i = init_i; i < end_i; i++)
-			for (int j = init_j; j < end_j; j++)
-				regions_in_range.add(this._regions[i][j]);
+		int ini_i = (int) Math.max((y - sr) / this.get_region_height(), 0);
+		int ini_j = (int) Math.max((x - sr) / this.get_region_width(), 0);
+		int end_i = (int) Math.min((y + sr) / this.get_region_height(), this.get_rows() - 1);
+		int end_j = (int) Math.min((x + sr) / this.get_region_width(), this.get_cols() - 1);
+
+		for (int i = ini_i; i <= end_i; i++)
+			for (int j = ini_j; j <= end_j; j++)
+				regions_in_range.add(this.get_region(i, j));
 
 		return regions_in_range;
 	}
+
+	// JSONable
 
 	@Override
 	public JSONObject as_JSON() {
@@ -161,7 +223,7 @@ public class RegionManager implements AnimalMapView {
 				JSONObject jo1 = new JSONObject();
 				jo1.put(Messages.ROW_KEY, i);
 				jo1.put(Messages.COLUMN_KEY, j);
-				jo1.put(Messages.DATA_KEY, this._regions[i][j].as_JSON());
+				jo1.put(Messages.DATA_KEY, this.get_region(i, j).as_JSON());
 				ja.put(jo1);
 			}
 
