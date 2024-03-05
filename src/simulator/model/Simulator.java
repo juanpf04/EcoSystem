@@ -40,6 +40,21 @@ public class Simulator implements JSONable {
 		this._time = 0.0;
 	}
 
+	public void reset(int cols, int rows, int width, int height) {
+		if (cols <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_COLS);
+		if (rows <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_ROWS);
+		if (width <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_WIDTH);
+		if (height <= 0)
+			throw new IllegalArgumentException(Messages.INVALID_HEIGHT);
+		
+		this._animals = new LinkedList<Animal>();
+		this._region_manager = new RegionManager(cols, rows, width, height);
+		this._time = 0.0;
+	}
+	
 	private void set_region(int row, int col, Region r) {
 		if (row < 0 || row >= this.get_map_info().get_rows())
 			throw new IllegalArgumentException(Messages.INVALID_ROW);
