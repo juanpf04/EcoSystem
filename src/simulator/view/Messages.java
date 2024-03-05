@@ -97,6 +97,11 @@ public class Messages {
 	public static final String SHEEP_GENETIC_CODE = "Sheep";
 	public static final String WOLF_GENETIC_CODE = "Wolf";
 
+	// Region names
+
+	public static final String DEFAULT_REGION_NAME = "Default region";
+	public static final String DYNAMIC_REGION_NAME = "Dynamic region";
+
 	// Commands
 
 	public static final String COMMAND_DELTA_TIME_NAME = "delta-time";
