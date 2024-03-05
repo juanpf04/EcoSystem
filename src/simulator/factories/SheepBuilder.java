@@ -29,11 +29,12 @@ public class SheepBuilder extends Builder<Animal> {
 		if (data == null)
 			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
-		SelectionStrategy mate_strategy = new SelectFirst(), danger_strategy = new SelectFirst();
+		SelectionStrategy danger_strategy = new SelectFirst();
 		Vector2D position = null;
 
-		if (data.has(Messages.MATE_STRATEGY_KEY))
-			mate_strategy = this._strategies_factory.create_instance(data.getJSONObject(Messages.MATE_STRATEGY_KEY));
+		SelectionStrategy mate_strategy = data.has(Messages.MATE_STRATEGY_KEY)
+				? this._strategies_factory.create_instance(data.getJSONObject(Messages.MATE_STRATEGY_KEY))
+				: new SelectFirst();
 
 		if (data.has(Messages.DANGER_STRATEGY_KEY))
 			danger_strategy = this._strategies_factory
