@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import simulator.view.Messages;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -45,6 +46,12 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 				animals.add(animal);
 
 		return animals;
+	}
+
+	// RegionInfo
+
+	public List<AnimalInfo> getAnimalsInfo() {
+		return new ArrayList<>(_animals); // se puede usar Collections.unmodifiableList(_animals);
 	}
 
 	// JSONable

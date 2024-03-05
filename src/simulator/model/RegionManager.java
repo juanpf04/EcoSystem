@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import simulator.view.Messages;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -230,5 +231,11 @@ public class RegionManager implements AnimalMapView {
 		jo.put(Messages.REGIONS_KEY, ja);
 
 		return jo;
+	}
+
+	@Override
+	public Iterator<RegionData> iterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
