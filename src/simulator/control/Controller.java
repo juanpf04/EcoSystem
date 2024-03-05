@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.model.AnimalInfo;
+import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.Simulator;
 import simulator.view.Messages;
@@ -32,15 +33,7 @@ public class Controller {
 			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
 		if (data.has(Messages.REGIONS_KEY)) {
-			JSONArray ja = data.getJSONArray(Messages.REGIONS_KEY);
-			for (int i = 0; i < ja.length(); i++) {
-				JSONObject jo = ja.getJSONObject(i);
-				JSONArray jac = jo.getJSONArray(Messages.COLUMN_KEY);
-				JSONArray jar = jo.getJSONArray(Messages.ROW_KEY);
-				for (int col = jac.getInt(0); col <= jac.getInt(1); col++)
-					for (int row = jar.getInt(0); row <= jar.getInt(1); row++)
-						this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
-			}
+			this.set_regions(data);
 		}
 
 		JSONArray ja = data.getJSONArray(Messages.ANIMALS_KEY);
@@ -68,13 +61,13 @@ public class Controller {
 
 		SimpleObjectViewer view = null;
 		if (sv) {
-			MapInfo m = _sim.get_map_info();
+			MapInfo m = this._sim.get_map_info();
 			view = new SimpleObjectViewer(Messages.TITLE, m.get_width(), m.get_height(), m.get_cols(), m.get_rows());
 			view.update(to_animals_info(this._sim.get_animals()), this._sim.get_time(), dt);
 		}
 
 		while (this._sim.get_time() <= t) {
-			this._sim.advance(dt);
+			this.advance(dt);
 			if (sv)
 				view.update(to_animals_info(this._sim.get_animals()), this._sim.get_time(), dt);
 		}
@@ -95,6 +88,38 @@ public class Controller {
 			ol.add(new ObjInfo(a.get_genetic_code(), (int) a.get_position().getX(), (int) a.get_position().getY(),
 					(int) Math.round(a.get_age()) + 2));
 		return ol;
+	}
+	
+	public void reset(int cols, int rows, int width, int height) {
+		this.reset(cols, rows, width, height);
+	}
+	
+	public void set_regions(JSONObject rs) {
+		JSONArray ja = rs.getJSONArray(Messages.REGIONS_KEY);
+		
+		for (int i = 0; i < ja.length(); i++) {
+			
+			JSONObject jo = ja.getJSONObject(i);
+			
+			JSONArray jac = jo.getJSONArray(Messages.COLUMN_KEY);
+			JSONArray jar = jo.getJSONArray(Messages.ROW_KEY);
+			
+			for (int col = jac.getInt(0); col <= jac.getInt(1); col++)
+				for (int row = jar.getInt(0); row <= jar.getInt(1); row++)
+					this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
+		}
+	}
+	
+	public void advance(double dt) {
+		this._sim.advance(dt);
+	}
+	
+	public void addObserver(EcoSysObserver o) {
+		this._sim.addObserver(o);
+	}
+	
+	public void removeObserver(EcoSysObserver o) {
+		this._sim.removeObserver(o);
 	}
 
 }
