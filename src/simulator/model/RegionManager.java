@@ -126,6 +126,12 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	// MapInfo
+	
+	@Override
+	public Iterator<RegionData> iterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public int get_cols() {
@@ -232,10 +238,5 @@ public class RegionManager implements AnimalMapView {
 
 		return jo;
 	}
-
-	@Override
-	public Iterator<RegionData> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
