@@ -196,7 +196,7 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 	}
 
 	// Notifications
-	
+
 	private void notify_on_register(EcoSysObserver o) {
 		o.onRegister(this.get_time(), this.get_map_info(), new ArrayList<>(this.get_animals()));
 	}
