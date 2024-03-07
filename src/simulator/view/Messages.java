@@ -97,6 +97,11 @@ public class Messages {
 	public static final String SHEEP_GENETIC_CODE = "Sheep";
 	public static final String WOLF_GENETIC_CODE = "Wolf";
 
+	// Region names
+
+	public static final String DEFAULT_REGION_NAME = "Default region";
+	public static final String DYNAMIC_REGION_NAME = "Dynamic region";
+
 	// Commands
 
 	public static final String COMMAND_DELTA_TIME_NAME = "delta-time";
@@ -146,12 +151,18 @@ public class Messages {
 
 	public static final String WOLF_BUILDER_DESCRIPTION = "Wolf builder";
 	public static final String SHEEP_BUILDER_DESCRIPTION = "Sheep builder";
-	public static final String DEFAULT_REGION_BUILDER_DESCRIPTION = "Default region builder";
-	public static final String DYNAMIC_REGION_BUILDER_DESCRIPTION = "Dynamic region builder";
+	public static final String DEFAULT_REGION_BUILDER_DESCRIPTION = "Infinite food supply";
+	public static final String DYNAMIC_REGION_BUILDER_DESCRIPTION = "Dynamic food supply";
 	public static final String SELECT_FIRST_BUILDER_DESCRIPTION = "Select first builder";
 	public static final String SELECT_CLOSEST_BUILDER_DESCRIPTION = "Select closest builder";
 	public static final String SELECT_YOUNGEST_BUILDER_DESCRIPTION = "Select youngest builder";
 	public static final String SIMULATOR_BUILDER_DESCRIPTION = "Simulator builder";
+
+	// Builder data descriptions
+
+	public static final String FACTOR_DESCRIPTION = "food increase factor (optional, default 2.0)";
+	public static final String FOOD_DESCRIPTION = "initial amount of food (optional, default 100.0)";
+	public static final String _DESCRIPTION = "";
 
 	// Execute mode tags
 

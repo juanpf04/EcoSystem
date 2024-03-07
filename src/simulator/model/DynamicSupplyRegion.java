@@ -42,4 +42,9 @@ public class DynamicSupplyRegion extends DefaultRegion {
 		this._food -= food;
 		return food;
 	}
+
+	@Override
+	public String toString() {
+		return Messages.DYNAMIC_REGION_NAME;
+	}
 }

@@ -72,6 +72,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		if (p1 == null || p2 == null)
 			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
 
+		this._age = 0.0;
 		this._dest = null;
 		this._baby = null;
 		this._mate_target = null;

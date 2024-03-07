@@ -25,4 +25,8 @@ public class DefaultRegion extends Region {
 				* dt;
 	}
 
+	@Override
+	public String toString() {
+		return Messages.DEFAULT_REGION_NAME;
+	}
 }

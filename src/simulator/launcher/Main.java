@@ -60,7 +60,7 @@ public class Main {
 	// some attributes to stores values corresponding to command-line parameters
 	//
 	private static Double _time = null;
-	private static Double _delta_time = null;
+	public static Double _delta_time = null;
 	private static String _in_file = null;
 	private static String _out_file = null;
 	private static ExecMode _mode = ExecMode.BATCH;
@@ -68,9 +68,9 @@ public class Main {
 
 	// factories
 	//
-	private static Factory<SelectionStrategy> _strategies_factory;
-	private static Factory<Animal> _animals_factory;
-	private static Factory<Region> _regions_factory;
+	public static Factory<SelectionStrategy> _strategies_factory;
+	public static Factory<Animal> _animals_factory;
+	public static Factory<Region> _regions_factory;
 
 	private static void parse_args(String[] args) {
 

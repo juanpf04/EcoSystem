@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 import org.json.JSONArray;
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 import simulator.view.Messages;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -127,6 +129,39 @@ public class RegionManager implements AnimalMapView {
 	// MapInfo
 
 	@Override
+	public Iterator<RegionData> iterator() { // TODO check
+		Iterator<RegionData> it = new Iterator<RegionData>() {
+
+			private int _row = 0;
+			private int _col = 0;
+
+			@Override
+			public RegionData next() {
+				if (!this.hasNext())
+					throw new NoSuchElementException("mensaje");
+
+				RegionData next_region = new RegionData(_row, _col, get_region(_row, _col));
+
+				this._col++;
+
+				if (this._col == get_cols()) {
+					this._col = 0;
+					this._row++;
+				}
+
+				return next_region;
+			}
+
+			@Override
+			public boolean hasNext() {
+				return this._row < RegionManager.this.get_rows() && this._col < get_cols();
+			}
+		};
+
+		return it;
+	}
+
+	@Override
 	public int get_cols() {
 		return this._cols;
 	}
@@ -231,4 +266,5 @@ public class RegionManager implements AnimalMapView {
 
 		return jo;
 	}
+
 }
