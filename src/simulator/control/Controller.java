@@ -91,7 +91,7 @@ public class Controller {
 	}
 	
 	public void reset(int cols, int rows, int width, int height) {
-		this.reset(cols, rows, width, height);
+		this._sim.reset(cols, rows, width, height);
 	}
 	
 	public void set_regions(JSONObject rs) {

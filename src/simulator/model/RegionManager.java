@@ -154,7 +154,7 @@ public class RegionManager implements AnimalMapView {
 
 			@Override
 			public boolean hasNext() {
-				return this._row < RegionManager.this.get_rows() && this._col < get_cols();
+				return this._row < get_rows() && this._col < get_cols();
 			}
 		};
 
