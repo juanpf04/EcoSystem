@@ -33,7 +33,7 @@ public class ControlPanel extends JPanel {
 	private JButton _stopButton;
 	private JButton _quitButton;
 
-	// TODO añade más atributos aquí …
+	// TODO aï¿½ade mï¿½s atributos aquï¿½ ï¿½
 
 	private JSpinner _spinner;
 	private JTextField _textField;
@@ -50,9 +50,9 @@ public class ControlPanel extends JPanel {
 		this._toolaBar = new JToolBar();
 		this.add(_toolaBar, BorderLayout.PAGE_START);
 
-		// TODO crear los diferentes botones/atributos y añadirlos a _toolaBar.
+		// TODO crear los diferentes botones/atributos y aï¿½adirlos a _toolaBar.
 		// Todos ellos han de tener su correspondiente tooltip. Puedes utilizar
-		// _toolaBar.addSeparator() para añadir la línea de separación vertical
+		// _toolaBar.addSeparator() para aï¿½adir la lï¿½nea de separaciï¿½n vertical
 		// entre las componentes que lo necesiten.
 
 		// Open Button
@@ -74,14 +74,21 @@ public class ControlPanel extends JPanel {
 		this._regionsButton = new JButton();
 		this._regionsButton.setToolTipText("Regions");
 		this._regionsButton.setIcon(new ImageIcon("resources/icons/regions.png"));
-		this._regionsButton.addActionListener((e) -> ); // TODO check
+		this._regionsButton.addActionListener((e) -> _changeRegionsDialog.open(ViewUtils.getWindow(this))); // TODO check
 		this._toolaBar.add(this._regionsButton);
 
 		// Run Button
 		this._runButton = new JButton();
 		this._runButton.setToolTipText("Run");
 		this._runButton.setIcon(new ImageIcon("resources/icons/run.png"));
-		this._runButton.addActionListener((e) -> ); // TODO check
+		this._runButton.addActionListener((e) -> {
+			this._openButton.setVisible(false);
+			this._viewerButton.setVisible(false);
+			this._regionsButton.setVisible(false);
+			this._quitButton.setVisible(false);
+			this._stopped = false;
+			
+		}); // TODO check
 		this._toolaBar.add(this._runButton);
 
 		// Stop Button
@@ -108,9 +115,9 @@ public class ControlPanel extends JPanel {
 		//
 		// _fc.setCurrentDirectory(new File(System.getProperty("user.dir") +
 		// "/resources/examples"));
-		// TODO Inicializar _changeRegionsDialog con instancias del diálogo de cambio
+		// TODO Inicializar _changeRegionsDialog con instancias del diï¿½logo de cambio
 		// de regiones
 	}
-	// TODO el resto de métodos van aquí…
+	// TODO el resto de mï¿½todos van aquï¿½
 
 }
