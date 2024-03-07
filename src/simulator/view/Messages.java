@@ -177,4 +177,5 @@ public class Messages {
 	// View
 
 	public static final String TITLE = "[ECOSYSTEM]";
+	public static final String GUI_TITLE = "[ECOSYSTEM SIMULATOR]";
 }
