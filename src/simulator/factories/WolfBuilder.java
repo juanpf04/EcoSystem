@@ -13,15 +13,15 @@ import simulator.view.Messages;
 
 public class WolfBuilder extends Builder<Animal> {
 
-	private Factory<SelectionStrategy> _selection_strategy_factory;
+	private Factory<SelectionStrategy> _strategies_factory;
 
-	public WolfBuilder(Factory<SelectionStrategy> selection_strategy_factory) {
+	public WolfBuilder(Factory<SelectionStrategy> strategies_factory) {
 		super(Messages.WOLF_TAG, Messages.WOLF_BUILDER_DESCRIPTION);
 
-		if (selection_strategy_factory == null)
+		if (strategies_factory == null)
 			throw new IllegalArgumentException(Messages.INVALID_FACTORY);
 
-		this._selection_strategy_factory = selection_strategy_factory;
+		this._strategies_factory = strategies_factory;
 	}
 
 	@Override
@@ -29,16 +29,15 @@ public class WolfBuilder extends Builder<Animal> {
 		if (data == null)
 			throw new IllegalArgumentException(Messages.INVALID_JSON);
 
-		SelectionStrategy mate_strategy = new SelectFirst(), hunt_strategy = new SelectFirst();
 		Vector2D position = null;
 
-		if (data.has(Messages.MATE_STRATEGY_KEY))
-			mate_strategy = this._selection_strategy_factory
-					.create_instance(data.getJSONObject(Messages.MATE_STRATEGY_KEY));
-
-		if (data.has(Messages.HUNT_STRATEGY_KEY))
-			hunt_strategy = this._selection_strategy_factory
-					.create_instance(data.getJSONObject(Messages.HUNT_STRATEGY_KEY));
+		SelectionStrategy mate_strategy = data.has(Messages.MATE_STRATEGY_KEY)
+				? this._strategies_factory.create_instance(data.getJSONObject(Messages.MATE_STRATEGY_KEY))
+				: new SelectFirst();
+		
+		SelectionStrategy hunt_strategy = data.has(Messages.HUNT_STRATEGY_KEY)
+				? this._strategies_factory.create_instance(data.getJSONObject(Messages.HUNT_STRATEGY_KEY))
+				: new SelectFirst();
 
 		if (data.has(Messages.POSITION_KEY)) {
 			JSONObject jo = data.getJSONObject(Messages.POSITION_KEY);
