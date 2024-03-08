@@ -76,7 +76,7 @@ public class ControlPanel extends JPanel {
 		this._regionsButton = new JButton();
 		this._regionsButton.setToolTipText("Regions");
 		this._regionsButton.setIcon(new ImageIcon("resources/icons/regions.png"));
-		this._regionsButton.addActionListener((e) -> _changeRegionsDialog.open(ViewUtils.getWindow(this))); // TODO check
+		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this))); // TODO check
 		this._toolaBar.add(this._regionsButton);
 
 		// Run Button
@@ -107,7 +107,7 @@ public class ControlPanel extends JPanel {
 		//spinner y lo otro
 		//Spinner
 		
-		_spinner = new JSpinner(new SpinnerNumberModel(5000, 1, 10000, 100));
+		this._spinner = new JSpinner(new SpinnerNumberModel(5000, 1, 10000, 100));
 		this._toolaBar.add(this._spinner);
 		
 		//JTextField
@@ -135,9 +135,9 @@ public class ControlPanel extends JPanel {
 	// TODO el resto de m�todos van aqu�
 	
 	private void run_sim(int n, double dt) {
-		if (n > 0 && !_stopped) {
+		if (n > 0 && !this._stopped) {
 			try {
-				_ctrl.advance(dt);
+				this._ctrl.advance(dt);
 				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
 			} catch (Exception e) {
 				// TODO llamar a ViewUtils.showErrorMsg con el mensaje de error
@@ -149,12 +149,12 @@ public class ControlPanel extends JPanel {
 				
 				this.enableButtons();
 
-				_stopped = true;
+				this._stopped = true;
 			}
 		} else {
 			// TODO activar todos los botones
 			this.enableButtons();
-			_stopped = true;
+			this._stopped = true;
 		}
 	}
 	private void enableButtons() {

@@ -178,4 +178,14 @@ public class Messages {
 
 	public static final String TITLE = "[ECOSYSTEM]";
 	public static final String GUI_TITLE = "[ECOSYSTEM SIMULATOR]";
+	
+	// Buttons
+	
+	
+	
+	// Icons
+	
+	public static final String ICONS_DIRECTORY = "resources/icons/";
+	
+	
 }
