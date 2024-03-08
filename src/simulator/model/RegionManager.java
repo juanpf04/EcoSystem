@@ -130,7 +130,7 @@ public class RegionManager implements AnimalMapView {
 
 	@Override
 	public Iterator<RegionData> iterator() { // TODO check
-		Iterator<RegionData> it = new Iterator<RegionData>() {
+		return new Iterator<RegionData>() {
 
 			private int _row = 0;
 			private int _col = 0;
@@ -156,9 +156,12 @@ public class RegionManager implements AnimalMapView {
 			public boolean hasNext() {
 				return this._row < get_rows() && this._col < get_cols();
 			}
+			
+			@Override
+			public void remove() {
+				// TODO
+			}
 		};
-
-		return it;
 	}
 
 	@Override
