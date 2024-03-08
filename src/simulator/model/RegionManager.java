@@ -133,14 +133,12 @@ public class RegionManager implements AnimalMapView {
 		return new Iterator<RegionData>() {
 
 			private int _row = 0;
-			private int _col = 0;
+			private int _col = -1;
 
 			@Override
 			public RegionData next() {
 				if (!this.hasNext())
 					throw new NoSuchElementException("mensaje");
-
-				RegionData next_region = new RegionData(_row, _col, get_region(_row, _col));
 
 				this._col++;
 
@@ -149,17 +147,12 @@ public class RegionManager implements AnimalMapView {
 					this._row++;
 				}
 
-				return next_region;
+				return new RegionData(_row, _col, get_region(_row, _col));
 			}
-
+			// TODO  esto es muuy cutre cabrón, espabila!!!!!
 			@Override
 			public boolean hasNext() {
 				return this._row < get_rows() && this._col < get_cols();
-			}
-			
-			@Override
-			public void remove() {
-				// TODO
 			}
 		};
 	}
