@@ -1,11 +1,13 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -57,7 +59,7 @@ public class ControlPanel extends JPanel {
 		// _toolaBar.addSeparator() para a�adir la l�nea de separaci�n vertical
 		// entre las componentes que lo necesiten.*/
 
-		// Open Button
+		// Open Button*/
 		this._openButton = new JButton();
 		this._openButton.setToolTipText("Open");
 		this._openButton.setIcon(new ImageIcon("resources/icons/open.png"));
@@ -90,7 +92,7 @@ public class ControlPanel extends JPanel {
 			this._quitButton.setEnabled(false);
 			this._stopped = false;
 			
-			this._delta_time =  this._textField.getText();
+			this._delta_time =  Double.valueOf(this._textField.getText());
 			
 			this.run_sim((Integer) this._spinner.getValue(), this._delta_time); //TODO REVISAR
 		}); // TODO check
@@ -106,11 +108,14 @@ public class ControlPanel extends JPanel {
 
 		//spinner y lo otro
 		//Spinner
-		
+		JLabel l_steps = new JLabel("Steps: ");
+		this._toolaBar.add(l_steps);
 		this._spinner = new JSpinner(new SpinnerNumberModel(5000, 1, 10000, 100));
 		this._toolaBar.add(this._spinner);
 		
 		//JTextField
+		JLabel l_deltaTime = new JLabel("Delta-Time: ");
+		this._toolaBar.add(l_deltaTime);
 		this._textField= new JTextField(10);
 		this._textField.setBounds(100,50,120,30); // ¿Donde colocar el txtField?
 		this._toolaBar.add(this._textField);
@@ -126,6 +131,9 @@ public class ControlPanel extends JPanel {
 
 		// TODO Inicializar _fc con una instancia de JFileChooser. Para que siempre
 		// abre en la carpeta de ejemplos puedes usar:
+		
+		this._fc = new JFileChooser();
+		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources/examples"));
 		//
 		// _fc.setCurrentDirectory(new File(System.getProperty("user.dir") +
 		// "/resources/examples"));

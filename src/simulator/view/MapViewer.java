@@ -19,29 +19,29 @@ import java.util.Map.Entry;
 @SuppressWarnings("serial")
 public class MapViewer extends AbstractMapViewer {
 
-	// Anchura/altura/ de la simulación -- se supone que siempre van a ser iguales
-	// al tamaño del componente
+	// Anchura/altura/ de la simulaciï¿½n -- se supone que siempre van a ser iguales
+	// al tamaï¿½o del componente
 	private int _width;
 	private int _height;
 
-	// Número de filas/columnas de la simulación
+	// Nï¿½mero de filas/columnas de la simulaciï¿½n
 	private int _rows;
 	private int _cols;
 
-	// Anchura/altura de una región
+	// Anchura/altura de una regiï¿½n
 	int _rwidth;
 	int _rheight;
 
-	// Mostramos sólo animales con este estado. Los posibles valores de _currState
+	// Mostramos sï¿½lo animales con este estado. Los posibles valores de _currState
 	// son null, y los valores deAnimal.State.values(). Si es null mostramos todo.
 	Animal.State _currState;
 
 	// En estos atributos guardamos la lista de animales y el tiempo que hemos
-	// recibido la última vez para dibujarlos.
+	// recibido la ï¿½ltima vez para dibujarlos.
 	volatile private Collection<AnimalInfo> _objs;
 	volatile private Double _time;
 
-	// Una clase auxilar para almacenar información sobre una especie
+	// Una clase auxilar para almacenar informaciï¿½n sobre una especie
 	private static class SpeciesInfo {
 		private Integer _count;
 		private Color _color;
@@ -52,7 +52,7 @@ public class MapViewer extends AbstractMapViewer {
 		}
 	}
 
-	// Un mapa para la información sobre las especies
+	// Un mapa para la informaciï¿½n sobre las especies
 	Map<String, SpeciesInfo> _kindsInfo = new HashMap<>();
 
 	// El font que usamos para dibujar texto
@@ -76,8 +76,8 @@ public class MapViewer extends AbstractMapViewer {
 					repaint();
 					break;
 				case 's':
-					// TODO Cambiar _currState al siguiente (de manera circular). Después de null
-					// viene el primero de Animal.State.values() y después del último viene null.
+					// TODO Cambiar _currState al siguiente (de manera circular). Despuï¿½s de null
+					// viene el primero de Animal.State.values() y despuï¿½s del ï¿½ltimo viene null.
 					repaint();
 				default:
 				}
@@ -89,7 +89,7 @@ public class MapViewer extends AbstractMapViewer {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				requestFocus(); // Esto es necesario para capturar las teclas cuando el ratón está sobre este
+				requestFocus(); // Esto es necesario para capturar las teclas cuando el ratï¿½n estï¿½ sobre este
 								// componente.
 			}
 		});
@@ -121,7 +121,7 @@ public class MapViewer extends AbstractMapViewer {
 			drawObjects(gr, _objs, _time);
 
 		// TODO Mostrar el texto de ayuda si _showHelp es true. El texto a mostrar es el
-		// siguiente (en 2 líneas):
+		// siguiente (en 2 lï¿½neas):
 		//
 		// h: toggle help
 		// s: show animals of a specific state
@@ -141,21 +141,21 @@ public class MapViewer extends AbstractMapViewer {
 		// Dibujar los animales
 		for (AnimalInfo a : animals) {
 
-			// Si no es visible saltamos la iteración
+			// Si no es visible saltamos la iteraciï¿½n
 			if (!visible(a))
 				continue;
 
-			// La información sobre la especie de 'a'
+			// La informaciï¿½n sobre la especie de 'a'
 			SpeciesInfo esp_info = _kindsInfo.get(a.get_genetic_code());
 
-			// TODO Si esp_info es null, añade una entrada correspondiente al mapa. Para el
+			// TODO Si esp_info es null, aï¿½ade una entrada correspondiente al mapa. Para el
 			// color usa ViewUtils.get_color(a.get_genetic_code())
 
 			// TODO Incrementar el contador de la especie (es decir el contador dentro de
 			// tag_info)
 
 			// TODO Dibijar el animal en la posicion correspondiente, usando el color
-			// tag_info._color. Su tamaño tiene que ser relativo a su edad, por ejemplo
+			// tag_info._color. Su tamaï¿½o tiene que ser relativo a su edad, por ejemplo
 			// edad/2+2. Se puede dibujar usando fillRoundRect, fillRect o fillOval.
 
 		}
@@ -165,13 +165,13 @@ public class MapViewer extends AbstractMapViewer {
 		// TODO Dibujar la etiqueta del tiempo. Para escribir solo 3 decimales puede
 		// usar String.format("%.3f", time)
 
-		// TODO Dibujar la información de todas la especies. Al final de cada iteración
+		// TODO Dibujar la informaciï¿½n de todas la especies. Al final de cada iteraciï¿½n
 		// poner el contador de la especie correspondiente a 0 (para resetear el cuento)
 		for (Entry<String, SpeciesInfo> e : _kindsInfo.entrySet()) {
 		}
 	}
 
-	// Un método que dibujar un texto con un rectángulo
+	// Un mï¿½todo que dibujar un texto con un rectï¿½ngulo
 	void drawStringWithRect(Graphics2D g, int x, int y, String s) {
 		Rectangle2D rect = g.getFontMetrics().getStringBounds(s, g);
 		g.drawString(s, x, y);
@@ -188,8 +188,8 @@ public class MapViewer extends AbstractMapViewer {
 	public void reset(double time, MapInfo map, List<AnimalInfo> animals) {
 		// TODO Actualizar los atributos _width, _height, _cols, _rows, etc.
 
-		// Esto cambia el tamaño del componente, y así cambia el tamaño de la ventana
-		// porque en MapWindow llamamos a pack() después de llamar a reset
+		// Esto cambia el tamaï¿½o del componente, y asï¿½ cambia el tamaï¿½o de la ventana
+		// porque en MapWindow llamamos a pack() despuï¿½s de llamar a reset
 		setPreferredSize(new Dimension(map.get_width(), map.get_height()));
 
 		// Dibuja el estado

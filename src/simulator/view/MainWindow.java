@@ -14,7 +14,9 @@ public class MainWindow extends JFrame {
 
 	/**
 	 * 
-	 */
+	 */ 
+
+
 	private static final long serialVersionUID = 1L;
 	
 	private Controller _ctrl;
@@ -29,25 +31,25 @@ public class MainWindow extends JFrame {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
 		
-		// TODO crear ControlPanel y añadirlo en PAGE_START de mainPanel
+		// TODO crear ControlPanel y aï¿½adirlo en PAGE_START de mainPanel
 		ControlPanel controlPanel = new ControlPanel(this._ctrl);
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
 		
-		// TODO crear StatusBar y añadirlo en PAGE_END de mainPanel
+		// TODO crear StatusBar y aï¿½adirlo en PAGE_END de mainPanel
 		StatusBar statusBar = new StatusBar(this._ctrl);
 		mainPanel.add(statusBar, BorderLayout.PAGE_END);
 		
-		// Definición del panel de tablas (usa un BoxLayout vertical)
+		// Definiciï¿½n del panel de tablas (usa un BoxLayout vertical)
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 		
-		// TODO crear la tabla de especies y añadirla a contentPanel.
+		// TODO crear la tabla de especies y aï¿½adirla a contentPanel.
 		
 		SpeciesTableModel species = new SpeciesTableModel(this._ctrl);
 		contentPanel.add(species); 
 		
-		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
+		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaï¿½o
 		
 		species.setPreferredSize(new Dimension(500, 250));
 		
@@ -55,11 +57,11 @@ public class MainWindow extends JFrame {
 		
 		RegionsTableModel regions = new RegionsTableModel(this._ctrl);
 		
-		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
+		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaï¿½o
 		
 		regions.setPreferredSize(new Dimension(500, 250));
 		
-		// TODO llama a ViewUtils.quit(MainWindow.this) en el método windowClosing
+		// TODO llama a ViewUtils.quit(MainWindow.this) en el mï¿½todo windowClosing
 		
 		this.windowClosing();
 		
