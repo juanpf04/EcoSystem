@@ -248,8 +248,10 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	@Override
 	public boolean is_out() {
-		return this.get_position().getX() < 0 || this.get_position().getX() >= this._region_mngr.get_width()
-				|| this.get_position().getY() < 0 || this.get_position().getY() >= this._region_mngr.get_height();
+		double x = this.get_position().getX();
+		double y = this.get_position().getY();
+
+		return x < 0 || x >= this._region_mngr.get_width() || y < 0 || y >= this._region_mngr.get_height();
 	}
 
 	@Override
@@ -412,12 +414,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return this.distanceTo(a) <= a.get_sight_range();
 	}
 
-	protected boolean in_action_range(Vector2D other) {
-		return this.get_position().distanceTo(other) < ACTION_RANGE;
+	protected boolean in_action_range(Vector2D pos) {
+		return this.get_position().distanceTo(pos) < ACTION_RANGE;
 	}
 
-	protected boolean in_action_range(Animal other) {
-		return this.in_action_range(other.get_position());
+	protected boolean in_action_range(Animal a) {
+		return this.in_action_range(a.get_position());
 	}
 
 	protected Vector2D random_position() {
@@ -426,14 +428,20 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected void adjust_position() {
-		while (this.get_position().getX() >= this._region_mngr.get_width())
-			this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0));
-		while (this.get_position().getX() < 0)
-			this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
-		while (this.get_position().getY() >= this._region_mngr.get_height())
-			this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
-		while (this.get_position().getY() < 0)
-			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
+		Vector2D pos = this.get_position();
+		double x = pos.getX();
+		double y = pos.getY();
+		double width = this._region_mngr.get_width();
+		double height = this._region_mngr.get_height();
+
+		while (x >= width)
+			this._pos = pos.minus(new Vector2D(width, 0));
+		while (x < 0)
+			this._pos = pos.plus(new Vector2D(width, 0));
+		while (y >= height)
+			this._pos = pos.minus(new Vector2D(0, height));
+		while (y < 0)
+			this._pos = pos.plus(new Vector2D(0, height));
 	}
 
 	protected void set_dead() {
