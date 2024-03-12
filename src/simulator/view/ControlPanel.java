@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.File;
 
 import javax.swing.Box;
@@ -107,17 +108,20 @@ public class ControlPanel extends JPanel {
 		this._toolaBar.add(this._stopButton);
 
 		//spinner y lo otro
-		//Spinner
+		//JLabel para donde pone: Steps: 
 		JLabel l_steps = new JLabel("Steps: ");
 		this._toolaBar.add(l_steps);
-		this._spinner = new JSpinner(new SpinnerNumberModel(5000, 1, 10000, 100));
+		
+		//Spinner
+		this._spinner = new JSpinner(new SpinnerNumberModel(10000, 1, 10000, 100)); // Inicial y final?
 		this._toolaBar.add(this._spinner);
 		
 		//JTextField
 		JLabel l_deltaTime = new JLabel("Delta-Time: ");
 		this._toolaBar.add(l_deltaTime);
-		this._textField= new JTextField(10);
-		this._textField.setBounds(100,50,120,30); // ¿Donde colocar el txtField?
+		this._textField= new JTextField("0.3");
+		this._textField.setMinimumSize(new Dimension(300, 300)); // Ver que poner aqui 
+		this._textField.setMaximumSize(new Dimension(100,100));
 		this._toolaBar.add(this._textField);
 		
 		// Quit Button
@@ -129,9 +133,8 @@ public class ControlPanel extends JPanel {
 		this._quitButton.addActionListener((e) -> ViewUtils.quit(this)); // TODO check
 		this._toolaBar.add(this._quitButton);
 
-		// TODO Inicializar _fc con una instancia de JFileChooser. Para que siempre
-		// abre en la carpeta de ejemplos puedes usar:
 		
+		//fc
 		this._fc = new JFileChooser();
 		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources/examples"));
 		//
