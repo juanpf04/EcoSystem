@@ -3,6 +3,7 @@ package simulator.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.swing.Box;
@@ -71,10 +72,17 @@ public class ControlPanel extends JPanel {
 		this._openButton.addActionListener((e) -> {
 		int selection = this._fc.showOpenDialog(ViewUtils.getWindow(this));
 		if(selection == JFileChooser.APPROVE_OPTION) {
-			InputStream file = this._fc.getSelectedFile();
-			JSONObject json_data= load_JSON_file(file);
-			//this._ctrl.reset()
-			//this._ctrl.load_data(data);
+			File file = this._fc.getSelectedFile();
+			InputStream in = new FileInputStream(file);
+			JSONObject data= load_JSON_file(in);
+			
+			int cols = data.getInt(Messages.COLUMNS_KEY);
+			int rows = data.getInt(Messages.ROWS_KEY);
+			int width = data.getInt(Messages.WIDTH_KEY);
+			int height = data.getInt(Messages.HEIGHT_KEY);
+			
+			this._ctrl.reset(cols, rows, width, height);
+			this._ctrl.load_data(data);
 		}
 		;}); // TODO check
 		this._toolaBar.add(this._openButton);
@@ -144,7 +152,6 @@ public class ControlPanel extends JPanel {
 		this._quitButton.setIcon(new ImageIcon("resources/icons/exit.png"));
 		this._quitButton.addActionListener((e) -> ViewUtils.quit(this)); // TODO check
 		this._toolaBar.add(this._quitButton);
-
 		
 		//fc
 		this._fc = new JFileChooser();
@@ -154,6 +161,8 @@ public class ControlPanel extends JPanel {
 		// "/resources/examples"));
 		// TODO Inicializar _changeRegionsDialog con instancias del di�logo de cambio
 		// de regiones
+		
+		
 	}
 	// TODO el resto de m�todos van aqu�
 	
@@ -189,7 +198,7 @@ public class ControlPanel extends JPanel {
 		this._quitButton.setEnabled(true);
 	}
 	
-	private static JSONObject load_JSON_file(JFileChooser f) {
-		return new JSONObject(new JSONTokener(f));
+	private static JSONObject load_JSON_file(InputStream in) {
+		return new JSONObject(new JSONTokener(in));
 	}
 }
