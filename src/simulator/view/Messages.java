@@ -1,6 +1,6 @@
 package simulator.view;
 
-import simulator.model.State;
+import simulator.model.Animal;
 
 public class Messages {
 
@@ -76,7 +76,7 @@ public class Messages {
 	public static final String TIME_ERROR = "Time must be a positive number.";
 	public static final String ILLEGAL_STATE = "%s cannot be in %s state.";
 
-	public static final String illegal_state(String name, State state) {
+	public static final String illegal_state(String name, Animal.State state) {
 		return Messages.ILLEGAL_STATE.formatted(name, state.toString().toLowerCase());
 	}
 

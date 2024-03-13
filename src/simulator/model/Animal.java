@@ -24,7 +24,37 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected static final double MAX_DESIRE = 100.0;
 
 	protected String _genetic_code;
+	
+	public static enum Diet {
+		HERBIVORE(1.0), CARNIVORE(0.0);
+
+		private double _herbivorous_region_weighting;
+
+		Diet(double herbivorous_region_weighting) {
+			this._herbivorous_region_weighting = herbivorous_region_weighting;
+		}
+
+		public double get_herbivorous_region_weighting() {
+			return this._herbivorous_region_weighting;
+		}
+	}
+	
 	protected Diet _diet;
+	
+	public static enum State {
+		NORMAL(1.0), MATE(1.2), HUNGER(1.2), DANGER(1.2), DEAD(0.0);
+
+		private double _energy_weighting;
+
+		State(double energy_weighting) {
+			this._energy_weighting = energy_weighting;
+		}
+
+		public double get_energy_weighting() {
+			return _energy_weighting;
+		}
+	}
+	
 	protected State _state;
 	protected Vector2D _pos;
 	protected Vector2D _dest;
