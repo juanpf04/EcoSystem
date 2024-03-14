@@ -24,7 +24,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected static final double MAX_DESIRE = 100.0;
 
 	protected String _genetic_code;
-	
+
 	public static enum Diet {
 		HERBIVORE(1.0), CARNIVORE(0.0);
 
@@ -38,9 +38,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 			return this._herbivorous_region_weighting;
 		}
 	}
-	
+
 	protected Diet _diet;
-	
+
 	public static enum State {
 		NORMAL(1.0), MATE(1.2), HUNGER(1.2), DANGER(1.2), DEAD(0.0);
 
@@ -54,7 +54,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			return _energy_weighting;
 		}
 	}
-	
+
 	protected State _state;
 	protected Vector2D _pos;
 	protected Vector2D _dest;
@@ -178,14 +178,6 @@ public abstract class Animal implements Entity, AnimalInfo {
 				this.adjust_position();
 				this.set_normal();
 			}
-
-			if (this.normal()) {
-				this._mate_target = null;
-				this.update_reference_animal();
-			} else if (this.mate())
-				this.update_reference_animal();
-			else if (this.hunger() || this.danger())
-				this._mate_target = null;
 
 			if (this.get_energy() == MIN_ENERGY || this.get_age() > this.max_age())
 				this.set_dead();
@@ -480,18 +472,23 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	protected void set_normal() {
 		this._state = State.NORMAL;
+		this._mate_target = null;
+		this.update_reference_animal();
 	}
 
 	protected void set_mate() {
 		this._state = State.MATE;
+		this.update_reference_animal();
 	}
 
 	protected void set_danger() {
 		this._state = State.DANGER;
+		this._mate_target = null;
 	}
 
 	protected void set_hunger() {
 		this._state = State.HUNGER;
+		this._mate_target = null;
 	}
 
 }

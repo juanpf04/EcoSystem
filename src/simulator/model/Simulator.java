@@ -142,10 +142,14 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-		for (Animal a : this._animals) {
+//		for (Animal a : this._animals) { TODO
+//			a.update(dt);
+//			this._region_manager.update_animal_region(a);
+//		}
+		this._animals.forEach((Animal a) -> {
 			a.update(dt);
 			this._region_manager.update_animal_region(a);
-		}
+		});
 	}
 
 	private void remove_deaths() {
@@ -160,7 +164,7 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 		}
 	}
 
-	private void remove_animal(Animal a) {
+	private void remove_animal(Animal a) { // FIXME revisar remove a
 		if (a == null)
 			throw new IllegalArgumentException(Messages.INVALID_ANIMAL);
 

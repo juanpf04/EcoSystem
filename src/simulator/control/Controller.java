@@ -76,10 +76,9 @@ public class Controller {
 			view.close();
 
 		jo.put(Messages.OUT_KEY, this._sim.as_JSON());
-		if (out != null) {
-			PrintStream p = new PrintStream(out);
-			p.println(jo);
-		}
+
+		PrintStream p = new PrintStream(out);
+		p.println(jo);
 	}
 
 	private List<ObjInfo> to_animals_info(List<? extends AnimalInfo> animals) {
@@ -89,35 +88,35 @@ public class Controller {
 					(int) Math.round(a.get_age()) + 2));
 		return ol;
 	}
-	
+
 	public void reset(int cols, int rows, int width, int height) {
 		this._sim.reset(cols, rows, width, height);
 	}
-	
+
 	public void set_regions(JSONObject rs) {
 		JSONArray ja = rs.getJSONArray(Messages.REGIONS_KEY);
-		
+
 		for (int i = 0; i < ja.length(); i++) {
-			
+
 			JSONObject jo = ja.getJSONObject(i);
-			
+
 			JSONArray jac = jo.getJSONArray(Messages.COLUMN_KEY);
 			JSONArray jar = jo.getJSONArray(Messages.ROW_KEY);
-			
+
 			for (int col = jac.getInt(0); col <= jac.getInt(1); col++)
 				for (int row = jar.getInt(0); row <= jar.getInt(1); row++)
 					this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
 		}
 	}
-	
+
 	public void advance(double dt) {
 		this._sim.advance(dt);
 	}
-	
+
 	public void addObserver(EcoSysObserver o) {
 		this._sim.addObserver(o);
 	}
-	
+
 	public void removeObserver(EcoSysObserver o) {
 		this._sim.removeObserver(o);
 	}

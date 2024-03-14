@@ -212,7 +212,7 @@ public class Main {
 		InputStream in = new FileInputStream(new File(_in_file));
 		JSONObject data = load_JSON_file(in);
 
-		OutputStream out = _out_file != null ? new FileOutputStream(_out_file) : null;
+		OutputStream out = _out_file != null ? new FileOutputStream(_out_file) : System.out;
 
 		SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
 		Simulator simulator = sb.create_instance(data);
@@ -221,8 +221,7 @@ public class Main {
 		controller.load_data(data);
 		controller.run(_time, _delta_time, _simple_viewer, out);
 
-		if (out != null)
-			out.close();
+		out.close();
 	}
 
 	private static void start_GUI_mode() throws Exception {
