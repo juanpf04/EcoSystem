@@ -19,6 +19,11 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	// TODO el resto de métodos van aquí…
 
 	@Override
+	public String getColumnName(int i) {
+		
+	}
+	
+	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
 		return 0;

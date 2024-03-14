@@ -65,8 +65,7 @@ public class MainWindow extends JFrame {
 		
 		this.windowClosing();
 		
-		WindowListener quePONERAQUI;
-		addWindowListener(quePONERAQUI);
+		addWindowListener((WindowListener) this);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		pack();
 		setVisible(true);
