@@ -491,4 +491,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this._mate_target = null;
 	}
 
+	@Override
+	public String toString() {
+		return this.get_genetic_code();
+	}
+
 }
