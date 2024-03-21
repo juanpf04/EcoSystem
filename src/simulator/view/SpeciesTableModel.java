@@ -26,12 +26,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	SpeciesTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
 		this._header = new ArrayList<>();
-		this._species = this._ctrl.getSpecies();
-		
-		this._header.add("Species");
-		for(Animal.State s:Animal.State.values())
-			this._header.add(s.toString());
-	}
+		this._species = new ArrayList<>();
 
 	@Override
 	public int getRowCount() {
@@ -50,8 +45,6 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Animal.State s = Animal.State.valueOf(this.getColumnName(columnIndex));
-
 		return null;
 	}
 
