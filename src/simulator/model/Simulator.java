@@ -1,6 +1,8 @@
 package simulator.model;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.json.JSONObject;
 
@@ -229,6 +231,16 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 
 		for (EcoSysObserver o : this._observers)
 			o.onAvanced(this.get_time(), this.get_map_info(), animals, dt);
+	}
+
+	public List<String> getSpecies() {
+		List<String> species = new ArrayList<>();
+		
+		for(Animal a: this._animals)
+			if(!species.contains(a.get_genetic_code()))
+				species.add(a.get_genetic_code());
+				
+		return species;
 	}
 
 }

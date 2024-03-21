@@ -13,21 +13,15 @@ import simulator.model.RegionInfo;
 
 class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	// TODO definir atributos necesarios
+	private Controller _ctrl;
 	private String[] _header; // ={"nombre", dni, etc.}
 	private List<Region> _regions;
 
 	RegionsTableModel(Controller ctrl) {
-		// TODO inicializar estructuras de datos correspondientes
-		// TODO registrar this como observador
-		this._regions = la lista de regiones;
+		this._ctrl = ctrl;
 	}
 	// TODO el resto de métodos van aquí…
 
-	@Override
-	public String getColumnName(int index) {
-		return _header[index];
-
-	}
 
 	@Override
 	public int getRowCount() {
@@ -41,6 +35,11 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		return _header.length;
 	}
 
+	@Override
+	public String getColumnName(int index) {
+		return _header[index];
+	}
+	
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub

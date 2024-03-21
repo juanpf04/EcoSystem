@@ -46,7 +46,7 @@ public class MainWindow extends JFrame {
 		
 		// TODO crear la tabla de especies y a�adirla a contentPanel.
 		
-		SpeciesTableModel species = new InfoTable("Species", new SpeciesTableModel(_ctrl));
+		InfoTable species = new InfoTable("Species", new SpeciesTableModel(_ctrl));
 		contentPanel.add(species); 
 		
 		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tama�o
@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
 		
 		// TODO crear la tabla de regiones.
 		
-		RegionsTableModel regions = new InfoTable("Regions", new RegionsTableModel(_ctrl));
+		InfoTable regions = new InfoTable("Regions", new RegionsTableModel(_ctrl));
 		
 		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tama�o
 		

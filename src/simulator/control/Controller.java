@@ -3,6 +3,7 @@ package simulator.control;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -119,6 +120,10 @@ public class Controller {
 
 	public void removeObserver(EcoSysObserver o) {
 		this._sim.removeObserver(o);
+	}
+
+	public List<String> getSpecies() {
+		return this._sim.getSpecies();
 	}
 
 }
