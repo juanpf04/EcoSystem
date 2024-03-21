@@ -16,8 +16,8 @@ public class InfoTable extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String _title;
-	private TableModel _tableModel;
+	String _title;
+	TableModel _tableModel;
 
 	InfoTable(String title, TableModel tableModel) {
 		this._title = title;
