@@ -186,6 +186,8 @@ public class Messages {
 	// Icons
 	
 	public static final String ICONS_DIRECTORY = "resources/icons/";
+	public static final String CHANGE_REGIONS_HELP_DESCRIPTION = "Select a region type, the rows/cols interval, and provide"
+															+ "values for the parameters in the Value column (default values are used for parameters with no value).";
 	
 	
 }
