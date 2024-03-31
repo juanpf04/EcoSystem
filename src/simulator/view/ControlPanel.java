@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import javax.swing.Box;
@@ -73,16 +74,20 @@ public class ControlPanel extends JPanel {
 		int selection = this._fc.showOpenDialog(ViewUtils.getWindow(this));
 		if(selection == JFileChooser.APPROVE_OPTION) {
 			File file = this._fc.getSelectedFile();
-			InputStream in = new FileInputStream(file);
-			JSONObject data= load_JSON_file(in);
+			try {
+				JSONObject data= load_JSON_file(new FileInputStream(file));
+				int cols = data.getInt(Messages.COLUMNS_KEY);
+				int rows = data.getInt(Messages.ROWS_KEY);
+				int width = data.getInt(Messages.WIDTH_KEY);
+				int height = data.getInt(Messages.HEIGHT_KEY);
+				
+				this._ctrl.reset(cols, rows, width, height);
+				this._ctrl.load_data(data);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
-			int cols = data.getInt(Messages.COLUMNS_KEY);
-			int rows = data.getInt(Messages.ROWS_KEY);
-			int width = data.getInt(Messages.WIDTH_KEY);
-			int height = data.getInt(Messages.HEIGHT_KEY);
-			
-			this._ctrl.reset(cols, rows, width, height);
-			this._ctrl.load_data(data);
 		}
 		;}); // TODO check
 		this._toolaBar.add(this._openButton);
@@ -107,16 +112,17 @@ public class ControlPanel extends JPanel {
 		this._runButton.setToolTipText("Run");
 		this._runButton.setIcon(new ImageIcon("resources/icons/run.png"));
 		this._runButton.addActionListener((e) -> {
+			this._stopped = false;
 			this._openButton.setEnabled(false);
 			this._viewerButton.setEnabled(false);
 			this._regionsButton.setEnabled(false);
-			this._quitButton.setEnabled(false);
-			this._stopped = false;
+			this._runButton.setEnabled(false);
+			this._stopButton.setEnabled(true);
 			
 			this._delta_time =  Double.valueOf(this._textField.getText());
-			
 			this.run_sim((Integer) this._spinner.getValue(), this._delta_time); //TODO REVISAR
 		}); // TODO check
+		
 		this._toolaBar.add(this._runButton);
 
 		// Stop Button
@@ -124,7 +130,15 @@ public class ControlPanel extends JPanel {
 		this._stopButton = new JButton();
 		this._stopButton.setToolTipText("Stop");
 		this._stopButton.setIcon(new ImageIcon("resources/icons/stop.png"));
-		this._stopButton.addActionListener((e) -> this._stopped = true); // TODO check
+		this._stopButton.addActionListener((e) ->{
+			this._openButton.setEnabled(true);
+			this._viewerButton.setEnabled(true);
+			this._regionsButton.setEnabled(true);
+			this._quitButton.setEnabled(true);
+			this._runButton.setEnabled(true);
+			this._stopped = true;
+			
+		}); // TODO check
 		this._toolaBar.add(this._stopButton);
 
 		//spinner y lo otro
@@ -133,13 +147,13 @@ public class ControlPanel extends JPanel {
 		this._toolaBar.add(l_steps);
 		
 		//Spinner
-		this._spinner = new JSpinner(new SpinnerNumberModel(10000, 1, 10000, 100)); // Inicial y final?
+		this._spinner = new JSpinner(new SpinnerNumberModel(10, 10, 10000, 100)); // Inicial y final?
 		this._toolaBar.add(this._spinner);
 		
 		//JTextField
 		JLabel l_deltaTime = new JLabel("Delta-Time: ");
 		this._toolaBar.add(l_deltaTime);
-		this._textField= new JTextField("0.3");
+		this._textField= new JTextField("0.03");
 		this._textField.setMinimumSize(new Dimension(300, 300)); // Ver que poner aqui 
 		this._textField.setMaximumSize(new Dimension(100,100));
 		this._toolaBar.add(this._textField);
@@ -163,14 +177,15 @@ public class ControlPanel extends JPanel {
 		// de regiones
 		
 		
+		
 	}
 	// TODO el resto de m�todos van aqu�
 	
 	private void run_sim(int n, double dt) {
 		if (n > 0 && !this._stopped) {
 			try {
-				this._ctrl.advance(dt);
-				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
+			this._ctrl.advance(dt);
+			SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
 			} catch (Exception e) {
 				// TODO llamar a ViewUtils.showErrorMsg con el mensaje de error
 				// que corresponda

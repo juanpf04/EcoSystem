@@ -12,10 +12,10 @@ import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
 
-class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
+/*class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	/**
 	 * 
-	 */
+	 
 	private static final long serialVersionUID = 1L;
 
 	//dos mapas map(map(numero, stado), especie)
@@ -91,4 +91,4 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		// TODO Auto-generated method stub
 
 	}
-}
+}*/

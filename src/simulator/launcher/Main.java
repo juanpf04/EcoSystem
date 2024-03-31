@@ -19,11 +19,14 @@ import org.json.JSONTokener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import simulator.misc.Utils;
 import simulator.model.Animal;
 import simulator.model.Region;
 import simulator.model.SelectionStrategy;
 import simulator.model.Simulator;
+import simulator.view.MainWindow;
 import simulator.view.Messages;
 import simulator.control.Controller;
 import simulator.factories.*;
@@ -63,7 +66,7 @@ public class Main {
 	public static Double _delta_time = null;
 	private static String _in_file = null;
 	private static String _out_file = null;
-	private static ExecMode _mode = ExecMode.BATCH;
+	private static ExecMode _mode = ExecMode.GUI;
 	private static boolean _simple_viewer = false;
 
 	// factories
@@ -225,7 +228,18 @@ public class Main {
 	}
 
 	private static void start_GUI_mode() throws Exception {
-		throw new UnsupportedOperationException(Messages.GUI_ERROR);
+		
+			InputStream in = new FileInputStream(new File(_in_file));
+			JSONObject data = load_JSON_file(in);
+
+			SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
+			Simulator simulator = sb.create_instance(data);
+
+			Controller controller = new Controller(simulator);
+			controller.load_data(data);
+			SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
+			
+			//throw new UnsupportedOperationException(Messages.GUI_ERROR);
 	}
 
 	private static void start(String[] args) throws Exception {
@@ -251,4 +265,6 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
+	
+	
 }

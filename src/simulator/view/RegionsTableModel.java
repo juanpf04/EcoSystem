@@ -1,4 +1,4 @@
-package simulator.view;
+/*package simulator.view;
 
 import java.util.List;
 
@@ -12,6 +12,10 @@ import simulator.model.Region;
 import simulator.model.RegionInfo;
 
 class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
+	/**
+	 * 
+	 
+	private static final long serialVersionUID = 1L;
 	// TODO definir atributos necesarios
 	private Controller _ctrl;
 	private String[] _header; // ={"nombre", dni, etc.}
@@ -91,4 +95,4 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		// TODO Auto-generated method stub
 
 	}
-}
+}*/

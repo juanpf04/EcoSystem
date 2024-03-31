@@ -46,27 +46,27 @@ public class MainWindow extends JFrame {
 		
 		// TODO crear la tabla de especies y a�adirla a contentPanel.
 		
-		InfoTable species = new InfoTable("Species", new SpeciesTableModel(_ctrl));
-		contentPanel.add(species); 
+		/*InfoTable species = new InfoTable("Species", new SpeciesTableModel(_ctrl));
+		contentPanel.add(species); */
 		
 		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tama�o
 		
-		species.setPreferredSize(new Dimension(500, 250));
+		//species.setPreferredSize(new Dimension(500, 250));
 		
 		// TODO crear la tabla de regiones.
 		
-		InfoTable regions = new InfoTable("Regions", new RegionsTableModel(_ctrl));
+		//InfoTable regions = new InfoTable("Regions", new RegionsTableModel(_ctrl));
 		
 		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tama�o
 		
-		regions.setPreferredSize(new Dimension(500, 250));
+		//regions.setPreferredSize(new Dimension(500, 250));
 		
 		// TODO llama a ViewUtils.quit(MainWindow.this) en el m�todo windowClosing
 		
-		this.windowClosing();
+		//	this.windowClosing();
 		
-		addWindowListener((WindowListener) this);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		//addWindowListener((WindowListener) this); // ESTO NO VA, PABLO NOS LA HA LIADO GORDA
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}
