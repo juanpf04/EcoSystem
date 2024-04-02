@@ -106,20 +106,39 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		//usa la clave “desc” o “type” de los JSONObject en _regionsInfo,
 		//ya que estos nos dan información sobre lo que puede crear la factoría.
 		
+		String[] descripciones = new String[this._regionsInfo.size()];
+		int i = 0;
+		for (JSONObject jo: this._regionsInfo) {
+			descripciones[i] = jo.getString("desc");
+			i++;
+		}
+		
+		this._regionsModel = new DefaultComboBoxModel<String>();
+		
 		
 		// TODO crear un combobox que use _regionsModel y añadirlo al diálogo.
 		
 		JComboBox<String> regions_combobox = new JComboBox<String>(this._regionsModel);
-		combobox.add(regions_combobox);
+		this.add(regions_combobox);
 		
 		// TODO crear 4 modelos de combobox para _fromRowModel, _toRowModel, _fromColModel y _toColModel.
+		String[] opciones = {"1","2","3","4","5","6","7","8","9","10"};
+		
+		this._fromRowModel = new DefaultComboBoxModel<String>(opciones);
+		this._toRowModel = new DefaultComboBoxModel<String>(opciones);
+		this._fromColModel = new DefaultComboBoxModel<String>(opciones);
+		this._toColModel = new DefaultComboBoxModel<String>(opciones);
+		// FUMADA DE LAS GRANDES, MIRAR
+		
+		// TODO crear 4 combobox que usen estos modelos y añadirlos al diálogo.
 		JComboBox<String> fromRowModel_combobox = new JComboBox<String>(this._fromRowModel);
 		JComboBox<String> toRowModel_combobox = new JComboBox<String>(this._toRowModel);
 		JComboBox<String> fromColModel_combobox = new JComboBox<String>(this._fromColModel);
 		JComboBox<String> toColModel_combobox = new JComboBox<String>(this._toColModel);
-		// FUMADA DE LAS GRANDES, MIRAR
-		
-		// TODO crear 4 combobox que usen estos modelos y añadirlos al diálogo.
+		this.add(fromColModel_combobox);
+		this.add(toColModel_combobox);
+		this.add(fromRowModel_combobox);
+		this.add(toRowModel_combobox);
 		
 		// ????
 		

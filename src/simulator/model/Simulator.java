@@ -142,14 +142,14 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 		if (dt <= 0)
 			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
 
-//		for (Animal a : this._animals) { TODO
-//			a.update(dt);
-//			this._region_manager.update_animal_region(a);
-//		}
-		this._animals.forEach((Animal a) -> {
+		for (Animal a : this._animals) {
 			a.update(dt);
 			this._region_manager.update_animal_region(a);
-		});
+		}
+//		this._animals.forEach((Animal a) -> {
+//			a.update(dt);
+//			this._region_manager.update_animal_region(a);
+//		});
 	}
 
 	private void remove_deaths() {

@@ -76,7 +76,7 @@ public class ControlPanel extends JPanel {
 		if(selection == JFileChooser.APPROVE_OPTION) {
 			File file = this._fc.getSelectedFile();
 			try {
-				JSONObject data= load_JSON_file(new FileInputStream(file));
+				JSONObject data = load_JSON_file(new FileInputStream(file));
 				int cols = data.getInt(Messages.COLUMNS_KEY);
 				int rows = data.getInt(Messages.ROWS_KEY);
 				int width = data.getInt(Messages.WIDTH_KEY);
@@ -105,6 +105,7 @@ public class ControlPanel extends JPanel {
 		this._regionsButton = new JButton();
 		this._regionsButton.setToolTipText("Regions");
 		this._regionsButton.setIcon(new ImageIcon("resources/icons/regions.png"));
+		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
 		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this))); // TODO check
 		this._toolaBar.add(this._regionsButton);
 
@@ -119,8 +120,9 @@ public class ControlPanel extends JPanel {
 			this._regionsButton.setEnabled(false);
 			this._runButton.setEnabled(false);
 			
-			this._delta_time =  Double.valueOf(this._textField.getText());
-			this.run_sim((Integer) this._spinner.getValue(), this._delta_time); //TODO REVISAR
+			String delta_time = this._textField.getText();
+			this._delta_time =  Double.valueOf(delta_time);
+			this.run_sim((int) this._spinner.getValue(), this._delta_time); //TODO REVISAR
 		}); // TODO check
 		
 		this._toolaBar.add(this._runButton);
@@ -147,7 +149,7 @@ public class ControlPanel extends JPanel {
 		this._toolaBar.add(l_steps);
 		
 		//Spinner
-		this._spinner = new JSpinner(new SpinnerNumberModel(10, 10, 10000, 100)); // Inicial y final?
+		this._spinner = new JSpinner(new SpinnerNumberModel(2, 2, 10000, 100)); // Inicial y final?
 		this._toolaBar.add(this._spinner);
 		
 		//JTextField
@@ -190,7 +192,7 @@ public class ControlPanel extends JPanel {
 				// TODO llamar a ViewUtils.showErrorMsg con el mensaje de error
 				// que corresponda
 				
-				ViewUtils.showErrorMsg("Mensaje de error"); // cual es
+				ViewUtils.showErrorMsg(e.getMessage()); // cual es
 
 				// TODO activar todos los botones
 				
