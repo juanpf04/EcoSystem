@@ -2,9 +2,9 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
+import simulator.misc.Messages;
 import simulator.model.DynamicSupplyRegion;
 import simulator.model.Region;
-import simulator.view.Messages;
 
 public class DynamicSupplyRegionBuilder extends Builder<Region> {
 

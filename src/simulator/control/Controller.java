@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.misc.Messages;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.Simulator;
-import simulator.view.Messages;
 import simulator.view.SimpleObjectViewer;
 import simulator.view.SimpleObjectViewer.ObjInfo;
 

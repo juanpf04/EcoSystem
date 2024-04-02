@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 
 import simulator.control.Controller;
+import simulator.misc.Messages;
 
 public class MainWindow extends JFrame {
 

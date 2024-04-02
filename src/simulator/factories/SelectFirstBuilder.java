@@ -2,9 +2,9 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
+import simulator.misc.Messages;
 import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
-import simulator.view.Messages;
 
 public class SelectFirstBuilder extends Builder<SelectionStrategy> {
 

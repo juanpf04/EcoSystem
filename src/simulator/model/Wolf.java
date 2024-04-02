@@ -1,7 +1,7 @@
 package simulator.model;
 
+import simulator.misc.Messages;
 import simulator.misc.Vector2D;
-import simulator.view.Messages;
 
 public class Wolf extends Animal {
 

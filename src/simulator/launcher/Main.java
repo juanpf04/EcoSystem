@@ -21,13 +21,13 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import simulator.misc.Messages;
 import simulator.misc.Utils;
 import simulator.model.Animal;
 import simulator.model.Region;
 import simulator.model.SelectionStrategy;
 import simulator.model.Simulator;
 import simulator.view.MainWindow;
-import simulator.view.Messages;
 import simulator.control.Controller;
 import simulator.factories.*;
 
@@ -44,12 +44,10 @@ public class Main {
 			_desc = modeDesc;
 		}
 
-		@SuppressWarnings("unused") // TODO remove
 		public String get_tag() {
 			return _tag;
 		}
 
-		@SuppressWarnings("unused") // TODO remove
 		public String get_desc() {
 			return _desc;
 		}
@@ -59,6 +57,7 @@ public class Main {
 	//
 	private final static Double _default_time = 10.0; // in seconds
 	private final static Double _default_delta_time = 0.03; // in seconds
+	private final static ExecMode _default_mode = ExecMode.GUI; // GUI mode
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
@@ -66,7 +65,7 @@ public class Main {
 	public static Double _delta_time = null;
 	private static String _in_file = null;
 	private static String _out_file = null;
-	private static ExecMode _mode = ExecMode.GUI;
+	private static ExecMode _mode = null;
 	private static boolean _simple_viewer = false;
 
 	// factories
@@ -89,6 +88,7 @@ public class Main {
 			parse_delta_time_option(line);
 			parse_help_option(line, cmdLineOptions);
 			parse_in_file_option(line);
+			parse_mode_option(line);
 			parse_out_file_option(line);
 			parse_simple_viewer_option(line);
 			parse_time_option(line);
@@ -126,6 +126,17 @@ public class Main {
 		// input file
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_INPUT_SHORTCUT).longOpt(Messages.COMMAND_INPUT_NAME)
 				.hasArg().desc(Messages.COMMAND_INPUT_DESCRIPTION).build());
+
+		StringBuilder modes = new StringBuilder();
+
+		for (ExecMode mode : ExecMode.values())
+			modes.append("'" + mode.get_tag() + "' (" + mode.get_desc() + "),");
+
+		modes.deleteCharAt(modes.length() - 1);
+
+		// mode
+		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_MODE_SHORTCUT).longOpt(Messages.COMMAND_MODE_NAME)
+				.hasArg().desc(Messages.command_mode_description(modes.toString())).build());
 
 		// output file
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_OUTPUT_SHORTCUT).longOpt(Messages.COMMAND_OUTPUT_NAME)
@@ -165,6 +176,17 @@ public class Main {
 		if (_mode == ExecMode.BATCH && _in_file == null) {
 			throw new ParseException(Messages.IN_FILE_ERROR);
 		}
+	}
+
+	private static void parse_mode_option(CommandLine line) throws ParseException {
+		String mode_tag = line.getOptionValue(Messages.COMMAND_MODE_SHORTCUT, _default_mode.get_tag());
+
+		for (ExecMode mode : ExecMode.values())
+			if (mode_tag.equals(mode.get_tag()))
+				_mode = mode;
+
+		if (_mode == null)
+			throw new ParseException(Messages.unknown_mode(mode_tag));
 	}
 
 	private static void parse_out_file_option(CommandLine line) throws ParseException {
@@ -228,18 +250,18 @@ public class Main {
 	}
 
 	private static void start_GUI_mode() throws Exception {
-		
-			InputStream in = new FileInputStream(new File(_in_file));
-			JSONObject data = load_JSON_file(in);
+		InputStream in = new FileInputStream(new File(_in_file));
+		JSONObject data = load_JSON_file(in);
 
-			SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
-			Simulator simulator = sb.create_instance(data);
+		SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
+		Simulator simulator = sb.create_instance(data);
 
-			Controller controller = new Controller(simulator);
-			controller.load_data(data);
-			SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
-			
-			//throw new UnsupportedOperationException(Messages.GUI_ERROR);
+		Controller controller = new Controller(simulator);
+		controller.load_data(data);
+
+		SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
+
+		// throw new UnsupportedOperationException(Messages.GUI_ERROR);
 	}
 
 	private static void start(String[] args) throws Exception {
@@ -265,6 +287,5 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 }

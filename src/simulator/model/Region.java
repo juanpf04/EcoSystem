@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import simulator.view.Messages;
+import simulator.misc.Messages;
 
 import java.util.ArrayList;
 import java.util.Collections;

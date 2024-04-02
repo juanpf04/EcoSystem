@@ -3,13 +3,13 @@ package simulator.factories;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.misc.Messages;
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 import simulator.model.Animal;
 import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
 import simulator.model.Sheep;
-import simulator.view.Messages;
 
 public class SheepBuilder extends Builder<Animal> {
 

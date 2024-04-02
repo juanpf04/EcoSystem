@@ -24,6 +24,7 @@ import org.json.JSONTokener;
 
 import simulator.control.Controller;
 import simulator.launcher.Main;
+import simulator.misc.Messages;
 
 public class ControlPanel extends JPanel {
 

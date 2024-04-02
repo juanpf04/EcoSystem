@@ -2,7 +2,7 @@ package simulator.model;
 
 import java.util.List;
 
-import simulator.view.Messages;
+import simulator.misc.Messages;
 
 public class SelectYoungest implements SelectionStrategy {
 

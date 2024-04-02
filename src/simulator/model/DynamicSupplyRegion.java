@@ -1,7 +1,7 @@
 package simulator.model;
 
+import simulator.misc.Messages;
 import simulator.misc.Utils;
-import simulator.view.Messages;
 
 public class DynamicSupplyRegion extends DefaultRegion {
 

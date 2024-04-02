@@ -2,10 +2,10 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
+import simulator.misc.Messages;
 import simulator.model.Animal;
 import simulator.model.Region;
 import simulator.model.Simulator;
-import simulator.view.Messages;
 
 public class SimulatorBuilder extends Builder<Simulator> {
 

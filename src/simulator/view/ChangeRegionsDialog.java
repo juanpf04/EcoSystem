@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import simulator.control.Controller;
 import simulator.launcher.Main;
+import simulator.misc.Messages;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;

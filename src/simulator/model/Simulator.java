@@ -5,7 +5,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import simulator.factories.Factory;
-import simulator.view.Messages;
+import simulator.misc.Messages;
 
 import java.util.ArrayList;
 import java.util.Collections;

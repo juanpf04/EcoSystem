@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
-import simulator.view.Messages;
+import simulator.misc.Messages;
 
 public class BuilderBasedFactory<T> implements Factory<T> {
 

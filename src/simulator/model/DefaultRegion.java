@@ -1,6 +1,6 @@
 package simulator.model;
 
-import simulator.view.Messages;
+import simulator.misc.Messages;
 
 public class DefaultRegion extends Region {
 

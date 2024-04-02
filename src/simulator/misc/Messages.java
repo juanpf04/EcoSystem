@@ -1,4 +1,4 @@
-package simulator.view;
+package simulator.misc;
 
 import simulator.model.Animal;
 
@@ -75,6 +75,7 @@ public class Messages {
 	public static final String DELTA_TIME_ERROR = "Delta time must be a positive number.";
 	public static final String TIME_ERROR = "Time must be a positive number.";
 	public static final String ILLEGAL_STATE = "%s cannot be in %s state.";
+	public static final String UNKNOWN_MODE = "Unknown execution mode %s.";
 
 	public static final String illegal_state(String name, Animal.State state) {
 		return Messages.ILLEGAL_STATE.formatted(name, state.toString().toLowerCase());
@@ -90,6 +91,10 @@ public class Messages {
 
 	public static final String invalid_time(String time) {
 		return Messages.INVALID_TIME.formatted(time);
+	}
+
+	public static final String unknown_mode(String mode_tag) {
+		return Messages.UNKNOWN_MODE.formatted(mode_tag);
 	}
 
 	// Animal genetic Codes
@@ -116,6 +121,10 @@ public class Messages {
 	public static final String COMMAND_INPUT_SHORTCUT = "i";
 	public static final String COMMAND_INPUT_DESCRIPTION = "Initial configuration file.";
 
+	public static final String COMMAND_MODE_NAME = "mode";
+	public static final String COMMAND_MODE_SHORTCUT = "m";
+	public static final String COMMAND_MODE_DESCRIPTION = "Execution Mode. Possible values: \n%s \nDefault value: 'gui'.";
+
 	public static final String COMMAND_OUTPUT_NAME = "output";
 	public static final String COMMAND_OUTPUT_SHORTCUT = "o";
 	public static final String COMMAND_OUTPUT_DESCRIPTION = "Output file, where output is written.";
@@ -134,6 +143,10 @@ public class Messages {
 
 	public static final String command_time_description(Double time) {
 		return Messages.COMMAND_TIME_DESCRIPTION.formatted(time);
+	}
+
+	public static final String command_mode_description(String modes) {
+		return Messages.COMMAND_MODE_DESCRIPTION.formatted(modes);
 	}
 
 	// Builder tags
@@ -178,16 +191,13 @@ public class Messages {
 
 	public static final String TITLE = "[ECOSYSTEM]";
 	public static final String GUI_TITLE = "[ECOSYSTEM SIMULATOR]";
-	
+
 	// Buttons
-	
-	
-	
+
 	// Icons
-	
+
 	public static final String ICONS_DIRECTORY = "resources/icons/";
 	public static final String CHANGE_REGIONS_HELP_DESCRIPTION = "Select a region type, the rows/cols interval, and provide"
-															+ "values for the parameters in the Value column (default values are used for parameters with no value).";
-	
-	
+			+ "values for the parameters in the Value column (default values are used for parameters with no value).";
+
 }

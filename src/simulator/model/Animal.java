@@ -4,9 +4,9 @@ import java.lang.IllegalArgumentException;
 
 import org.json.JSONObject;
 
+import simulator.misc.Messages;
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
-import simulator.view.Messages;
 
 public abstract class Animal implements Entity, AnimalInfo {
 

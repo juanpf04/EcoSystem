@@ -2,7 +2,7 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-import simulator.view.Messages;
+import simulator.misc.Messages;
 
 public abstract class Builder<T> {
 
