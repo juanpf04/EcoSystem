@@ -23,6 +23,8 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	RegionsTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
+		
+		this._ctrl.addObserver(this);
 	}
 	// TODO el resto de métodos van aquí…
 

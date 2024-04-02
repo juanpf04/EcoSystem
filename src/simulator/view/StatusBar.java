@@ -28,10 +28,14 @@ class StatusBar extends JPanel implements EcoSysObserver {
 	private int _rows;
 	private int _height;
 	private int _width;
+	private Controller _ctrl;
 
 	StatusBar(Controller ctrl) {
+		this._ctrl = ctrl;
 		initGUI();
 		// TODO registrar this como observador
+		
+		this._ctrl.addObserver(this);
 		
 		
 	}

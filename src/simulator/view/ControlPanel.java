@@ -118,7 +118,6 @@ public class ControlPanel extends JPanel {
 			this._viewerButton.setEnabled(false);
 			this._regionsButton.setEnabled(false);
 			this._runButton.setEnabled(false);
-			this._stopButton.setEnabled(true);
 			
 			this._delta_time =  Double.valueOf(this._textField.getText());
 			this.run_sim((Integer) this._spinner.getValue(), this._delta_time); //TODO REVISAR
@@ -210,7 +209,6 @@ public class ControlPanel extends JPanel {
 		this._viewerButton.setEnabled(true);
 		this._regionsButton.setEnabled(true);
 		this._runButton.setEnabled(true);
-		this._stopButton.setEnabled(true);
 		this._quitButton.setEnabled(true);
 	}
 	

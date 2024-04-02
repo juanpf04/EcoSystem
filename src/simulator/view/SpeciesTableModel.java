@@ -32,6 +32,8 @@ import simulator.model.RegionInfo;
 		this._header.add("Species");
 		for(Animal.State s:Animal.State.values())
 			this._header.add(s.toString());
+			
+			this._ctrl.addObserver(this);
 	}
 
 	@Override
@@ -51,9 +53,9 @@ import simulator.model.RegionInfo;
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Animal.State s = Animal.State.valueOf(this.getColumnName(columnIndex));
+		//Animal.State s = Animal.State.valueOf(this.getColumnName(columnIndex));
 
-		return null;
+		return _species[rowIndex][columnIndex];
 	}
 
 	@Override
