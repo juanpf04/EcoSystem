@@ -48,8 +48,6 @@ public class MainWindow extends JFrame {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("resources/icons/exit.png"));
-		
 		// TODO crear la tabla de especies y a�adirla a contentPanel.
 		
 		/*InfoTable species = new InfoTable("Species", new SpeciesTableModel(_ctrl));
@@ -68,8 +66,6 @@ public class MainWindow extends JFrame {
 		//regions.setPreferredSize(new Dimension(500, 250));
 		
 		// TODO llama a ViewUtils.quit(MainWindow.this) en el m�todo windowClosing
-		
-		//	this.windowClosing();
 		
 		addWindowListener(new WindowListener() {
 			
@@ -99,7 +95,6 @@ public class MainWindow extends JFrame {
 			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
 				ViewUtils.quit(MainWindow.this);
 			}
 			
@@ -114,7 +109,8 @@ public class MainWindow extends JFrame {
 				// TODO Auto-generated method stub
 				
 			}
-		}); // ESTO NO VA, PABLO NOS LA HA LIADO GORDA
+		});
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);

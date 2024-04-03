@@ -450,20 +450,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected void adjust_position() {
-		Vector2D pos = this.get_position();
-		double x = pos.getX();
-		double y = pos.getY();
-		double width = this._region_mngr.get_width();
-		double height = this._region_mngr.get_height();
-
-		while (this._pos.getX() >= width)
-			this._pos = pos.minus(new Vector2D(width, 0));
-		while (this._pos.getX() < 0)
-			this._pos = pos.plus(new Vector2D(width, 0));
-		while (this._pos.getY() >= height)
-			this._pos = pos.minus(new Vector2D(0, height));
-		while (this._pos.getY() < 0)
-			this._pos = pos.plus(new Vector2D(0, height));
+		while (this.get_position().getX() >= this._region_mngr.get_width())
+			this._pos = this.get_position().minus(new Vector2D(this._region_mngr.get_width(), 0));
+		while (this.get_position().getX() < 0)
+			this._pos = this.get_position().plus(new Vector2D(this._region_mngr.get_width(), 0));
+		while (this.get_position().getY() >= this._region_mngr.get_height())
+			this._pos = this.get_position().minus(new Vector2D(0, this._region_mngr.get_height()));
+		while (this.get_position().getY() < 0)
+			this._pos = this.get_position().plus(new Vector2D(0, this._region_mngr.get_height()));
 	}
 
 	protected void set_dead() {
