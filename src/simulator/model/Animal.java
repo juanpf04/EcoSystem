@@ -456,13 +456,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 		double width = this._region_mngr.get_width();
 		double height = this._region_mngr.get_height();
 
-		while (x >= width)
+		while (this._pos.getX() >= width)
 			this._pos = pos.minus(new Vector2D(width, 0));
-		while (x < 0)
+		while (this._pos.getX() < 0)
 			this._pos = pos.plus(new Vector2D(width, 0));
-		while (y >= height)
+		while (this._pos.getY() >= height)
 			this._pos = pos.minus(new Vector2D(0, height));
-		while (y < 0)
+		while (this._pos.getY() < 0)
 			this._pos = pos.plus(new Vector2D(0, height));
 	}
 

@@ -149,7 +149,7 @@ public class ControlPanel extends JPanel {
 		this._toolaBar.add(l_steps);
 		
 		//Spinner
-		this._spinner = new JSpinner(new SpinnerNumberModel(2, 2, 10000, 100)); // Inicial y final?
+		this._spinner = new JSpinner(new SpinnerNumberModel(10, 10, 10000, 100)); // Inicial y final?
 		this._toolaBar.add(this._spinner);
 		
 		//JTextField

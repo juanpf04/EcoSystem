@@ -2,9 +2,12 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
@@ -45,6 +48,8 @@ public class MainWindow extends JFrame {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("resources/icons/exit.png"));
+		
 		// TODO crear la tabla de especies y a�adirla a contentPanel.
 		
 		/*InfoTable species = new InfoTable("Species", new SpeciesTableModel(_ctrl));
@@ -66,13 +71,54 @@ public class MainWindow extends JFrame {
 		
 		//	this.windowClosing();
 		
-		//addWindowListener((WindowListener) this); // ESTO NO VA, PABLO NOS LA HA LIADO GORDA
+		addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				ViewUtils.quit(MainWindow.this);
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); // ESTO NO VA, PABLO NOS LA HA LIADO GORDA
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}
 	
-	public void windowClosing() {
-		ViewUtils.quit(MainWindow.this);
-	}
+
 }
