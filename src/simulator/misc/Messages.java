@@ -123,7 +123,7 @@ public class Messages {
 
 	public static final String COMMAND_MODE_NAME = "mode";
 	public static final String COMMAND_MODE_SHORTCUT = "m";
-	public static final String COMMAND_MODE_DESCRIPTION = "Execution Mode. Possible values: \n%s \nDefault value: 'gui'.";
+	public static final String COMMAND_MODE_DESCRIPTION = "Execution Mode. Possible values: %s \nDefault value: 'gui'.";
 
 	public static final String COMMAND_OUTPUT_NAME = "output";
 	public static final String COMMAND_OUTPUT_SHORTCUT = "o";
