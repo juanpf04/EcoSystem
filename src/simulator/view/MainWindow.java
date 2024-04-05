@@ -112,6 +112,7 @@ public class MainWindow extends JFrame {
 		});
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setBounds(200, 200, 300, 300);
 		pack();
 		setVisible(true);
 	}
