@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import simulator.factories.Factory;
 import simulator.misc.Messages;
+import simulator.model.MapInfo.RegionData;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -146,10 +147,6 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 			a.update(dt);
 			this._region_manager.update_animal_region(a);
 		}
-//		this._animals.forEach((Animal a) -> {
-//			a.update(dt);
-//			this._region_manager.update_animal_region(a);
-//		});
 	}
 
 	private void remove_deaths() {
