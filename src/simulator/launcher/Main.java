@@ -51,6 +51,19 @@ public class Main {
 		public String get_desc() {
 			return _desc;
 		}
+
+		public static String modes() {
+			StringBuilder modes = new StringBuilder();
+
+			for (ExecMode mode : ExecMode.values())
+				modes.append("'" + mode.get_tag() + "' (" + mode.get_desc() + "), ");
+
+			modes.deleteCharAt(modes.length() - 1);
+			modes.setCharAt(modes.length() - 1, '.');
+
+			return modes.toString();
+		}
+
 	}
 
 	// default values for some parameters
@@ -58,6 +71,10 @@ public class Main {
 	private final static Double _default_time = 10.0; // in seconds
 	private final static Double _default_delta_time = 0.03; // in seconds
 	private final static ExecMode _default_mode = ExecMode.GUI; // GUI mode
+	private final static int _default_cols = 20;
+	private final static int _default_rows = 15;
+	private final static int _default_width = 800;
+	private final static int _default_height = 600;
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
@@ -127,16 +144,9 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_INPUT_SHORTCUT).longOpt(Messages.COMMAND_INPUT_NAME)
 				.hasArg().desc(Messages.COMMAND_INPUT_DESCRIPTION).build());
 
-		StringBuilder modes = new StringBuilder();
-
-		for (ExecMode mode : ExecMode.values())
-			modes.append("'" + mode.get_tag() + "' (" + mode.get_desc() + "),");
-
-		modes.deleteCharAt(modes.length() - 1);
-
 		// mode
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_MODE_SHORTCUT).longOpt(Messages.COMMAND_MODE_NAME)
-				.hasArg().desc(Messages.command_mode_description(modes.toString())).build());
+				.hasArg().desc(Messages.command_mode_description(ExecMode.modes())).build());
 
 		// output file
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_OUTPUT_SHORTCUT).longOpt(Messages.COMMAND_OUTPUT_NAME)
@@ -250,18 +260,25 @@ public class Main {
 	}
 
 	private static void start_GUI_mode() throws Exception {
-		InputStream in = new FileInputStream(new File(_in_file));
-		JSONObject data = load_JSON_file(in);
+		Simulator simulator;
+		Controller controller;
 
-		SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
-		Simulator simulator = sb.create_instance(data);
+		if (_in_file != null) {
+			InputStream in = new FileInputStream(new File(_in_file));
+			JSONObject data = load_JSON_file(in);
 
-		Controller controller = new Controller(simulator);
-		controller.load_data(data);
+			SimulatorBuilder sb = new SimulatorBuilder(_animals_factory, _regions_factory);
+			simulator = sb.create_instance(data);
+
+			controller = new Controller(simulator);
+			controller.load_data(data);
+		} else {
+			simulator = new Simulator(_default_cols, _default_rows, _default_width, _default_height, _animals_factory,
+					_regions_factory);
+			controller = new Controller(simulator);
+		}
 
 		SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
-
-		// throw new UnsupportedOperationException(Messages.GUI_ERROR);
 	}
 
 	private static void start(String[] args) throws Exception {
