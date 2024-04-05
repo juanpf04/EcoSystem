@@ -9,6 +9,7 @@ import java.io.InputStream;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -59,7 +61,7 @@ public class ControlPanel extends JPanel {
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
 		this._toolaBar = new JToolBar();
-		this.add(_toolaBar, BorderLayout.PAGE_START);
+		this.add(this._toolaBar, BorderLayout.PAGE_START);
 
 		// TODO crear los diferentes botones/atributos y añadirlos a _toolaBar.
 		// Todos ellos han de tener su correspondiente tooltip. Puedes utilizar

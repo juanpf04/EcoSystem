@@ -29,24 +29,28 @@ import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
 
 class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private DefaultComboBoxModel<String> _regionsModel;
 	private DefaultComboBoxModel<String> _fromRowModel;
 	private DefaultComboBoxModel<String> _toRowModel;
 	private DefaultComboBoxModel<String> _fromColModel;
 	private DefaultComboBoxModel<String> _toColModel;
+	
 	private DefaultTableModel _dataTableModel;
 	private Controller _ctrl;
 	private List<JSONObject> _regionsInfo;
+	
 	private String[] _headers = { "Key", "Value", "Description" };
 
 	// TODO en caso de ser necesario, aÃ±adir los atributos aquÃ­â€¦
 	ChangeRegionsDialog(Controller ctrl) {
 		super((Frame) null, true);
-		_ctrl = ctrl;
+		this._ctrl = ctrl;
 		initGUI();
 		// TODO registrar this como observer;
 		
@@ -58,6 +62,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
+		
 		// TODO crea varios paneles para organizar los componentes visuales en el
 		// dialogo, y aÃ±adelos al mainpanel. P.ej., uno para el texto de ayuda,
 		// uno para la tabla, uno para los combobox, y uno para los botones.
@@ -73,17 +78,18 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		//crear el texto de ayuda que aparece en la parte superior del diÃ¡logo y
 		// aÃ±adirlo al panel correspondiente diÃ¡logo (Ver el apartado Figuras)
 		
-		JLabel help_text = new JLabel(Messages.CHANGE_REGIONS_HELP_DESCRIPTION);
+		JLabel help_text = new JLabel(Messages.CHANGE_REGIONS_DESCRIPTION);
 		help_text.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
 		mainPanel.add(help_text);
 
 		
 		// _regionsInfo se usarÃ¡ para establecer la informaciÃ³n en la tabla
-		_regionsInfo = Main._regions_factory.get_info();
+		this._regionsInfo = Main._regions_factory.get_info();
 		
 		// _dataTableModel es un modelo de tabla que incluye todos los parÃ¡metros de la region
-		_dataTableModel = new DefaultTableModel() {
+		this._dataTableModel = new DefaultTableModel() {
+			
 			/**
 			 * 
 			 */
@@ -96,15 +102,14 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 				
 			}
 		};
-		_dataTableModel.setColumnIdentifiers(_headers);
 		
-		
-		for(JSONObject jo: _regionsInfo) {
-			//TODO
-		}
+		this._dataTableModel.setColumnIdentifiers(this._headers);
 		
 		//crear un JTable que use _dataTableModel, y aÃ±adirlo al diÃ¡logo
 		
+		for(JSONObject jo: this._regionsInfo) {
+			//TODO 
+		}
 		JTable dialog_table = new JTable(this._dataTableModel);
 		JScrollPane tablapro = new JScrollPane(dialog_table);
 		tablapro.setPreferredSize(new Dimension(600,150));
@@ -112,13 +117,13 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		mainPanel.add(table);
 		
 		// _regionsModel es un modelo de combobox que incluye los tipos de regiones
-		_regionsModel = new DefaultComboBoxModel<>();
+		this._regionsModel = new DefaultComboBoxModel<>();
 		
 		// TODO aÃ±adir la descripciÃ³n de todas las regiones a _regionsModel, para eso
 		//usa la clave â€œdescâ€� o â€œtypeâ€� de los JSONObject en _regionsInfo,
 		//ya que estos nos dan informaciÃ³n sobre lo que puede crear la factorÃ­a.
 		
-		this._regionsModel = new DefaultComboBoxModel<String>();
+		//FIXME AQUI NO HAY QUE HACER NADA NO? YA ESTA EN EL OBSERVER
 		
 		
 		// TODO crear un combobox que use _regionsModel y aÃ±adirlo al diÃ¡logo.

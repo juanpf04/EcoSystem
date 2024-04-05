@@ -16,6 +16,7 @@ import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
 
 class StatusBar extends JPanel implements EcoSysObserver {
+	
 	/**
 	 * 
 	 */
@@ -34,10 +35,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 		this._ctrl = ctrl;
 		initGUI();
 		// TODO registrar this como observador
-		
 		this._ctrl.addObserver(this);
-		
-		
 	}
 
 	private void initGUI() {
