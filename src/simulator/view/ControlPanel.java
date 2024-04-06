@@ -100,7 +100,7 @@ public class ControlPanel extends JPanel {
 		this._viewerButton.setToolTipText("Viewer");
 		this._viewerButton.setIcon(new ImageIcon("resources/icons/viewer.png"));
 		this._viewerButton.addActionListener((e) -> {
-			MapWindow mapWindow = new MapWindow();
+			MapWindow mapWindow = new MapWindow(new MainWindow(this._ctrl), this._ctrl); // TODO VER QUÉ PONER COMO PARENT DEL MAPWINDOW
 		}); // TODO mirar si se pueden crear varias ventanas o solo una
 		this._toolaBar.add(this._viewerButton);
 		// ----------------------------------------------------------------------
