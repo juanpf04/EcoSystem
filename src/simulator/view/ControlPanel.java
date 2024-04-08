@@ -122,7 +122,7 @@ public class ControlPanel extends JPanel {
 			this._stopped = false;
 			this.setEnableButtons(false);
 			try {				
-				this.run_sim((int) (((int) this._steps_spinner.getValue())/(Double.valueOf(this._delta_time_textField.getText()))), Double.valueOf(this._delta_time_textField.getText()));
+				this.run_sim((int) this._steps_spinner.getValue(), Double.valueOf(this._delta_time_textField.getText()));
 			}
 			catch(Exception ex) {
 				ViewUtils.showErrorMsg("si mensaje to pro");
@@ -143,7 +143,7 @@ public class ControlPanel extends JPanel {
 
 		// - Steps spinner ------------------------------------------------------
 		this._toolaBar.add(new JLabel("Steps: "));
-		this._steps_spinner = new JSpinner(new SpinnerNumberModel(10000, 10000, 100000, 100));
+		this._steps_spinner = new JSpinner(new SpinnerNumberModel(10000, 0, 100000, 100));
 		this._toolaBar.add(this._steps_spinner);
 		// ----------------------------------------------------------------------
 
@@ -184,10 +184,10 @@ public class ControlPanel extends JPanel {
 	}
 	// TODO el resto de m�todos van aqu�
 
-	private void run_sim(int n, double dt) {
+	private void run_sim(int n, double dt) { // 
 		if (n > 0 && !this._stopped) {
 			try {
-				long startTime = System.currentTimeMillis(); // fumadón de samir
+				long startTime = System.currentTimeMillis(); // FIXME
 				this._ctrl.advance(dt);
 				long stepTime = System.currentTimeMillis() - startTime;
 				long delay = (long) (dt * 1000 - stepTime);
@@ -216,6 +216,8 @@ public class ControlPanel extends JPanel {
 		this._regionsButton.setEnabled(b);
 		this._runButton.setEnabled(b);
 		this._quitButton.setEnabled(b);
+		this._steps_spinner.setEnabled(b);
+		this._delta_time_textField.setEnabled(b);
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
