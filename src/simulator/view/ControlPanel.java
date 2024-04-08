@@ -63,11 +63,6 @@ public class ControlPanel extends JPanel {
 		this._toolaBar = new JToolBar();
 		this.add(this._toolaBar, BorderLayout.PAGE_START);
 
-		// TODO crear los diferentes botones/atributos y añadirlos a _toolaBar.
-		// Todos ellos han de tener su correspondiente tooltip. Puedes utilizar
-		// _toolaBar.addSeparator() para a�adir la l�nea de separaci�n vertical
-		// entre las componentes que lo necesiten.
-
 		// - Open Button --------------------------------------------------------
 		this._openButton = new JButton();
 		this._openButton.setToolTipText("Open");
@@ -94,8 +89,9 @@ public class ControlPanel extends JPanel {
 		this._toolaBar.add(this._openButton);
 		// ----------------------------------------------------------------------
 
-		// - Viewer Button ------------------------------------------------------
 		this._toolaBar.addSeparator();
+
+		// - Viewer Button ------------------------------------------------------
 		this._viewerButton = new JButton();
 		this._viewerButton.setToolTipText("Viewer");
 		this._viewerButton.setIcon(new ImageIcon("resources/icons/viewer.png"));
@@ -132,8 +128,9 @@ public class ControlPanel extends JPanel {
 		this._toolaBar.add(this._runButton);
 		// ----------------------------------------------------------------------
 
-		// - Stop Button --------------------------------------------------------
 		this._toolaBar.addSeparator();
+
+		// - Stop Button --------------------------------------------------------
 		this._stopButton = new JButton();
 		this._stopButton.setToolTipText("Stop");
 		this._stopButton.setIcon(new ImageIcon("resources/icons/stop.png"));
@@ -155,9 +152,10 @@ public class ControlPanel extends JPanel {
 		this._toolaBar.add(this._delta_time_textField);
 		// ----------------------------------------------------------------------
 
-		// - Quit Button --------------------------------------------------------
 		this._toolaBar.add(Box.createGlue()); // this aligns the button to the right
 		this._toolaBar.addSeparator();
+
+		// - Quit Button --------------------------------------------------------
 		this._quitButton = new JButton();
 		this._quitButton.setToolTipText("Quit");
 		this._quitButton.setIcon(new ImageIcon("resources/icons/exit.png"));
@@ -182,7 +180,6 @@ public class ControlPanel extends JPanel {
 
 
 	}
-	// TODO el resto de m�todos van aqu�
 
 	private void run_sim(int n, double dt) { // 
 		if (n > 0 && !this._stopped) {
@@ -194,17 +191,11 @@ public class ControlPanel extends JPanel {
 				Thread.sleep(delay > 0 ? delay : 0);
 				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
 			} catch (Exception e) {
-				// TODO llamar a ViewUtils.showErrorMsg con el mensaje de error
-				// que corresponda
-				ViewUtils.showErrorMsg(e.getMessage()); // cual es
-
-				// TODO activar todos los botones
+				ViewUtils.showErrorMsg(e.getMessage());
 				this.setEnableButtons(true);
-
 				this._stopped = true;
 			}
 		} else {
-			// TODO activar todos los botones
 			this.setEnableButtons(true);
 			this._stopped = true;
 		}
