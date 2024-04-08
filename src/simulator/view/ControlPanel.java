@@ -121,7 +121,12 @@ public class ControlPanel extends JPanel {
 		this._runButton.addActionListener((e) -> {
 			this._stopped = false;
 			this.setEnableButtons(false);
-			this.run_sim((int) this._steps_spinner.getValue(), Double.valueOf(this._delta_time_textField.getText()));
+			try {				
+				this.run_sim((int) (((int) this._steps_spinner.getValue())/(Double.valueOf(this._delta_time_textField.getText()))), Double.valueOf(this._delta_time_textField.getText()));
+			}
+			catch(Exception ex) {
+				ViewUtils.showErrorMsg("si mensaje to pro");
+			}
 		}); // TODO check
 
 		this._toolaBar.add(this._runButton);
@@ -182,7 +187,11 @@ public class ControlPanel extends JPanel {
 	private void run_sim(int n, double dt) {
 		if (n > 0 && !this._stopped) {
 			try {
+				long startTime = System.currentTimeMillis(); // fumadón de samir
 				this._ctrl.advance(dt);
+				long stepTime = System.currentTimeMillis() - startTime;
+				long delay = (long) (dt * 1000 - stepTime);
+				Thread.sleep(delay > 0 ? delay : 0);
 				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
 			} catch (Exception e) {
 				// TODO llamar a ViewUtils.showErrorMsg con el mensaje de error
