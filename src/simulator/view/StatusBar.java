@@ -16,23 +16,21 @@ import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
 
 class StatusBar extends JPanel implements EcoSysObserver {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	//Ver para añadir más
+	private Controller _ctrl;
+
 	private JLabel _time;
 	private JLabel _total_animals;
 	private JLabel _dimension;
 
-	private Controller _ctrl;
-
 	StatusBar(Controller ctrl) {
 		this._ctrl = ctrl;
 		initGUI();
-		// TODO registrar this como observador
 		this._ctrl.addObserver(this);
 	}
 
@@ -40,70 +38,76 @@ class StatusBar extends JPanel implements EcoSysObserver {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.setBorder(BorderFactory.createBevelBorder(1));
 
+		// - Time ------------------------------
 		this.add(new JLabel("Time: "));
 		this._time = new JLabel();
-		this.add(_time);
+		this.add(this._time);
+		// -------------------------------------
 
-		this.separator();
+		this.vertical_separator();
 
+		// - Total Animals ---------------------
 		this.add(new JLabel("Total Animals: "));
 		this._total_animals = new JLabel();
-		this.add(_total_animals);
-		
-		this.separator();
+		this.add(this._total_animals);
+		// -------------------------------------
 
+		this.vertical_separator();
+
+		// - Dimension -------------------------
 		this.add(new JLabel("Dimension: "));
 		this._dimension = new JLabel();
-
+		this.add(this._dimension);
+		// -------------------------------------
 	}
 
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
 		this.setTime(time);
-		this._total_animals.setText(""+ animals.size());
+		this.setTotalAnimals(animals.size());
+		this.setDimension(map.get_width(), map.get_height(), map.get_cols(), map.get_rows());
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
 		this.setTime(time);
-		this._total_animals.setText(""+ animals.size());
+		this.setTotalAnimals(animals.size());
+		this.setDimension(map.get_width(), map.get_height(), map.get_cols(), map.get_rows());
 
 	}
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		// TODO Auto-generated method stub
-		this.setTime(time);
-		this._total_animals.setText(""+animals.size());
-
+		this.setTotalAnimals(animals.size());
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		// TODO Auto-generated method stub
-
+		this.setDimension(map.get_width(), map.get_height(), map.get_cols(), map.get_rows());
 	}
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		// TODO Auto-generated method stub
 		this.setTime(time);
-		this._total_animals.setText(""+animals.size());
+		this.setTotalAnimals(animals.size());
 
 	}
-	
 
-	// TODO el resto de métodos van aquí…
-
-	private void separator() {
+	private void vertical_separator() {
 		JSeparator s = new JSeparator(JSeparator.VERTICAL);
 		s.setPreferredSize(new Dimension(10, 20));
 		this.add(s);
 	}
-	
+
 	private void setTime(double time) {
 		this._time.setText(String.format("%.3f", time));
+	}
+
+	private void setTotalAnimals(int total_animals) {
+		this._total_animals.setText("" + total_animals);
+	}
+
+	private void setDimension(int width, int height, int cols, int rows) {
+		this._dimension.setText(width + "x" + height + " " + cols + "x" + rows);
 	}
 }
