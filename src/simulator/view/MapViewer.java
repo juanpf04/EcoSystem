@@ -226,11 +226,8 @@ public class MapViewer extends AbstractMapViewer {
 		this._rwidth = map.get_region_width();
 		this._rheight = map.get_region_height();
 
-		// Esto cambia el tamaño del componente, y así cambia el tamaño de la ventana
-		// porque en MapWindow llamamos a pack() después de llamar a reset
 		this.setPreferredSize(new Dimension(map.get_width(), map.get_height()));
 
-		// Draw the actual
 		this.update(animals, time);
 	}
 
