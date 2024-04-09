@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 public class InfoTable extends JPanel {
+	
 	/**
 	 * 
 	 */
@@ -26,23 +27,17 @@ public class InfoTable extends JPanel {
 	}
 
 	private void initGUI() {
-		// TODO cambiar el layout del panel a BorderLayout()
-		BorderLayout bl = new BorderLayout();
-		this.setLayout(bl);
-		// TODO añadir un borde con título al JPanel, con el texto _title
+		this.setLayout(new BorderLayout());
 
+		// - border ------------------------------------------------------
 		Border b = BorderFactory.createLineBorder(Color.black, 2);
-
 		this.setBorder(BorderFactory.createTitledBorder(b, this._title, TitledBorder.LEFT, TitledBorder.TOP));
+		// ---------------------------------------------------------------
 
-		// TODO añadir un JTable (con barra de desplazamiento vertical) que use
-		// _tableModel
-
+		// - table with scroll -------------------------------------------
 		JTable table = new JTable(this._tableModel);
-		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		table.add(new JScrollPane(table));
 		this.add(table);
-		this.add(scroll);
+		// ---------------------------------------------------------------
 	}
-
 }

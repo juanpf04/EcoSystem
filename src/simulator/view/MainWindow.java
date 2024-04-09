@@ -35,11 +35,9 @@ public class MainWindow extends JFrame {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 
-		// TODO crear ControlPanel y a�adirlo en PAGE_START de mainPanel
 		ControlPanel controlPanel = new ControlPanel(this._ctrl);
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
 
-		// TODO crear StatusBar y a�adirlo en PAGE_END de mainPanel
 		StatusBar statusBar = new StatusBar(this._ctrl);
 		mainPanel.add(statusBar, BorderLayout.PAGE_END);
 
