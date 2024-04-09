@@ -28,7 +28,7 @@ class MapWindow extends JFrame implements EcoSysObserver {
 	private AbstractMapViewer _viewer;
 	private Frame _parent;
 
-	MapWindow(Frame parent, Controller ctrl) { // FIXME en el enunciado está mal la constructora???
+	MapWindow(Frame parent, Controller ctrl) {
 		super(Messages.MAP_WINDOW_TITLE);
 		this._ctrl = ctrl;
 		this._parent = parent;
@@ -109,6 +109,6 @@ class MapWindow extends JFrame implements EcoSysObserver {
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		SwingUtilities.invokeLater(() -> { this._viewer.update(animals, dt); });
+		SwingUtilities.invokeLater(() -> { this._viewer.update(animals, time); });
 	}
 }

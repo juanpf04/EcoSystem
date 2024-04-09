@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
 	}
 
 	private void initGUI() {
-		//this.setIconImage(Toolkit.getDefaultToolkit().getImage("resources/icons/ecosystem.png"));
+		// this.setIconImage(Toolkit.getDefaultToolkit().getImage("resources/icons/ecosystem.png"));
 
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
@@ -103,15 +103,15 @@ public class MainWindow extends JFrame {
 			}
 		});
 
+		pack();
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-		pack();
-		
-        int x = (screenSize.width - getWidth()) / 2; 
-        int y = (screenSize.height - getHeight()) / 2;
-        
-        setLocation(x, y); // FIXME no se alinea del todo
-		
+		int x = (screenSize.width - getWidth()) / 2;
+		int y = (screenSize.height - getHeight()) / 2;
+
+		setLocation(x, y);
+
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		setVisible(true);

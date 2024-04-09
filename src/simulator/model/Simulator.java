@@ -6,8 +6,6 @@ import org.json.JSONObject;
 
 import simulator.factories.Factory;
 import simulator.misc.Messages;
-import simulator.model.MapInfo.RegionData;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;

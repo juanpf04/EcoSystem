@@ -89,7 +89,6 @@ class StatusBar extends JPanel implements EcoSysObserver {
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 		this.setTime(time);
 		this.setTotalAnimals(animals.size());
-
 	}
 
 	private void addVerticalSeparator() {

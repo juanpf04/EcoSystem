@@ -44,20 +44,16 @@ public class ControlPanel extends JPanel {
 	private JButton _runButton;
 	private JButton _stopButton;
 	private JButton _exitButton;
-	
-	// TODO a�ade m�s atributos aqu� �
 
 	private JSpinner _steps_spinner;
 	private JTextField _delta_time_textField;
-	
-	private MapWindow _maps; 
 
 	ControlPanel(Controller ctrl) {
 		this._ctrl = ctrl;
 		initGUI();
 	}
 
-	private void initGUI() {		// FIXME cambiar los mensajes de los botones y spinner
+	private void initGUI() { // TODO crear mensajes
 		this.setLayout(new BorderLayout());
 		this._toolBar = new JToolBar();
 		this.add(this._toolBar, BorderLayout.PAGE_START);
@@ -84,7 +80,7 @@ public class ControlPanel extends JPanel {
 					ViewUtils.showErrorMsg(e.getMessage());
 				}
 			}
-		}); // TODO check
+		});
 		this._toolBar.add(this._openButton);
 		// ----------------------------------------------------------------------
 
@@ -95,10 +91,9 @@ public class ControlPanel extends JPanel {
 		this._viewerButton.setToolTipText("Map Viewer");
 		this._viewerButton.setIcon(new ImageIcon("resources/icons/viewer.png"));
 		this._viewerButton.addActionListener((e) -> {
-			this._maps = new MapWindow(ViewUtils.getWindow(this), this._ctrl);
-//			MapWindow maps = null;
-//					maps = new MapWindow(maps, this._ctrl);
-		}); // TODO mirar si se pueden crear varias ventanas o solo una
+			new MapWindow(ViewUtils.getWindow(this), this._ctrl); // TODO hace falta guardarlo en una variable o como la
+																	// variable no se utiliza asi sirve
+		});
 		this._toolBar.add(this._viewerButton);
 		// ----------------------------------------------------------------------
 
@@ -107,7 +102,7 @@ public class ControlPanel extends JPanel {
 		this._regionsButton.setToolTipText("Change Regions");
 		this._regionsButton.setIcon(new ImageIcon("resources/icons/regions.png"));
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
-		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this))); // TODO check
+		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this)));
 		this._toolBar.add(this._regionsButton);
 		// ----------------------------------------------------------------------
 
@@ -118,15 +113,19 @@ public class ControlPanel extends JPanel {
 		this._runButton.addActionListener((e) -> {
 			this._stopped = false;
 			this.setEnableButtons(false);
-			try {				
-				this.run_sim((int) this._steps_spinner.getValue(), Double.valueOf(this._delta_time_textField.getText()));
-			}
-			catch(Exception ex) {
-				ViewUtils.showErrorMsg("si mensaje to pro");
+			try {
+				this.run_sim((int) this._steps_spinner.getValue(),
+						Double.valueOf(this._delta_time_textField.getText()));
+			} catch (NumberFormatException ex) {
+				ViewUtils.showErrorMsg("Delta Time must be a number");
+				this.setEnableButtons(true);
+				this._stopped = true;
+			} catch (Exception ex) {
+				ViewUtils.showErrorMsg(ex.getMessage());
 				this.setEnableButtons(true);
 				this._stopped = true;
 			}
-		}); // TODO check
+		});
 
 		this._toolBar.add(this._runButton);
 		// ----------------------------------------------------------------------
@@ -144,15 +143,21 @@ public class ControlPanel extends JPanel {
 		// - Steps spinner ------------------------------------------------------
 		this._toolBar.add(new JLabel("Steps: "));
 		this._steps_spinner = new JSpinner(new SpinnerNumberModel(10000, 1, 10000, 100));
-		this._steps_spinner.setToolTipText("Simulation steps to run: 1-10000"); 
+		Dimension d = this._steps_spinner.getPreferredSize();		
+		this._steps_spinner.setMinimumSize(new Dimension(d.width - 20, d.height * 2));
+		this._steps_spinner.setMaximumSize(new Dimension(d.width - 20, d.height * 2)); // TODO REVISAR 
+//		this._steps_spinner.setPreferredSize(new Dimension(d.width - 20, d.height * 2));
+		this._steps_spinner.setToolTipText("Simulation steps to run: 1-10000");
 		this._toolBar.add(this._steps_spinner);
 		// ----------------------------------------------------------------------
 
 		// - Delta time text field ----------------------------------------------
 		this._toolBar.add(new JLabel("Delta-Time: "));
 		this._delta_time_textField = new JTextField("0.03");
-		this._delta_time_textField.setMinimumSize(new Dimension(300, 300)); // TODO Ver que poner aqui
-		this._delta_time_textField.setMaximumSize(new Dimension(100, 100));
+		Dimension di = this._delta_time_textField.getPreferredSize();		
+		this._delta_time_textField.setMinimumSize(new Dimension((d.width - 20) / 2, d.height * 2));
+		this._delta_time_textField.setMaximumSize(new Dimension(d.width - 20, d.height * 2));  // TODO REVISAR 
+//		this._delta_time_textField.setPreferredSize(new Dimension(d.width - 40, d.height * 2));
 		this._delta_time_textField.setToolTipText("Real time (seconds) corresponding to a step");
 		this._toolBar.add(this._delta_time_textField);
 		// ----------------------------------------------------------------------
@@ -177,7 +182,7 @@ public class ControlPanel extends JPanel {
 	private void run_sim(int n, double dt) {
 		if (n > 0 && !this._stopped) {
 			try {
-				long startTime = System.currentTimeMillis(); // FIXME preguntar
+				long startTime = System.currentTimeMillis();
 				this._ctrl.advance(dt);
 				long stepTime = System.currentTimeMillis() - startTime;
 				long delay = (long) (dt * 1000 - stepTime);

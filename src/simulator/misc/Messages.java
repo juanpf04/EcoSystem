@@ -192,6 +192,9 @@ public class Messages {
 	public static final String TITLE = "[ECOSYSTEM]";
 	public static final String MAP_WINDOW_TITLE = "[MAP VIEWER]";
 	public static final String GUI_TITLE = "[ECOSYSTEM SIMULATOR]";
+	
+	public static final String HELP_HELP_VIEWER = "h: toggle help";
+	public static final String STATE_HELP_VIEWER = "s: show animals of a specific state";
 
 	// Buttons
 
