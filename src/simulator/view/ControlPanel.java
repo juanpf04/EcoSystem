@@ -9,7 +9,6 @@ import java.io.InputStream;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,8 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-import javax.swing.text.JTextComponent;
-
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -36,7 +33,7 @@ public class ControlPanel extends JPanel {
 	private Controller _ctrl;
 	private ChangeRegionsDialog _changeRegionsDialog;
 
-	private JToolBar _toolaBar;
+	private JToolBar _toolBar;
 	private JFileChooser _fc;
 
 	private boolean _stopped = true; // for run/stop buttons
@@ -46,26 +43,28 @@ public class ControlPanel extends JPanel {
 	private JButton _regionsButton;
 	private JButton _runButton;
 	private JButton _stopButton;
-	private JButton _quitButton;
-
+	private JButton _exitButton;
+	
 	// TODO a�ade m�s atributos aqu� �
 
 	private JSpinner _steps_spinner;
 	private JTextField _delta_time_textField;
+	
+	private MapWindow _maps; 
 
 	ControlPanel(Controller ctrl) {
 		this._ctrl = ctrl;
 		initGUI();
 	}
 
-	private void initGUI() {
+	private void initGUI() {		// FIXME cambiar los mensajes de los botones y spinner
 		this.setLayout(new BorderLayout());
-		this._toolaBar = new JToolBar();
-		this.add(this._toolaBar, BorderLayout.PAGE_START);
+		this._toolBar = new JToolBar();
+		this.add(this._toolBar, BorderLayout.PAGE_START);
 
 		// - Open Button --------------------------------------------------------
 		this._openButton = new JButton();
-		this._openButton.setToolTipText("Open");
+		this._openButton.setToolTipText("Load an input file into the simulator");
 		this._openButton.setIcon(new ImageIcon("resources/icons/open.png"));
 		this._openButton.addActionListener((ev) -> {
 			int option = this._fc.showOpenDialog(ViewUtils.getWindow(this));
@@ -86,33 +85,35 @@ public class ControlPanel extends JPanel {
 				}
 			}
 		}); // TODO check
-		this._toolaBar.add(this._openButton);
+		this._toolBar.add(this._openButton);
 		// ----------------------------------------------------------------------
 
-		this._toolaBar.addSeparator();
+		this._toolBar.addSeparator();
 
 		// - Viewer Button ------------------------------------------------------
 		this._viewerButton = new JButton();
-		this._viewerButton.setToolTipText("Viewer");
+		this._viewerButton.setToolTipText("Map Viewer");
 		this._viewerButton.setIcon(new ImageIcon("resources/icons/viewer.png"));
 		this._viewerButton.addActionListener((e) -> {
-			MapWindow mapWindow = new MapWindow(new MainWindow(this._ctrl), this._ctrl); // TODO VER QUÉ PONER COMO PARENT DEL MAPWINDOW
+			this._maps = new MapWindow(this._maps, this._ctrl);
+//			MapWindow maps = null;
+//					maps = new MapWindow(maps, this._ctrl);
 		}); // TODO mirar si se pueden crear varias ventanas o solo una
-		this._toolaBar.add(this._viewerButton);
+		this._toolBar.add(this._viewerButton);
 		// ----------------------------------------------------------------------
 
 		// - Regions Button -----------------------------------------------------
 		this._regionsButton = new JButton();
-		this._regionsButton.setToolTipText("Regions");
+		this._regionsButton.setToolTipText("Change Regions");
 		this._regionsButton.setIcon(new ImageIcon("resources/icons/regions.png"));
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
 		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this))); // TODO check
-		this._toolaBar.add(this._regionsButton);
+		this._toolBar.add(this._regionsButton);
 		// ----------------------------------------------------------------------
 
 		// - Run Button ---------------------------------------------------------
 		this._runButton = new JButton();
-		this._runButton.setToolTipText("Run");
+		this._runButton.setToolTipText("Run the simulator");
 		this._runButton.setIcon(new ImageIcon("resources/icons/run.png"));
 		this._runButton.addActionListener((e) -> {
 			this._stopped = false;
@@ -122,69 +123,61 @@ public class ControlPanel extends JPanel {
 			}
 			catch(Exception ex) {
 				ViewUtils.showErrorMsg("si mensaje to pro");
+				this.setEnableButtons(true);
+				this._stopped = true;
 			}
 		}); // TODO check
 
-		this._toolaBar.add(this._runButton);
+		this._toolBar.add(this._runButton);
 		// ----------------------------------------------------------------------
 
-		this._toolaBar.addSeparator();
+		this._toolBar.addSeparator();
 
 		// - Stop Button --------------------------------------------------------
 		this._stopButton = new JButton();
-		this._stopButton.setToolTipText("Stop");
+		this._stopButton.setToolTipText("Stop the simulator");
 		this._stopButton.setIcon(new ImageIcon("resources/icons/stop.png"));
-		this._stopButton.addActionListener((e) -> this._stopped = true); // TODO check
-		this._toolaBar.add(this._stopButton);
+		this._stopButton.addActionListener((e) -> this._stopped = true);
+		this._toolBar.add(this._stopButton);
 		// ----------------------------------------------------------------------
 
 		// - Steps spinner ------------------------------------------------------
-		this._toolaBar.add(new JLabel("Steps: "));
-		this._steps_spinner = new JSpinner(new SpinnerNumberModel(10000, 0, 100000, 100));
-		this._toolaBar.add(this._steps_spinner);
+		this._toolBar.add(new JLabel("Steps: "));
+		this._steps_spinner = new JSpinner(new SpinnerNumberModel(10000, 1, 10000, 100));
+		this._steps_spinner.setToolTipText("Simulation steps to run: 1-10000"); 
+		this._toolBar.add(this._steps_spinner);
 		// ----------------------------------------------------------------------
 
 		// - Delta time text field ----------------------------------------------
-		this._toolaBar.add(new JLabel("Delta-Time: "));
+		this._toolBar.add(new JLabel("Delta-Time: "));
 		this._delta_time_textField = new JTextField("0.03");
 		this._delta_time_textField.setMinimumSize(new Dimension(300, 300)); // TODO Ver que poner aqui
 		this._delta_time_textField.setMaximumSize(new Dimension(100, 100));
-		this._toolaBar.add(this._delta_time_textField);
+		this._delta_time_textField.setToolTipText("Real time (seconds) corresponding to a step");
+		this._toolBar.add(this._delta_time_textField);
 		// ----------------------------------------------------------------------
 
-		this._toolaBar.add(Box.createGlue()); // this aligns the button to the right
-		this._toolaBar.addSeparator();
+		this._toolBar.add(Box.createGlue()); // this aligns the button to the right
+		this._toolBar.addSeparator();
 
 		// - Quit Button --------------------------------------------------------
-		this._quitButton = new JButton();
-		this._quitButton.setToolTipText("Quit");
-		this._quitButton.setIcon(new ImageIcon("resources/icons/exit.png"));
-		this._quitButton.addActionListener((e) -> ViewUtils.quit(this)); // TODO check
-		this._toolaBar.add(this._quitButton);
+		this._exitButton = new JButton();
+		this._exitButton.setToolTipText("Exit");
+		this._exitButton.setIcon(new ImageIcon("resources/icons/exit.png"));
+		this._exitButton.addActionListener((e) -> ViewUtils.quit(this));
+		this._toolBar.add(this._exitButton);
 		// ----------------------------------------------------------------------
-
-		// TODO Inicializar _fc con una instancia de JFileChooser. Para que siempre
-		// abre en la carpeta de ejemplos puedes usar:
-
-		//
-		// _fc.setCurrentDirectory(new File(System.getProperty("user.dir") +
-		// "/resources/examples"));
 
 		this._fc = new JFileChooser();
 		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources/examples"));
 
-		// TODO Inicializar _changeRegionsDialog con instancias del di�logo de cambio
-		// de regiones
-
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
-
-
 	}
 
-	private void run_sim(int n, double dt) { // 
+	private void run_sim(int n, double dt) {
 		if (n > 0 && !this._stopped) {
 			try {
-				long startTime = System.currentTimeMillis(); // FIXME
+				long startTime = System.currentTimeMillis(); // FIXME preguntar
 				this._ctrl.advance(dt);
 				long stepTime = System.currentTimeMillis() - startTime;
 				long delay = (long) (dt * 1000 - stepTime);
@@ -206,7 +199,7 @@ public class ControlPanel extends JPanel {
 		this._viewerButton.setEnabled(b);
 		this._regionsButton.setEnabled(b);
 		this._runButton.setEnabled(b);
-		this._quitButton.setEnabled(b);
+		this._exitButton.setEnabled(b);
 		this._steps_spinner.setEnabled(b);
 		this._delta_time_textField.setEnabled(b);
 	}

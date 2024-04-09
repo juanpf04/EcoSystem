@@ -44,7 +44,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 		this.add(this._time);
 		// -------------------------------------
 
-		this.vertical_separator();
+		this.addVerticalSeparator();
 
 		// - Total Animals ---------------------
 		this.add(new JLabel("Total Animals: "));
@@ -52,7 +52,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 		this.add(this._total_animals);
 		// -------------------------------------
 
-		this.vertical_separator();
+		this.addVerticalSeparator();
 
 		// - Dimension -------------------------
 		this.add(new JLabel("Dimension: "));
@@ -92,7 +92,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 
 	}
 
-	private void vertical_separator() {
+	private void addVerticalSeparator() {
 		JSeparator s = new JSeparator(JSeparator.VERTICAL);
 		s.setPreferredSize(new Dimension(10, 20));
 		this.add(s);

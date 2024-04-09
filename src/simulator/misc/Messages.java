@@ -190,6 +190,7 @@ public class Messages {
 	// View
 
 	public static final String TITLE = "[ECOSYSTEM]";
+	public static final String MAP_WINDOW_TITLE = "[MAP VIEWER]";
 	public static final String GUI_TITLE = "[ECOSYSTEM SIMULATOR]";
 
 	// Buttons

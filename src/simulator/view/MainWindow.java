@@ -33,7 +33,7 @@ public class MainWindow extends JFrame {
 		//this.setIconImage(Toolkit.getDefaultToolkit().getImage("resources/icons/ecosystem.png"));
 
 		JPanel mainPanel = new JPanel(new BorderLayout());
-		setContentPane(mainPanel);
+		this.setContentPane(mainPanel);
 
 		// TODO crear ControlPanel y a�adirlo en PAGE_START de mainPanel
 		ControlPanel controlPanel = new ControlPanel(this._ctrl);
@@ -111,7 +111,7 @@ public class MainWindow extends JFrame {
         y-=100;
 		setLocation(x, y); // FIXME no se alinea del todo
 		
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}
