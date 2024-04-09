@@ -105,14 +105,15 @@ public class MainWindow extends JFrame {
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
+		pack();
+		
         int x = (screenSize.width - getWidth()) / 2; 
         int y = (screenSize.height - getHeight()) / 2;
-        x-=300;
-        y-=100;
-		setLocation(x, y); // FIXME no se alinea del todo
+        
+        setLocation(x, y); // FIXME no se alinea del todo
 		
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		pack();
+
 		setVisible(true);
 	}
 

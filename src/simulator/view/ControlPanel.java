@@ -95,7 +95,7 @@ public class ControlPanel extends JPanel {
 		this._viewerButton.setToolTipText("Map Viewer");
 		this._viewerButton.setIcon(new ImageIcon("resources/icons/viewer.png"));
 		this._viewerButton.addActionListener((e) -> {
-			this._maps = new MapWindow(this._maps, this._ctrl);
+			this._maps = new MapWindow(ViewUtils.getWindow(this), this._ctrl);
 //			MapWindow maps = null;
 //					maps = new MapWindow(maps, this._ctrl);
 		}); // TODO mirar si se pueden crear varias ventanas o solo una

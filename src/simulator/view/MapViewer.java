@@ -134,7 +134,7 @@ public class MapViewer extends AbstractMapViewer {
 
 		// Cambiar el font para dibujar texto
 		g.setFont(_font);
-
+		
 		// Dibujar fondo blanco
 		gr.setBackground(Color.WHITE);
 		gr.clearRect(0, 0, _width, _height);
@@ -151,7 +151,9 @@ public class MapViewer extends AbstractMapViewer {
 		
 		if(this._showHelp) {
 			// TODO
+			gr.setColor(Color.RED);
 			gr.drawString("h: toggle help", 5, 15);
+			gr.setColor(Color.BLUE);
 			gr.drawString("s: show animals of a specific state", 5, 25);
 		}
 

@@ -32,11 +32,11 @@ class MapWindow extends JFrame implements EcoSysObserver {
 		super(Messages.MAP_WINDOW_TITLE);
 		this._ctrl = ctrl;
 		this._parent = parent;
-		intiGUI();
+		initGUI();
 		this._ctrl.addObserver(this);
 	}
 
-	private void intiGUI() {
+	private void initGUI() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 
