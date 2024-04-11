@@ -22,11 +22,11 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	private static final long serialVersionUID = 1L;
 
 	private Controller _ctrl;
+
 	private List<String> _header;
 
 	private Map<String, Map<Animal.State, Integer>> _species;
-
-	private List<String> _types;
+	private List<String> _types; // Auxiliary list
 
 	SpeciesTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
@@ -59,15 +59,13 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		String specie = this._types.get(rowIndex);
-		if(columnIndex == 0 ) {
-			
+
+		if (columnIndex == 0)
 			return specie;
-		}
-		else {
-			Map<Animal.State, Integer> stats = this._species.get(specie);
-			Animal.State state = Animal.State.valueOf(this.getColumnName(columnIndex));
-			return stats.get(state);
-		}
+
+		Map<Animal.State, Integer> stats = this._species.get(specie);
+		Animal.State state = Animal.State.valueOf(this.getColumnName(columnIndex));
+		return stats.get(state);
 	}
 
 	@Override
