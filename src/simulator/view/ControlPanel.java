@@ -90,10 +90,7 @@ public class ControlPanel extends JPanel {
 		this._viewerButton = new JButton();
 		this._viewerButton.setToolTipText("Map Viewer");
 		this._viewerButton.setIcon(new ImageIcon("resources/icons/viewer.png"));
-		this._viewerButton.addActionListener((e) -> {
-			new MapWindow(ViewUtils.getWindow(this), this._ctrl); // TODO hace falta guardarlo en una variable o como la
-																	// variable no se utiliza asi sirve
-		});
+		this._viewerButton.addActionListener((e) -> new MapWindow(ViewUtils.getWindow(this), this._ctrl));
 		this._toolBar.add(this._viewerButton);
 		// ----------------------------------------------------------------------
 
@@ -156,9 +153,9 @@ public class ControlPanel extends JPanel {
 		this._delta_time_textField = new JTextField(6);
 		this._delta_time_textField.setText("0.03");
 		d = this._delta_time_textField.getPreferredSize();
-		this._delta_time_textField.setMinimumSize(new Dimension((d.width - 20) / 2, d.height * 2));
-		this._delta_time_textField.setMaximumSize(new Dimension(d.width - 20, d.height * 2));
-		this._delta_time_textField.setPreferredSize(new Dimension(d.width - 40, d.height * 2));
+		this._delta_time_textField.setMinimumSize(new Dimension(d.width - 40, d.height * 2));
+		this._delta_time_textField.setMaximumSize(new Dimension(d.width - 10, d.height * 2));
+//		this._delta_time_textField.setPreferredSize(new Dimension(d.width - 40, d.height * 2));
 		this._delta_time_textField.setToolTipText("Real time (seconds) corresponding to a step");
 		this._toolBar.add(this._delta_time_textField);
 		// ----------------------------------------------------------------------

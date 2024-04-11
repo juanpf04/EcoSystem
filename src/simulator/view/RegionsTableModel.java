@@ -1,4 +1,4 @@
-/*package simulator.view;
+package simulator.view;
 
 import java.util.List;
 
@@ -12,9 +12,7 @@ import simulator.model.Region;
 import simulator.model.RegionInfo;
 
 class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
-	/**
-	 * 
-	 
+
 	private static final long serialVersionUID = 1L;
 	// TODO definir atributos necesarios
 	private Controller _ctrl;
@@ -23,11 +21,10 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	RegionsTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
-		
+
 		this._ctrl.addObserver(this);
 	}
 	// TODO el resto de métodos van aquí…
-
 
 	@Override
 	public int getRowCount() {
@@ -45,7 +42,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	public String getColumnName(int index) {
 		return _header[index];
 	}
-	
+
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
@@ -97,4 +94,4 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		// TODO Auto-generated method stub
 
 	}
-}*/
+}

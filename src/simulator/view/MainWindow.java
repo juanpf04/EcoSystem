@@ -35,37 +35,33 @@ public class MainWindow extends JFrame {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 
+		// - ToolBar --------------------------------------------
 		ControlPanel controlPanel = new ControlPanel(this._ctrl);
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
+		// ------------------------------------------------------
 
+		// - StatusBar ------------------------------------------
 		StatusBar statusBar = new StatusBar(this._ctrl);
 		mainPanel.add(statusBar, BorderLayout.PAGE_END);
+		// ------------------------------------------------------
 
-		// Definici�n del panel de tablas (usa un BoxLayout vertical)
+		// - Table panel ----------------------------------------
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
+		// ------------------------------------------------------
 
-		// TODO crear la tabla de especies y a�adirla a contentPanel.
+		// - Species table --------------------------------------
+		InfoTable species = new InfoTable("Species", new SpeciesTableModel(this._ctrl));
+		species.setPreferredSize(new Dimension(500, 250));
+		contentPanel.add(species);
+		// ------------------------------------------------------
 
-		/*
-		 * InfoTable species = new InfoTable("Species", new SpeciesTableModel(_ctrl));
-		 * contentPanel.add(species);
-		 */
-
-		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tama�o
-
-		// species.setPreferredSize(new Dimension(500, 250));
-
-		// TODO crear la tabla de regiones.
-
-		// InfoTable regions = new InfoTable("Regions", new RegionsTableModel(_ctrl));
-
-		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tama�o
-
-		// regions.setPreferredSize(new Dimension(500, 250));
-
-		// TODO llama a ViewUtils.quit(MainWindow.this) en el m�todo windowClosing
+		// - Regions table --------------------------------------
+		InfoTable regions = new InfoTable("Regions", new RegionsTableModel(this._ctrl));
+		regions.setPreferredSize(new Dimension(500, 250));
+		contentPanel.add(regions);
+		// ------------------------------------------------------
 
 		addWindowListener(new WindowListener() {
 
