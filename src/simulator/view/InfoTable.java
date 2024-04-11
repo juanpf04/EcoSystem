@@ -11,12 +11,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 public class InfoTable extends JPanel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	String _title;
 	TableModel _tableModel;
 
@@ -36,8 +36,8 @@ public class InfoTable extends JPanel {
 
 		// - table with scroll -------------------------------------------
 		JTable table = new JTable(this._tableModel);
-		table.add(new JScrollPane(table));
-		this.add(table);
+		table.getTableHeader().setEnabled(false);
+		this.add(new JScrollPane(table));
 		// ---------------------------------------------------------------
 	}
 }

@@ -8,16 +8,18 @@ import simulator.control.Controller;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
-import simulator.model.Region;
 import simulator.model.RegionInfo;
 
 class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
-	// TODO definir atributos necesarios
+
 	private Controller _ctrl;
-	private String[] _header; // ={"nombre", dni, etc.}
-	private List<Region> _regions;
+	private List<String> _header;
+	// private Map<Region> _regions;
 
 	RegionsTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
@@ -29,69 +31,50 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		return _regions.size();
+		return 0; // _regions.size();
 	}
 
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return _header.length;
+		return 0; // _header.length;
 	}
 
 	@Override
 	public String getColumnName(int index) {
-		return _header[index];
+		return "";// _header[index];
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		Region r = _regions.get(rowIndex);
 
-		Object result = null;
-
-		switch (columnIndex) { // ejemplo lo mismo hacer con un for
-		case 0:
-			result = r.getAnimals();
-			break;
-		case 1:
-			result = r.getClass();
-			break;
-
-		default:
-			break;
-		}
-
-		return result;
+		return 0;
 	}
 
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
-
+		this.setRegions(map);
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
-
+		this.setRegions(map);
 	}
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		// TODO Auto-generated method stub
-
+		this.setRegions(map);
 	}
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		// TODO Auto-generated method stub
+	}
+
+	private void setRegions(MapInfo map) {
 
 	}
 }
