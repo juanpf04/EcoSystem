@@ -77,12 +77,13 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
 		this._species = new HashMap<>();
 		this._types = new ArrayList<>();
-
 		this.setSpecies(animals);
 	}
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
+		this._species = new HashMap<>();
+		this._types = new ArrayList<>();
 		this.setSpecies(animals);
 	}
 
@@ -92,6 +93,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
+		this._species = new HashMap<>();
+		this._types = new ArrayList<>();
 		this.setSpecies(animals);
 	}
 
