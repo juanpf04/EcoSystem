@@ -155,7 +155,6 @@ public class ControlPanel extends JPanel {
 		d = this._delta_time_textField.getPreferredSize();
 		this._delta_time_textField.setMinimumSize(new Dimension(d.width - 40, d.height * 2));
 		this._delta_time_textField.setMaximumSize(new Dimension(d.width - 10, d.height * 2));
-//		this._delta_time_textField.setPreferredSize(new Dimension(d.width - 40, d.height * 2));
 		this._delta_time_textField.setToolTipText("Real time (seconds) corresponding to a step");
 		this._toolBar.add(this._delta_time_textField);
 		// ----------------------------------------------------------------------

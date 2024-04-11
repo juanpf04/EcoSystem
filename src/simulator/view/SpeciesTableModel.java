@@ -26,13 +26,14 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	private List<String> _header;
 
 	private Map<String, Map<Animal.State, Integer>> _species;
-	private List<String> _types; // Auxiliary list
+	private List<String> _gcodes; // Auxiliary list
 
 	SpeciesTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
+
 		this._header = new ArrayList<>();
 		this._species = new HashMap<>();
-		this._types = new ArrayList<>();
+		this._gcodes = new ArrayList<>();
 
 		this._header.add("Species");
 		for (Animal.State s : Animal.State.values())
@@ -58,7 +59,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		String specie = this._types.get(rowIndex);
+		String specie = this._gcodes.get(rowIndex);
 
 		if (columnIndex == 0)
 			return specie;
@@ -78,7 +79,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
 		this._species = new HashMap<>();
-		this._types = new ArrayList<>();
+		this._gcodes = new ArrayList<>();
 		this.setSpecies(animals);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -87,7 +88,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
 		this._species = new HashMap<>();
-		this._types = new ArrayList<>();
+		this._gcodes = new ArrayList<>();
 		this.setSpecies(animals);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -100,7 +101,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 		this._species = new HashMap<>();
-		this._types = new ArrayList<>();
+		this._gcodes = new ArrayList<>();
 		this.setSpecies(animals);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -115,7 +116,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 			if (stats == null) {
 				stats = new HashMap<>();
-				this._types.add(specie);
+				this._gcodes.add(specie);
 				stats.put(state, 1);
 			} else {
 				Integer num_animals = stats.get(state);
