@@ -143,21 +143,22 @@ public class ControlPanel extends JPanel {
 		// - Steps spinner ------------------------------------------------------
 		this._toolBar.add(new JLabel("Steps: "));
 		this._steps_spinner = new JSpinner(new SpinnerNumberModel(10000, 1, 10000, 100));
-		Dimension d = this._steps_spinner.getPreferredSize();		
+		Dimension d = this._steps_spinner.getPreferredSize();
 		this._steps_spinner.setMinimumSize(new Dimension(d.width - 20, d.height * 2));
-		this._steps_spinner.setMaximumSize(new Dimension(d.width - 20, d.height * 2)); // TODO REVISAR 
-//		this._steps_spinner.setPreferredSize(new Dimension(d.width - 20, d.height * 2));
+		this._steps_spinner.setMaximumSize(new Dimension(d.width - 20, d.height * 2));
+		this._steps_spinner.setPreferredSize(new Dimension(d.width - 20, d.height * 2));
 		this._steps_spinner.setToolTipText("Simulation steps to run: 1-10000");
 		this._toolBar.add(this._steps_spinner);
 		// ----------------------------------------------------------------------
 
 		// - Delta time text field ----------------------------------------------
 		this._toolBar.add(new JLabel("Delta-Time: "));
-		this._delta_time_textField = new JTextField("0.03");
-		Dimension di = this._delta_time_textField.getPreferredSize();		
+		this._delta_time_textField = new JTextField(6);
+		this._delta_time_textField.setText("0.03");
+		d = this._delta_time_textField.getPreferredSize();
 		this._delta_time_textField.setMinimumSize(new Dimension((d.width - 20) / 2, d.height * 2));
-		this._delta_time_textField.setMaximumSize(new Dimension(d.width - 20, d.height * 2));  // TODO REVISAR 
-//		this._delta_time_textField.setPreferredSize(new Dimension(d.width - 40, d.height * 2));
+		this._delta_time_textField.setMaximumSize(new Dimension(d.width - 20, d.height * 2));
+		this._delta_time_textField.setPreferredSize(new Dimension(d.width - 40, d.height * 2));
 		this._delta_time_textField.setToolTipText("Real time (seconds) corresponding to a step");
 		this._toolBar.add(this._delta_time_textField);
 		// ----------------------------------------------------------------------
