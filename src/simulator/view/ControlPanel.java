@@ -98,7 +98,6 @@ public class ControlPanel extends JPanel {
 		this._regionsButton = new JButton();
 		this._regionsButton.setToolTipText("Change Regions");
 		this._regionsButton.setIcon(new ImageIcon("resources/icons/regions.png"));
-		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
 		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this)));
 		this._toolBar.add(this._regionsButton);
 		// ----------------------------------------------------------------------
