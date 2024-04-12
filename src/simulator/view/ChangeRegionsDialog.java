@@ -99,14 +99,11 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		comboBoxes.add(new JLabel("Region type: "));
 		JComboBox<String> regions = new JComboBox<String>(this._regionsModel);
 		regions.addActionListener((e) -> {
-			for (int i = 0; i < this._dataTableModel.getRowCount(); i++)
+			for (int i = this._dataTableModel.getRowCount() - 1; i >= 0; i--)
 				this._dataTableModel.removeRow(i);
 
 			JSONObject info = this._regionsInfo.get(regions.getSelectedIndex());
-
-			System.out.println(info.toString());
 			JSONObject data = info.getJSONObject(Messages.DATA_KEY);
-			System.out.println(data.toString());
 
 			Iterator<String> it = data.keys();
 			while (it.hasNext()) {
