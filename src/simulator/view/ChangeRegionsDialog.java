@@ -97,22 +97,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		comboBoxes.add(new JLabel("Region type: "));
 		JComboBox<String> regions = new JComboBox<String>(this._regionsModel);
-		regions.addActionListener((e) -> {
-			for (int i = this._dataTableModel.getRowCount() - 1; i >= 0; i--)
-				this._dataTableModel.removeRow(i);
-
-			JSONObject info = this._regionsInfo.get(regions.getSelectedIndex());
-			JSONObject data = info.getJSONObject(Messages.DATA_KEY);
-
-			Iterator<String> it = data.keys();
-			while (it.hasNext()) {
-				String key = it.next();
-				Object[] o = { key, null, data.getString(key) };
-				this._dataTableModel.addRow(o);
-			}
-
-			this._dataTableModel.fireTableDataChanged();
-		});
+		regions.addActionListener((e) -> updateTable(regions.getSelectedIndex()));
 		comboBoxes.add(regions);
 
 		this._fromRowModel = new DefaultComboBoxModel<String>();
@@ -121,6 +106,9 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		this._toColModel = new DefaultComboBoxModel<String>();
 
 		JComboBox<String> fromRow = new JComboBox<String>(this._fromRowModel);
+		fromRow.addActionListener((e) -> {
+
+		});
 		JComboBox<String> toRow = new JComboBox<String>(this._toRowModel);
 		JComboBox<String> fromCol = new JComboBox<String>(this._fromColModel);
 		JComboBox<String> toCol = new JComboBox<String>(this._toColModel);
@@ -143,43 +131,9 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		buttons.add(cancelButton);
 
 		JButton okButton = new JButton("OK");
-		okButton.addActionListener((e) -> { // FIXME caso no hay datos
+		okButton.addActionListener((e) -> {
 			try {
-
-				JSONObject data = new JSONObject();
-
-				for (int i = 0; i < this._dataTableModel.getRowCount(); i++) {
-					data.put((String) this._dataTableModel.getValueAt(i, 0), this._dataTableModel.getValueAt(i, 1));
-				}
-
-				JSONObject r_json = new JSONObject();
-
-				r_json.put(Messages.TYPE_KEY, this._regionsModel.getSelectedItem());
-				r_json.put(Messages.DATA_KEY, data);
-
-				JSONObject reg = new JSONObject();
-
-				reg.put(Messages.SPEC_KEY, r_json);
-
-				JSONArray col = new JSONArray();
-				col.put(this._fromColModel.getSelectedItem());
-				col.put(this._toColModel.getSelectedItem());
-				JSONArray row = new JSONArray();
-				row.put(this._fromRowModel.getSelectedItem());
-				row.put(this._toRowModel.getSelectedItem());
-
-				reg.put(Messages.COLUMN_KEY, col);
-				reg.put(Messages.ROW_KEY, row);
-
-				JSONArray regs = new JSONArray();
-
-				regs.put(reg);
-
-				JSONObject rs = new JSONObject();
-
-				rs.put(Messages.REGIONS_KEY, regs);
-
-				this._ctrl.set_regions(rs);
+				this._ctrl.set_regions(as_JSON());
 				setVisible(false);
 			} catch (Exception ex) {
 				ViewUtils.showErrorMsg(ex.getMessage());
@@ -250,5 +204,59 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			this._toRowModel.addElement(String.valueOf(i));
 			this._fromRowModel.addElement(String.valueOf(i));
 		}
+	}
+
+	private void updateTable(int index) {
+		for (int i = this._dataTableModel.getRowCount() - 1; i >= 0; i--)
+			this._dataTableModel.removeRow(i);
+
+		JSONObject info = this._regionsInfo.get(index);
+		JSONObject data = info.getJSONObject(Messages.DATA_KEY);
+
+		Iterator<String> it = data.keys();
+		while (it.hasNext()) {
+			String key = it.next();
+			Object[] o = { key, null, data.getString(key) };
+			this._dataTableModel.addRow(o);
+		}
+
+		this._dataTableModel.fireTableDataChanged();
+	}
+
+	private JSONObject as_JSON() {
+		JSONObject data = new JSONObject();
+
+		for (int i = 0; i < this._dataTableModel.getRowCount(); i++) {
+			data.put((String) this._dataTableModel.getValueAt(i, 0), this._dataTableModel.getValueAt(i, 1));
+		}
+
+		JSONObject r_json = new JSONObject();
+
+		r_json.put(Messages.TYPE_KEY, this._regionsModel.getSelectedItem());
+		r_json.put(Messages.DATA_KEY, data);
+
+		JSONObject reg = new JSONObject();
+
+		reg.put(Messages.SPEC_KEY, r_json);
+
+		JSONArray col = new JSONArray();
+		col.put(this._fromColModel.getSelectedItem());
+		col.put(this._toColModel.getSelectedItem());
+		JSONArray row = new JSONArray();
+		row.put(this._fromRowModel.getSelectedItem());
+		row.put(this._toRowModel.getSelectedItem());
+
+		reg.put(Messages.COLUMN_KEY, col);
+		reg.put(Messages.ROW_KEY, row);
+
+		JSONArray regs = new JSONArray();
+
+		regs.put(reg);
+
+		JSONObject rs = new JSONObject();
+
+		rs.put(Messages.REGIONS_KEY, regs);
+
+		return rs;
 	}
 }
