@@ -34,7 +34,7 @@ public class WolfBuilder extends Builder<Animal> {
 		SelectionStrategy mate_strategy = data.has(Messages.MATE_STRATEGY_KEY)
 				? this._strategies_factory.create_instance(data.getJSONObject(Messages.MATE_STRATEGY_KEY))
 				: new SelectFirst();
-		
+
 		SelectionStrategy hunt_strategy = data.has(Messages.HUNT_STRATEGY_KEY)
 				? this._strategies_factory.create_instance(data.getJSONObject(Messages.HUNT_STRATEGY_KEY))
 				: new SelectFirst();
@@ -55,10 +55,9 @@ public class WolfBuilder extends Builder<Animal> {
 	@Override
 	protected void fill_in_data(JSONObject o) {
 		SelectFirstBuilder b = new SelectFirstBuilder();
-		JSONObject data = new JSONObject();
 
-		data.put(Messages.MATE_STRATEGY_KEY, b.get_info());
-		data.put(Messages.HUNT_STRATEGY_KEY, b.get_info());
+		o.put(Messages.MATE_STRATEGY_KEY, b.get_info());
+		o.put(Messages.HUNT_STRATEGY_KEY, b.get_info());
 
 		JSONObject jo = new JSONObject();
 		JSONArray ja = new JSONArray();
@@ -69,8 +68,7 @@ public class WolfBuilder extends Builder<Animal> {
 		jo.put(Messages.X_RANGE_KEY, ja);
 		jo.put(Messages.Y_RANGE_KEY, ja);
 
-		data.put(Messages.POSITION_KEY, jo);
+		o.put(Messages.POSITION_KEY, jo);
 
-		o = new JSONObject(data.toString());
 	}
 }

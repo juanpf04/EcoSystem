@@ -25,11 +25,7 @@ public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
 	@Override
 	protected void fill_in_data(JSONObject o) {
-		JSONObject jo = new JSONObject();
-
-		jo.put(Messages.FACTOR_KEY, Messages.FACTOR_DESCRIPTION);
-		jo.put(Messages.FOOD_KEY, Messages.FOOD_DESCRIPTION);
-
-		o = new JSONObject(jo.toString());
+		o.put(Messages.FACTOR_KEY, Messages.FACTOR_DESCRIPTION);
+		o.put(Messages.FOOD_KEY, Messages.FOOD_DESCRIPTION);
 	}
 }
