@@ -181,10 +181,10 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 			try {
 				this._ctrl.set_regions(rs);
+				setVisible(false);
 			} catch (Exception ex) {
 				ViewUtils.showErrorMsg("FALALAL");
 			}
-			// TODO
 		});
 		buttons.add(okButton);
 
