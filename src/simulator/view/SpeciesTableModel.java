@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
-import simulator.model.Animal;
+import simulator.model.Animal.State;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
@@ -25,7 +25,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private List<String> _header;
 
-	private Map<String, Map<Animal.State, Integer>> _species;
+	private Map<String, Map<State, Integer>> _species;
 	private List<String> _gcodes; // Auxiliary list
 
 	SpeciesTableModel(Controller ctrl) {
@@ -36,7 +36,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		this._gcodes = new ArrayList<>();
 
 		this._header.add("Species");
-		for (Animal.State s : Animal.State.values())
+		for (State s : State.values())
 			this._header.add(s.toString());
 
 		this._ctrl.addObserver(this);
@@ -64,8 +64,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		if (columnIndex == 0)
 			return specie;
 
-		Map<Animal.State, Integer> stats = this._species.get(specie);
-		Animal.State state = Animal.State.valueOf(this.getColumnName(columnIndex));
+		Map<State, Integer> stats = this._species.get(specie);
+		State state = State.valueOf(this.getColumnName(columnIndex));
 		return stats.get(state);
 	}
 
@@ -87,9 +87,9 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		this._species = new HashMap<>();
-		this._gcodes = new ArrayList<>();
-		this.setSpecies(animals);
+		List<AnimalInfo> as = new ArrayList<AnimalInfo>();
+		as.add(a);
+		this.setSpecies(as);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
 	}
@@ -110,9 +110,9 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	private void setSpecies(List<AnimalInfo> animals) {
 		for (AnimalInfo a : animals) {
 			String specie = a.get_genetic_code();
-			Animal.State state = a.get_state();
+			State state = a.get_state();
 
-			Map<Animal.State, Integer> stats = this._species.get(specie);
+			Map<State, Integer> stats = this._species.get(specie);
 
 			if (stats == null) {
 				stats = new HashMap<>();

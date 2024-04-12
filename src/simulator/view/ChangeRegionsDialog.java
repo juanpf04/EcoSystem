@@ -25,7 +25,6 @@ import simulator.misc.Messages;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
-import simulator.model.Region;
 import simulator.model.RegionInfo;
 
 class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
@@ -108,7 +107,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			Iterator<String> it = data.keys();
 			while (it.hasNext()) {
 				String key = it.next();
-				Object[] o = { key, 0, data.getString(key) };
+				Object[] o = { key, null, data.getString(key) };
 				this._dataTableModel.addRow(o);
 			}
 
@@ -145,45 +144,45 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener((e) -> { // FIXME caso no hay datos
-
-			JSONObject data = new JSONObject();
-
-			for (int i = 0; i < this._dataTableModel.getRowCount(); i++) {
-				data.put((String) this._dataTableModel.getValueAt(i, 0), this._dataTableModel.getValueAt(i, 1));
-			}
-
-			JSONObject r_json = new JSONObject();
-
-			r_json.put(Messages.TYPE_KEY, this._regionsModel.getSelectedItem());
-			r_json.put(Messages.DATA_KEY, data);
-
-			JSONObject reg = new JSONObject();
-
-			reg.put(Messages.SPEC_KEY, r_json);
-
-			JSONArray col = new JSONArray();
-			col.put(this._fromColModel.getSelectedItem());
-			col.put(this._toColModel.getSelectedItem());
-			JSONArray row = new JSONArray();
-			row.put(this._fromRowModel.getSelectedItem());
-			row.put(this._toRowModel.getSelectedItem());
-
-			reg.put(Messages.COLUMN_KEY, col);
-			reg.put(Messages.ROW_KEY, row);
-
-			JSONArray regs = new JSONArray();
-
-			regs.put(reg);
-
-			JSONObject rs = new JSONObject();
-
-			rs.put(Messages.REGIONS_KEY, regs);
-
 			try {
+
+				JSONObject data = new JSONObject();
+
+				for (int i = 0; i < this._dataTableModel.getRowCount(); i++) {
+					data.put((String) this._dataTableModel.getValueAt(i, 0), this._dataTableModel.getValueAt(i, 1));
+				}
+
+				JSONObject r_json = new JSONObject();
+
+				r_json.put(Messages.TYPE_KEY, this._regionsModel.getSelectedItem());
+				r_json.put(Messages.DATA_KEY, data);
+
+				JSONObject reg = new JSONObject();
+
+				reg.put(Messages.SPEC_KEY, r_json);
+
+				JSONArray col = new JSONArray();
+				col.put(this._fromColModel.getSelectedItem());
+				col.put(this._toColModel.getSelectedItem());
+				JSONArray row = new JSONArray();
+				row.put(this._fromRowModel.getSelectedItem());
+				row.put(this._toRowModel.getSelectedItem());
+
+				reg.put(Messages.COLUMN_KEY, col);
+				reg.put(Messages.ROW_KEY, row);
+
+				JSONArray regs = new JSONArray();
+
+				regs.put(reg);
+
+				JSONObject rs = new JSONObject();
+
+				rs.put(Messages.REGIONS_KEY, regs);
+
 				this._ctrl.set_regions(rs);
 				setVisible(false);
 			} catch (Exception ex) {
-				ViewUtils.showErrorMsg("FALALAL");
+				ViewUtils.showErrorMsg(ex.getMessage());
 			}
 		});
 		buttons.add(okButton);
@@ -206,36 +205,18 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-		for (JSONObject jo : this._regionsInfo) {
-			this._regionsModel.addElement(jo.getString("type"));
+		for (JSONObject r_json : this._regionsInfo) {
+			this._regionsModel.addElement(r_json.getString(Messages.TYPE_KEY));
 		}
 
-		for (int i = 0; i < map.get_rows(); i++) {
-			this._toRowModel.addElement(String.valueOf(i));
-			this._fromRowModel.addElement(String.valueOf(i));
-		}
-
-		for (int i = 0; i < map.get_cols(); i++) {
-			this._toColModel.addElement(String.valueOf(i));
-			this._fromColModel.addElement(String.valueOf(i));
-		}
+		this.setRowComboBoxes(map.get_rows());
+		this.setColComboBoxes(map.get_cols());
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		this._toRowModel.removeAllElements();
-		this._fromRowModel.removeAllElements();
-		for (int i = 0; i < map.get_rows(); i++) {
-			this._toRowModel.addElement(String.valueOf(i));
-			this._fromRowModel.addElement(String.valueOf(i));
-		}
-
-		this._toColModel.removeAllElements();
-		this._fromColModel.removeAllElements();
-		for (int i = 0; i < map.get_cols(); i++) {
-			this._toColModel.addElement(String.valueOf(i));
-			this._fromColModel.addElement(String.valueOf(i));
-		}
+		this.setRowComboBoxes(map.get_rows());
+		this.setColComboBoxes(map.get_cols());
 
 	}
 
@@ -251,4 +232,23 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 	}
 
+	private void setColComboBoxes(int cols) {
+		this._toColModel.removeAllElements();
+		this._fromColModel.removeAllElements();
+
+		for (int i = 0; i < cols; i++) {
+			this._toColModel.addElement(String.valueOf(i));
+			this._fromColModel.addElement(String.valueOf(i));
+		}
+	}
+
+	private void setRowComboBoxes(int rows) {
+		this._toRowModel.removeAllElements();
+		this._fromRowModel.removeAllElements();
+
+		for (int i = 0; i < rows; i++) {
+			this._toRowModel.addElement(String.valueOf(i));
+			this._fromRowModel.addElement(String.valueOf(i));
+		}
+	}
 }

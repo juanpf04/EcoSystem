@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
+import simulator.model.Animal.Diet;
 import simulator.model.Animal;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
@@ -26,20 +27,20 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private List<String> _header;
 
-	private Map<RegionData, Map<Animal.Diet, Integer>> _regions;
-	private Map<RegionData, String> _descs;
-	private List<RegionData> _data;
+	private Map<RegionData, Map<Diet, Integer>> _info;
+	private List<RegionData> _regions;
 
 	RegionsTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
 
 		this._header = new ArrayList<>();
-		this._regions = new HashMap<>();
+		this._info = new HashMap<>();
+		this._regions = new ArrayList<>();
 
 		this._header.add("Row");
 		this._header.add("Col");
 		this._header.add("Desc.");
-		for (Animal.Diet d : Animal.Diet.values())
+		for (Diet d : Diet.values())
 			this._header.add(d.toString());
 
 		this._ctrl.addObserver(this);
@@ -47,7 +48,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public int getRowCount() {
-		return this._regions.size();
+		return this._info.size();
 	}
 
 	@Override
@@ -62,7 +63,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		RegionData r = this._data.get(rowIndex);
+		RegionData r = this._regions.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:
@@ -70,11 +71,12 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		case 1:
 			return r.col();
 		case 2:
-			return this._descs.get(r);
+			return r.region().toString();
 		default:
-			Map<Animal.Diet, Integer> stats = this._regions.get(r);
-			Animal.Diet diet = Animal.Diet.valueOf(this.getColumnName(columnIndex));
-			return stats.get(diet);
+			Map<Diet, Integer> stats = this._info.get(r);
+			Diet diet = Diet.valueOf(this.getColumnName(columnIndex));
+			Integer num_animals = stats.get(diet);
+			return num_animals == null ? 0 : num_animals;
 		}
 	}
 
@@ -88,8 +90,8 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-
-		this._regions = new HashMap<>();
+		this._info = new HashMap<>();
+		this._regions = new ArrayList<>();
 		this.setRegions(map);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -101,7 +103,8 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		this._regions = new HashMap<>();
+		this._info = new HashMap<>();
+		this._regions = new ArrayList<>();
 		this.setRegions(map);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -113,7 +116,23 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private void setRegions(MapInfo map) {
 		for (RegionData r : map) {
+			this._regions.add(r);
 
+			Map<Animal.Diet, Integer> stats = new HashMap<>();
+
+			for (AnimalInfo a : r.region().getAnimalsInfo()) {
+				Diet d = a.get_diet();
+				Integer num_animals = stats.get(d);
+
+				if (num_animals == null) {
+					stats.put(d, 1);
+				} else {
+					num_animals++;
+					stats.put(d, num_animals);
+				}
+			}
+
+			this._info.put(r, stats);
 		}
 	}
 }

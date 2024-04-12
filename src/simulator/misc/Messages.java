@@ -104,8 +104,8 @@ public class Messages {
 
 	// Region names
 
-	public static final String DEFAULT_REGION_NAME = "Default region";
-	public static final String DYNAMIC_REGION_NAME = "Dynamic region";
+	public static final String DEFAULT_REGION_NAME = "Default";
+	public static final String DYNAMIC_REGION_NAME = "Dynamic";
 
 	// Commands
 
@@ -192,7 +192,7 @@ public class Messages {
 	public static final String TITLE = "[ECOSYSTEM]";
 	public static final String MAP_WINDOW_TITLE = "[MAP VIEWER]";
 	public static final String GUI_TITLE = "[ECOSYSTEM SIMULATOR]";
-	
+
 	public static final String HELP_HELP_VIEWER = "h: toggle help";
 	public static final String STATE_HELP_VIEWER = "s: show animals of a specific state";
 

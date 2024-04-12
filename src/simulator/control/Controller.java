@@ -103,8 +103,13 @@ public class Controller {
 			JSONArray jac = jo.getJSONArray(Messages.COLUMN_KEY);
 			JSONArray jar = jo.getJSONArray(Messages.ROW_KEY);
 
-			for (int col = jac.getInt(0); col <= jac.getInt(1); col++)
-				for (int row = jar.getInt(0); row <= jar.getInt(1); row++)
+			int fromCol = jac.getInt(0);
+			int toCol = jac.getInt(1);
+			int fromRow = jar.getInt(0);
+			int toRow = jar.getInt(1);
+
+			for (int col = fromCol; col <= toCol; col++)
+				for (int row = fromRow; row <= toRow; row++)
 					this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
 		}
 	}
