@@ -27,9 +27,8 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	private List<String> _header;
 
 	private Map<RegionData, Map<Animal.Diet, Integer>> _regions;
-
-	private int _cols;
-	private int _rows;
+	private Map<RegionData, String> _descs;
+	private List<RegionData> _data;
 
 	RegionsTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
@@ -63,31 +62,24 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		int col = 0;
-		int row = 0;
-		while (col + row < rowIndex) {
-			col++;
-			if (col == this._cols) {
-				row++;
-				col = 0;
-			}
+		RegionData r = this._data.get(rowIndex);
+
+		switch (columnIndex) {
+		case 0:
+			return r.row();
+		case 1:
+			return r.col();
+		case 2:
+			return this._descs.get(r);
+		default:
+			Map<Animal.Diet, Integer> stats = this._regions.get(r);
+			Animal.Diet diet = Animal.Diet.valueOf(this.getColumnName(columnIndex));
+			return stats.get(diet);
 		}
-
-		if (columnIndex == 0) {
-			return row;
-		} else if (columnIndex == 1) {
-			return col;
-		} else {
-
-		}
-
-		return 0;
 	}
 
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-		this._cols = map.get_cols();
-		this._rows = map.get_rows();
 
 		this.setRegions(map);
 		this.fireTableDataChanged();
@@ -96,8 +88,6 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		this._cols = map.get_cols();
-		this._rows = map.get_rows();
 
 		this._regions = new HashMap<>();
 		this.setRegions(map);

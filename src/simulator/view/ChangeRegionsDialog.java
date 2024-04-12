@@ -2,6 +2,7 @@ package simulator.view;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -85,6 +86,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		this._dataTableModel.setColumnIdentifiers(this._headers);
 
 		JTable dataTable = new JTable(this._dataTableModel);
+		dataTable.getTableHeader().setEnabled(false);
 		table.add(new JScrollPane(dataTable));
 		mainPanel.add(table);
 		// -----------------------------------------------------------------
@@ -96,6 +98,25 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		comboBoxes.add(new JLabel("Region type: "));
 		JComboBox<String> regions = new JComboBox<String>(this._regionsModel);
+		regions.addActionListener((e) -> {
+			for (int i = 0; i < this._dataTableModel.getRowCount(); i++)
+				this._dataTableModel.removeRow(i);
+
+			JSONObject info = this._regionsInfo.get(regions.getSelectedIndex());
+
+			System.out.println(info.toString());
+			JSONObject data = info.getJSONObject(Messages.DATA_KEY);
+			System.out.println(data.toString());
+
+			Iterator<String> it = data.keys();
+			while (it.hasNext()) {
+				String key = it.next();
+				Object[] o = { key, 0, data.getString(key) };
+				this._dataTableModel.addRow(o);
+			}
+
+			this._dataTableModel.fireTableDataChanged();
+		});
 		comboBoxes.add(regions);
 
 		this._fromRowModel = new DefaultComboBoxModel<String>();
@@ -111,8 +132,8 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		comboBoxes.add(new JLabel("Row from/to: "));
 		comboBoxes.add(fromRow);
 		comboBoxes.add(toRow);
-		comboBoxes.add(new JLabel("Col from/to: "));
-		comboBoxes.add(toRow);
+		comboBoxes.add(new JLabel("Column from/to: "));
+		comboBoxes.add(fromCol);
 		comboBoxes.add(toCol);
 
 		mainPanel.add(comboBoxes);
@@ -161,7 +182,12 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 			rs.put(Messages.REGIONS_KEY, regs);
 
-			this._ctrl.set_regions(rs);
+			try {
+				this._ctrl.set_regions(rs);
+			} catch (Exception ex) {
+				ViewUtils.showErrorMsg("FALALAL");
+			}
+			// TODO
 		});
 		buttons.add(okButton);
 
@@ -175,8 +201,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	}
 
 	public void open(Frame parent) {
-		setLocation(//
-				parent.getLocation().x + parent.getWidth() / 2 - getWidth() / 2,
+		setLocation(parent.getLocation().x + parent.getWidth() / 2 - getWidth() / 2,
 				parent.getLocation().y + parent.getHeight() / 2 - getHeight() / 2);
 		pack();
 		setVisible(true);
@@ -184,49 +209,49 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-
-		_regionsModel.removeAllElements();
 		for (JSONObject jo : this._regionsInfo) {
-			_regionsModel.addElement(jo.getString("type"));
+			this._regionsModel.addElement(jo.getString("type"));
 		}
 
-		_toRowModel.removeAllElements();
-		_fromRowModel.removeAllElements();
 		for (int i = 0; i < map.get_rows(); i++) {
-			_toRowModel.addElement(String.valueOf(i));
-			_fromRowModel.addElement(String.valueOf(i));
+			this._toRowModel.addElement(String.valueOf(i));
+			this._fromRowModel.addElement(String.valueOf(i));
 		}
 
-		_toColModel.removeAllElements();
-		_fromColModel.removeAllElements();
 		for (int i = 0; i < map.get_cols(); i++) {
-			_toColModel.addElement(String.valueOf(i));
-			_fromColModel.addElement(String.valueOf(i));
+			this._toColModel.addElement(String.valueOf(i));
+			this._fromColModel.addElement(String.valueOf(i));
 		}
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
+		this._toRowModel.removeAllElements();
+		this._fromRowModel.removeAllElements();
+		for (int i = 0; i < map.get_rows(); i++) {
+			this._toRowModel.addElement(String.valueOf(i));
+			this._fromRowModel.addElement(String.valueOf(i));
+		}
+
+		this._toColModel.removeAllElements();
+		this._fromColModel.removeAllElements();
+		for (int i = 0; i < map.get_cols(); i++) {
+			this._toColModel.addElement(String.valueOf(i));
+			this._fromColModel.addElement(String.valueOf(i));
+		}
 
 	}
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
