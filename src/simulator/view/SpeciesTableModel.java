@@ -74,15 +74,11 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
 		this.setSpecies(animals);
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
 		this.setSpecies(animals);
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
 	}
 
 	@Override
@@ -99,8 +95,6 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 		this.setSpecies(animals);
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
 	}
 
 	private void setSpecies(List<AnimalInfo> animals) {
@@ -110,6 +104,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		for (AnimalInfo a : animals)
 			this.addSpecie(a);
 
+		this.fireTableDataChanged();
+		this.fireTableStructureChanged();
 	}
 
 	private void addSpecie(AnimalInfo a) {

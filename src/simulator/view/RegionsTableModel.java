@@ -84,32 +84,28 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
 		this.setRegions(map);
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
 		this.setRegions(map);
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
 		// TODO
+		this.setRegions(map);
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
 		this.setRegions(map);
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 		// TODO
+		this.setRegions(map);
 	}
 
 	private void setRegions(MapInfo map) {
@@ -118,6 +114,9 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 		for (RegionData r : map)
 			this.addRegion(r);
+
+		this.fireTableDataChanged();
+		this.fireTableStructureChanged();
 	}
 
 	private void addRegion(RegionData r) {
