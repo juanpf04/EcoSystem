@@ -32,7 +32,7 @@ class MapWindow extends JFrame implements EcoSysObserver {
 		super(Messages.MAP_WINDOW_TITLE);
 		this._ctrl = ctrl;
 		this._parent = parent;
-		initGUI();
+		this.initGUI();
 		this._ctrl.addObserver(this);
 	}
 
@@ -101,10 +101,6 @@ class MapWindow extends JFrame implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		SwingUtilities.invokeLater(() -> {
-			this._viewer.reset(time, map, animals);
-			this.pack();
-		});
 	}
 
 	@Override

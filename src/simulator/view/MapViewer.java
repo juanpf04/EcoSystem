@@ -2,6 +2,7 @@ package simulator.view;
 
 import simulator.misc.Messages;
 import simulator.model.Animal;
+import simulator.model.Animal.State;
 import simulator.model.AnimalInfo;
 import simulator.model.MapInfo;
 
@@ -31,8 +32,10 @@ public class MapViewer extends AbstractMapViewer {
 	int _rwidth;
 	int _rheight;
 
-	Animal.State _currState;
-	Queue<Animal.State> _states;
+	private static final State[] _states = State.values();
+
+	State _currState;
+	Queue<State> _statesQ;
 //	int _state_count;
 
 	volatile private Collection<AnimalInfo> _objs;
@@ -69,20 +72,28 @@ public class MapViewer extends AbstractMapViewer {
 					break;
 				case 's':
 					// Using the modulo
-//					Animal.State[] states = Animal.State.values();
-//					
+
 //					_state_count++;
-//					
-//					if(states.length == _state_count) { 
+//
+//					int index = _state_count % (_states.length + 1);
+//
+//					_currState = null;
+//					if (index != 0)
+//						_currState = _states[index - 1];
+
+					// Using a counter
+
+//					_state_count++;
+//
+//					if (_states.length == _state_count) {
 //						_state_count = -1;
 //						_currState = null;
-//					}
-//					else
-//					_currState = states[_state_count];
+//					} else
+//						_currState = _states[_state_count];
 
 					// Using a queue
-					_states.add(_currState);
-					_currState = _states.remove();
+					_statesQ.add(_currState);
+					_currState = _statesQ.remove();
 
 				default:
 				}
@@ -101,12 +112,13 @@ public class MapViewer extends AbstractMapViewer {
 
 		this._currState = null;
 
-		this._states = new LinkedList<>();
+		this._statesQ = new LinkedList<>();
 
-		for (Animal.State s : Animal.State.values())
-			this._states.add(s);
+		for (Animal.State s : _states)
+			this._statesQ.add(s);
 
 //		this._state_count = -1;
+//		this._state_count = 0; // for modulo version
 
 		this._showHelp = true;
 	}
@@ -145,7 +157,7 @@ public class MapViewer extends AbstractMapViewer {
 
 	private void drawObjects(Graphics2D g, Collection<AnimalInfo> animals, Double time) {
 
-		// Draw regions grid
+		// - Draw regions grid ------------------------------------------------
 		g.setColor(Color.LIGHT_GRAY);
 
 		for (int i = 0; i <= this._rows; i++)
@@ -153,8 +165,9 @@ public class MapViewer extends AbstractMapViewer {
 
 		for (int i = 0; i <= this._cols; i++)
 			g.drawLine(this._rwidth * i, 0, this._rwidth * i, this._height);
+		// --------------------------------------------------------------------
 
-		// Draw animals
+		// - Draw animals -----------------------------------------------------
 		for (AnimalInfo a : animals) {
 
 			// if the animal is not visible, skip
@@ -178,29 +191,33 @@ public class MapViewer extends AbstractMapViewer {
 			int y = (int) a.get_position().getY() - half_size;
 			g.fillRoundRect(x, y, size, size, half_size, half_size);
 		}
+		// --------------------------------------------------------------------
 
 		int x = 20;
 		int y = this._height - 30;
 
-		// Draw State
+		// - Draw State -------------------------------------------------------
 		if (this._currState != null) {
 			g.setColor(Color.BLUE); // ViewUtils.get_color(this._currState)); // RGB mode
 			this.drawStringWithRect(g, x, y, "State: " + this._currState + " ");
 			y -= 20;
 		}
+		// --------------------------------------------------------------------
 
-		// Draw time
+		// - Draw time --------------------------------------------------------
 		g.setColor(Color.MAGENTA); // ViewUtils.get_color(time)); // RGB mode
 		this.drawStringWithRect(g, x, y, "Time: " + String.format("%.3f ", time));
 		y -= 20;
+		// --------------------------------------------------------------------
 
-		// Draw animals count
+		// - Draw animals count -----------------------------------------------
 		for (Entry<String, SpeciesInfo> e : _kindsInfo.entrySet()) {
 			g.setColor(e.getValue()._color);
 			this.drawStringWithRect(g, x, y, e.getKey() + ": " + e.getValue()._count + " ");
 			e.getValue()._count = 0;
 			y -= 20;
 		}
+		// --------------------------------------------------------------------
 	}
 
 	// Draw text inside of a rectangle
