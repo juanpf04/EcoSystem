@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -57,6 +58,13 @@ class ViewUtils {
 	 */
 	static Color get_color(Object s) {
 		return new Color(s.hashCode());
+	}
+
+	/*
+	 * return the icon with the name given
+	 */
+	static ImageIcon get_icon(String name) {
+		return new ImageIcon("resources/icons/" + name + ".png");
 	}
 
 }

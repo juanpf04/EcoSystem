@@ -67,6 +67,7 @@ public class Messages {
 	public static final String UNRECOGNIZED_INFO = "Unrecognized 'info': %s.";
 	public static final String INVALID_TIME = "Invalid value for time: %s.";
 	public static final String INVALID_DELTA_TIME = "Invalid value for delta time: %s.";
+	public static final String DELTA_TIME_NUMBER_ERROR = "Delta Time must be a number";
 	public static final String SOMETHING_WENT_WRONG = "Something went wrong ...";
 	public static final String GUI_ERROR = "GUI mode is not ready yet ...";
 	public static final String IN_FILE_ERROR = "In batch mode an input configuration file is required.";
@@ -199,6 +200,15 @@ public class Messages {
 	public static final String STATE_HELP_VIEWER = "s: show animals of a specific state";
 
 	// Buttons
+
+	public static final String OPEN_BUTTON_DESCRIPTION = "Load an input file into the simulator";
+	public static final String VIEWER_BUTTON_DESCRIPTION = "Map Viewer";
+	public static final String REGIONS_BUTTON_DESCRIPTION = "Change Regions";
+	public static final String RUN_BUTTON_DESCRIPTION = "Run the simulator";
+	public static final String STOP_BUTTON_DESCRIPTION = "Stop the simulator";
+	public static final String EXIT_BUTTON_DESCRIPTION = "Exit";
+	public static final String STEPS_SPINNER_DESCRIPTION = "Simulation steps to run: 1-10000";
+	public static final String DT_TEXT_FIELD_DESCRIPTION = "Real time (seconds) corresponding to a step";
 
 	// Icons
 
