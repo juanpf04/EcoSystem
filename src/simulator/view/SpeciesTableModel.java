@@ -67,7 +67,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 		Map<State, Integer> stats = this._species.get(specie);
 		State state = State.valueOf(this.getColumnName(columnIndex));
-		return stats.get(state);
+		Integer num_animals = stats.get(state);
+		return num_animals == null ? 0 : num_animals;
 	}
 
 	@Override
@@ -105,9 +106,10 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	private void setSpecies(List<AnimalInfo> animals) {
 		this._species.clear();
 		this._gcodes.clear();
-		for (AnimalInfo a : animals) {
+
+		for (AnimalInfo a : animals)
 			this.addSpecie(a);
-		}
+
 	}
 
 	private void addSpecie(AnimalInfo a) {

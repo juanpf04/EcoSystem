@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
+import simulator.misc.Messages;
 import simulator.model.Animal.Diet;
 import simulator.model.Animal;
 import simulator.model.AnimalInfo;
@@ -27,19 +28,19 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private List<String> _header;
 
-	private Map<RegionData, Map<Diet, Integer>> _info;
-	private List<RegionData> _regions;
+	private Map<RegionData, Map<Diet, Integer>> _regions;
+	private List<RegionData> _regions_data; // Auxiliary list
 
 	RegionsTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
 
 		this._header = new ArrayList<>();
-		this._info = new HashMap<>();
-		this._regions = new ArrayList<>();
+		this._regions = new HashMap<>();
+		this._regions_data = new ArrayList<>();
 
-		this._header.add("Row");
-		this._header.add("Col");
-		this._header.add("Desc.");
+		this._header.add(Messages.ROW);
+		this._header.add(Messages.COL);
+		this._header.add(Messages.DESC);
 		for (Diet d : Diet.values())
 			this._header.add(d.toString());
 
@@ -48,7 +49,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public int getRowCount() {
-		return this._info.size();
+		return this._regions.size();
 	}
 
 	@Override
@@ -63,7 +64,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		RegionData r = this._regions.get(rowIndex);
+		RegionData r = this._regions_data.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:
@@ -73,7 +74,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		case 2:
 			return r.region().toString();
 		default:
-			Map<Diet, Integer> stats = this._info.get(r);
+			Map<Diet, Integer> stats = this._regions.get(r);
 			Diet diet = Diet.valueOf(this.getColumnName(columnIndex));
 			Integer num_animals = stats.get(diet);
 			return num_animals == null ? 0 : num_animals;
@@ -82,7 +83,6 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-
 		this.setRegions(map);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -90,8 +90,6 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		this._info = new HashMap<>();
-		this._regions = new ArrayList<>();
 		this.setRegions(map);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -99,12 +97,11 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
+		// TODO
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		this._info = new HashMap<>();
-		this._regions = new ArrayList<>();
 		this.setRegions(map);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -112,27 +109,34 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
+		// TODO
 	}
 
 	private void setRegions(MapInfo map) {
-		for (RegionData r : map) {
-			this._regions.add(r);
+		this._regions.clear();
+		this._regions_data.clear();
 
-			Map<Animal.Diet, Integer> stats = new HashMap<>();
+		for (RegionData r : map)
+			this.addRegion(r);
+	}
 
-			for (AnimalInfo a : r.region().getAnimalsInfo()) {
-				Diet d = a.get_diet();
-				Integer num_animals = stats.get(d);
+	private void addRegion(RegionData r) {
+		this._regions_data.add(r);
 
-				if (num_animals == null) {
-					stats.put(d, 1);
-				} else {
-					num_animals++;
-					stats.put(d, num_animals);
-				}
+		Map<Animal.Diet, Integer> stats = new HashMap<>();
+
+		for (AnimalInfo a : r.region().getAnimalsInfo()) {
+			Diet d = a.get_diet();
+			Integer num_animals = stats.get(d);
+
+			if (num_animals == null) {
+				stats.put(d, 1);
+			} else {
+				num_animals++;
+				stats.put(d, num_animals);
 			}
-
-			this._info.put(r, stats);
 		}
+
+		this._regions.put(r, stats);
 	}
 }

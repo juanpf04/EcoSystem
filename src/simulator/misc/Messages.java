@@ -199,6 +199,10 @@ public class Messages {
 	public static final String HELP_HELP_VIEWER = "h: toggle help";
 	public static final String STATE_HELP_VIEWER = "s: show animals of a specific state";
 
+	public static final String ROW = "Row";
+	public static final String COL = "Col";
+	public static final String DESC = "Desc.";
+
 	public static final String STEPS = "Steps: ";
 	public static final String TIME = "Time: ";
 	public static final String TOTAL_ANIMALS = "Total Animals: ";
