@@ -26,7 +26,7 @@ public class MainWindow extends JFrame {
 	public MainWindow(Controller ctrl) {
 		super(Messages.GUI_TITLE);
 		this._ctrl = ctrl;
-		initGUI();
+		this.initGUI();
 	}
 
 	private void initGUI() {
@@ -45,7 +45,7 @@ public class MainWindow extends JFrame {
 		mainPanel.add(statusBar, BorderLayout.PAGE_END);
 		// ------------------------------------------------------
 
-		// - Table panel ----------------------------------------
+		// - Tables panel ----------------------------------------
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
