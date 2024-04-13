@@ -195,6 +195,7 @@ public class Messages {
 	public static final String GUI_TITLE = "[ECOSYSTEM SIMULATOR]";
 	public static final String SPECIES_TABLE_TITLE = "Species";
 	public static final String REGIONS_TABLE_TITLE = "Regions";
+	public static final String CHANGE_REGIONS_TITLE = "Change Regions";
 
 	public static final String HELP_HELP_VIEWER = "h: toggle help";
 	public static final String STATE_HELP_VIEWER = "s: show animals of a specific state";
@@ -202,6 +203,14 @@ public class Messages {
 	public static final String ROW = "Row";
 	public static final String COL = "Col";
 	public static final String DESC = "Desc.";
+
+	public static final String KEY = "Key";
+	public static final String VALUE = "Value";
+	public static final String DESCRIPTION = "Description";
+
+	public static final String REGION_TYPE = "Region type: ";
+	public static final String ROW_FROM_TO = "Row from/to: ";
+	public static final String COL_FROM_TO = "Column from/to: ";
 
 	public static final String STEPS = "Steps: ";
 	public static final String TIME = "Time: ";
@@ -221,6 +230,9 @@ public class Messages {
 	public static final String EXIT_BUTTON_DESCRIPTION = "Exit";
 	public static final String STEPS_SPINNER_DESCRIPTION = "Simulation steps to run: 1-10000";
 	public static final String DT_TEXT_FIELD_DESCRIPTION = "Real time (seconds) corresponding to a step";
+
+	public static final String OK_BUTTON = "OK";
+	public static final String CANCEL_BUTTON = "Cancel";
 
 	// Icons
 

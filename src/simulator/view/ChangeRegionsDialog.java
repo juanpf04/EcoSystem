@@ -35,16 +35,19 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	private static final long serialVersionUID = 1L;
 
 	private DefaultComboBoxModel<String> _regionsModel;
+
 	private DefaultComboBoxModel<String> _fromRowModel;
 	private DefaultComboBoxModel<String> _toRowModel;
 	private DefaultComboBoxModel<String> _fromColModel;
 	private DefaultComboBoxModel<String> _toColModel;
 
 	private DefaultTableModel _dataTableModel;
+
 	private Controller _ctrl;
+
 	private List<JSONObject> _regionsInfo;
 
-	private String[] _headers = { "Key", "Value", "Description" };
+	private String[] _headers = { Messages.KEY, Messages.VALUE, Messages.DESCRIPTION };
 
 	ChangeRegionsDialog(Controller ctrl) {
 		super((Frame) null, true);
@@ -55,7 +58,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	}
 
 	private void initGUI() {
-		this.setTitle("Change Regions");
+		this.setTitle(Messages.CHANGE_REGIONS_TITLE);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 		this.setContentPane(mainPanel);
@@ -95,9 +98,9 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		this._regionsModel = new DefaultComboBoxModel<>();
 
-		comboBoxes.add(new JLabel("Region type: "));
+		comboBoxes.add(new JLabel(Messages.REGION_TYPE));
 		JComboBox<String> regions = new JComboBox<String>(this._regionsModel);
-		regions.addActionListener((e) -> updateTable(regions.getSelectedIndex()));
+		regions.addActionListener((e) -> updateTable());
 		comboBoxes.add(regions);
 
 		this._fromRowModel = new DefaultComboBoxModel<String>();
@@ -106,17 +109,19 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		this._toColModel = new DefaultComboBoxModel<String>();
 
 		JComboBox<String> fromRow = new JComboBox<String>(this._fromRowModel);
-		fromRow.addActionListener((e) -> {
+		fromRow.addActionListener((e) -> fromRowAction());
 
-		});
 		JComboBox<String> toRow = new JComboBox<String>(this._toRowModel);
+
 		JComboBox<String> fromCol = new JComboBox<String>(this._fromColModel);
+		fromCol.addActionListener((e) -> fromColAction());
+
 		JComboBox<String> toCol = new JComboBox<String>(this._toColModel);
 
-		comboBoxes.add(new JLabel("Row from/to: "));
+		comboBoxes.add(new JLabel(Messages.ROW_FROM_TO));
 		comboBoxes.add(fromRow);
 		comboBoxes.add(toRow);
-		comboBoxes.add(new JLabel("Column from/to: "));
+		comboBoxes.add(new JLabel(Messages.COL_FROM_TO));
 		comboBoxes.add(fromCol);
 		comboBoxes.add(toCol);
 
@@ -126,11 +131,11 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		// - Buttons -------------------------------------------------------
 		JPanel buttons = new JPanel();
 
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton(Messages.CANCEL_BUTTON);
 		cancelButton.addActionListener((e) -> setVisible(false));
 		buttons.add(cancelButton);
 
-		JButton okButton = new JButton("OK");
+		JButton okButton = new JButton(Messages.OK_BUTTON);
 		okButton.addActionListener((e) -> {
 			try {
 				this._ctrl.set_regions(as_JSON());
@@ -163,15 +168,12 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			this._regionsModel.addElement(r_json.getString(Messages.TYPE_KEY));
 		}
 
-		this.setRowComboBoxes(map.get_rows());
-		this.setColComboBoxes(map.get_cols());
+		this.setComboBoxes(map.get_rows(), map.get_cols());
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		this.setRowComboBoxes(map.get_rows());
-		this.setColComboBoxes(map.get_cols());
-
+		this.setComboBoxes(map.get_rows(), map.get_cols());
 	}
 
 	@Override
@@ -186,31 +188,26 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 	}
 
-	private void setColComboBoxes(int cols) {
-		this._toColModel.removeAllElements();
+	private void setComboBoxes(int rows, int cols) {
 		this._fromColModel.removeAllElements();
 
-		for (int i = 0; i < cols; i++) {
-			this._toColModel.addElement(String.valueOf(i));
+		for (int i = 0; i < cols; i++)
 			this._fromColModel.addElement(String.valueOf(i));
-		}
-	}
 
-	private void setRowComboBoxes(int rows) {
-		this._toRowModel.removeAllElements();
 		this._fromRowModel.removeAllElements();
 
-		for (int i = 0; i < rows; i++) {
-			this._toRowModel.addElement(String.valueOf(i));
+		for (int i = 0; i < rows; i++)
 			this._fromRowModel.addElement(String.valueOf(i));
-		}
+
+		this._fromColModel.setSelectedItem("0"); // FIXME la primera vez no va el fromCol/RowAction
+		this._fromRowModel.setSelectedItem("0"); // preguntar tb duda was
 	}
 
-	private void updateTable(int index) {
+	private void updateTable() {
 		for (int i = this._dataTableModel.getRowCount() - 1; i >= 0; i--)
 			this._dataTableModel.removeRow(i);
 
-		JSONObject info = this._regionsInfo.get(index);
+		JSONObject info = this._regionsInfo.get(this._regionsModel.getIndexOf(this._regionsModel.getSelectedItem()));
 		JSONObject data = info.getJSONObject(Messages.DATA_KEY);
 
 		Iterator<String> it = data.keys();
@@ -258,5 +255,36 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		rs.put(Messages.REGIONS_KEY, regs);
 
 		return rs;
+	}
+
+	private void fromRowAction() {
+		String actual_row = (String) this._toRowModel.getSelectedItem();
+		this._toRowModel.removeAllElements();
+
+		String selected_row = (String) this._fromRowModel.getSelectedItem();
+
+		int last_row = Integer.valueOf(this._fromRowModel.getElementAt(this._fromRowModel.getSize() - 1));
+
+		for (int i = Integer.valueOf(selected_row); i <= last_row; i++)
+			this._toRowModel.addElement(String.valueOf(i));
+
+		if (actual_row != null && Integer.valueOf(actual_row) > Integer.valueOf(selected_row))
+			this._toRowModel.setSelectedItem(actual_row);
+	}
+
+	private void fromColAction() {
+		String actual_col = (String) this._toColModel.getSelectedItem();
+		this._toColModel.removeAllElements();
+
+		String selected_col = (String) this._fromColModel.getSelectedItem();
+
+		int last_col = Integer.valueOf(this._fromColModel.getElementAt(this._fromColModel.getSize() - 1));
+
+		for (int i = Integer.valueOf(selected_col); i <= last_col; i++)
+			this._toColModel.addElement(String.valueOf(i));
+
+		if (actual_col != null && Integer.valueOf(actual_col) > Integer.valueOf(selected_col))
+			this._toColModel.setSelectedItem(actual_col);
+
 	}
 }
