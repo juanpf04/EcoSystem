@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
+import simulator.misc.Messages;
 import simulator.model.Animal.State;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
@@ -35,7 +36,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		this._species = new HashMap<>();
 		this._gcodes = new ArrayList<>();
 
-		this._header.add("Species");
+		this._header.add(Messages.SPECIES_TABLE_TITLE);
 		for (State s : State.values())
 			this._header.add(s.toString());
 
@@ -78,8 +79,6 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		this._species = new HashMap<>();
-		this._gcodes = new ArrayList<>();
 		this.setSpecies(animals);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
@@ -87,9 +86,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		List<AnimalInfo> as = new ArrayList<AnimalInfo>();
-		as.add(a);
-		this.setSpecies(as);
+		this.addSpecie(a);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
 	}
@@ -100,35 +97,39 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		this._species = new HashMap<>();
-		this._gcodes = new ArrayList<>();
 		this.setSpecies(animals);
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
 	}
 
 	private void setSpecies(List<AnimalInfo> animals) {
+		this._species.clear();
+		this._gcodes.clear();
 		for (AnimalInfo a : animals) {
-			String specie = a.get_genetic_code();
-			State state = a.get_state();
+			this.addSpecie(a);
+		}
+	}
 
-			Map<State, Integer> stats = this._species.get(specie);
+	private void addSpecie(AnimalInfo a) {
+		String specie = a.get_genetic_code();
+		State state = a.get_state();
 
-			if (stats == null) {
-				stats = new HashMap<>();
-				this._gcodes.add(specie);
+		Map<State, Integer> stats = this._species.get(specie);
+
+		if (stats == null) {
+			stats = new HashMap<>();
+			this._gcodes.add(specie);
+			stats.put(state, 1);
+		} else {
+			Integer num_animals = stats.get(state);
+
+			if (num_animals == null) {
 				stats.put(state, 1);
 			} else {
-				Integer num_animals = stats.get(state);
-
-				if (num_animals == null) {
-					stats.put(state, 1);
-				} else {
-					num_animals++;
-					stats.put(state, num_animals);
-				}
+				num_animals++;
+				stats.replace(state, num_animals);
 			}
-			this._species.put(specie, stats);
 		}
+		this._species.put(specie, stats);
 	}
 }
