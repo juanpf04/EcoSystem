@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 import simulator.control.Controller;
+import simulator.misc.Messages;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
@@ -30,7 +31,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 
 	StatusBar(Controller ctrl) {
 		this._ctrl = ctrl;
-		initGUI();
+		this.initGUI();
 		this._ctrl.addObserver(this);
 	}
 
@@ -39,7 +40,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 		this.setBorder(BorderFactory.createBevelBorder(1));
 
 		// - Time ------------------------------
-		this.add(new JLabel("Time: "));
+		this.add(new JLabel(Messages.TIME));
 		this._time = new JLabel();
 		this.add(this._time);
 		// -------------------------------------
@@ -47,7 +48,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 		this.addVerticalSeparator();
 
 		// - Total Animals ---------------------
-		this.add(new JLabel("Total Animals: "));
+		this.add(new JLabel(Messages.TOTAL_ANIMALS));
 		this._total_animals = new JLabel();
 		this.add(this._total_animals);
 		// -------------------------------------
@@ -55,7 +56,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
 		this.addVerticalSeparator();
 
 		// - Dimension -------------------------
-		this.add(new JLabel("Dimension: "));
+		this.add(new JLabel(Messages.DIMENSION));
 		this._dimension = new JLabel();
 		this.add(this._dimension);
 		// -------------------------------------

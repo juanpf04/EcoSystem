@@ -104,7 +104,7 @@ public class ControlPanel extends JPanel {
 		// ----------------------------------------------------------------------
 
 		// - Steps spinner ------------------------------------------------------
-		this._toolBar.add(new JLabel("Steps: "));
+		this._toolBar.add(new JLabel(Messages.STEPS));
 		this._steps_spinner = new JSpinner(new SpinnerNumberModel(10000, 1, 10000, 100));
 		Dimension size = this._steps_spinner.getPreferredSize();
 		size = new Dimension(size.width - 20, size.height * 2);
@@ -116,7 +116,7 @@ public class ControlPanel extends JPanel {
 		// ----------------------------------------------------------------------
 
 		// - Delta time text field ----------------------------------------------
-		this._toolBar.add(new JLabel("Delta-Time: "));
+		this._toolBar.add(new JLabel(Messages.DELTA_TIME));
 		this._delta_time_textField = new JTextField("" + Main._delta_time);
 		this._delta_time_textField.setMinimumSize(size);
 		this._delta_time_textField.setMaximumSize(size);
@@ -137,7 +137,7 @@ public class ControlPanel extends JPanel {
 		// ----------------------------------------------------------------------
 
 		this._fc = new JFileChooser();
-		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources/examples"));
+		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + Messages.EXAMPLES_DIRECTORY));
 
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
 	}

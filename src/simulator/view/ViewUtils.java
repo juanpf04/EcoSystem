@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import simulator.misc.Messages;
+
 class ViewUtils {
 
 	/*
@@ -64,7 +66,7 @@ class ViewUtils {
 	 * return the icon with the name given
 	 */
 	static ImageIcon get_icon(String name) {
-		return new ImageIcon("resources/icons/" + name + ".png");
+		return new ImageIcon(Messages.ICONS_DIRECTORY + name + ".png");
 	}
 
 }
