@@ -137,7 +137,7 @@ public class ControlPanel extends JPanel {
 		// ----------------------------------------------------------------------
 
 		this._fc = new JFileChooser();
-		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + Messages.EXAMPLES_DIRECTORY));
+		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/" + Messages.EXAMPLES_DIRECTORY));
 
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
 	}

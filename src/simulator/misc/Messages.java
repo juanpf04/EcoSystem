@@ -205,6 +205,8 @@ public class Messages {
 	public static final String DIMENSION = "Dimension: ";
 	public static final String DELTA_TIME = "Delta-Time: ";
 
+	public static final String CHANGE_REGIONS_DESCRIPTION = "<html><p><span style =\"font-weight:normal\">Select a region type, the rows/cols interval, and provide values for the parameters in the <b>Value column</b> (default values are used for parameters with no value).</span></p></html>";
+
 	// Buttons
 
 	public static final String OPEN_BUTTON_DESCRIPTION = "Load an input file into the simulator";
@@ -220,7 +222,8 @@ public class Messages {
 
 	public static final String ICONS_DIRECTORY = "resources/icons/";
 
-	public static final String EXAMPLES_DIRECTORY = "/resources/examples/";
-	public static final String CHANGE_REGIONS_DESCRIPTION = "<html><p><span style =\"font-weight:normal\">Select a region type, the rows/cols interval, and provide values for the parameters in the <b>Value column</b> (default values are used for parameters with no value).</span></p></html>";
+	// Other
+
+	public static final String EXAMPLES_DIRECTORY = "resources/examples/";
 
 }
