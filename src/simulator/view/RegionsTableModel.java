@@ -93,18 +93,37 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		// TODO
-		this.setRegions(map);
+		int row = (int) (a.get_position().getY() / map.get_region_height());
+		int col = (int) (a.get_position().getX() / map.get_region_width());
+		int index = row * map.get_cols() + col;
+
+		RegionData r = this._regions_data.get(index);
+		Map<Diet, Integer> stats = this._regions.get(r);
+		int num_animals = stats.get(a.get_diet());
+
+		num_animals++;
+		stats.replace(a.get_diet(), num_animals);
+		this._regions.replace(r, stats);
+
+		this.fireTableDataChanged();
+		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		this.setRegions(map);
+		int index = row * map.get_cols() + col;
+
+		RegionData new_r = new RegionData(row, col, r);
+		RegionData old_r = this._regions_data.set(index, new_r);
+
+		this._regions.put(new_r, this._regions.remove(old_r));
+
+		this.fireTableDataChanged();
+		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		// TODO
 		this.setRegions(map);
 	}
 
@@ -132,7 +151,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 				stats.put(d, 1);
 			} else {
 				num_animals++;
-				stats.put(d, num_animals);
+				stats.replace(d, num_animals);
 			}
 		}
 
