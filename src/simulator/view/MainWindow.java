@@ -23,6 +23,8 @@ public class MainWindow extends JFrame {
 
 	private Controller _ctrl;
 
+	private static final Dimension _default_table_size = new Dimension(500, 250);
+
 	public MainWindow(Controller ctrl) {
 		super(Messages.GUI_TITLE);
 		this._ctrl = ctrl;
@@ -52,14 +54,14 @@ public class MainWindow extends JFrame {
 		// ------------------------------------------------------
 
 		// - Species table --------------------------------------
-		InfoTable species = new InfoTable("Species", new SpeciesTableModel(this._ctrl));
-		species.setPreferredSize(new Dimension(500, 250));
+		InfoTable species = new InfoTable(Messages.SPECIES_TABLE_TITLE, new SpeciesTableModel(this._ctrl));
+		species.setPreferredSize(_default_table_size);
 		contentPanel.add(species);
 		// ------------------------------------------------------
 
 		// - Regions table --------------------------------------
-		InfoTable regions = new InfoTable("Regions", new RegionsTableModel(this._ctrl));
-		regions.setPreferredSize(new Dimension(500, 250));
+		InfoTable regions = new InfoTable(Messages.REGIONS_TABLE_TITLE, new RegionsTableModel(this._ctrl));
+		regions.setPreferredSize(_default_table_size);
 		contentPanel.add(regions);
 		// ------------------------------------------------------
 
@@ -99,12 +101,14 @@ public class MainWindow extends JFrame {
 
 		pack();
 
+		// - Center window -----------------------------------------------
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		int x = (screenSize.width - getWidth()) / 2;
 		int y = (screenSize.height - getHeight()) / 2;
 
 		setLocation(x, y);
+		// ---------------------------------------------------------------
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
