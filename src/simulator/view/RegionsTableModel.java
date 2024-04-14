@@ -144,14 +144,14 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		Map<Animal.Diet, Integer> stats = new HashMap<>();
 
 		for (AnimalInfo a : r.region().getAnimalsInfo()) {
-			Diet d = a.get_diet();
-			Integer num_animals = stats.get(d);
+			Diet diet = a.get_diet();
+			Integer num_animals = stats.get(diet);
 
 			if (num_animals == null) {
-				stats.put(d, 1);
+				stats.put(diet, 1);
 			} else {
 				num_animals++;
-				stats.replace(d, num_animals);
+				stats.replace(diet, num_animals);
 			}
 		}
 
