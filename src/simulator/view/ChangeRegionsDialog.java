@@ -138,7 +138,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		JButton okButton = new JButton(Messages.OK_BUTTON);
 		okButton.addActionListener((e) -> {
 			try {
-				this._ctrl.set_regions(as_JSON());
+				this._ctrl.set_regions(tableToJSON());
 				setVisible(false);
 			} catch (Exception ex) {
 				ViewUtils.showErrorMsg(ex.getMessage());
@@ -220,17 +220,17 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		this._dataTableModel.fireTableDataChanged();
 	}
 
-	private JSONObject as_JSON() {
-		JSONObject data = new JSONObject();
+	private JSONObject tableToJSON() {
+		JSONObject region_data = new JSONObject();
 
 		for (int i = 0; i < this._dataTableModel.getRowCount(); i++) {
-			data.put((String) this._dataTableModel.getValueAt(i, 0), this._dataTableModel.getValueAt(i, 1));
+			region_data.put((String) this._dataTableModel.getValueAt(i, 0), this._dataTableModel.getValueAt(i, 1));
 		}
 
 		JSONObject r_json = new JSONObject();
 
 		r_json.put(Messages.TYPE_KEY, this._regionsModel.getSelectedItem());
-		r_json.put(Messages.DATA_KEY, data);
+		r_json.put(Messages.DATA_KEY, region_data);
 
 		JSONObject reg = new JSONObject();
 
