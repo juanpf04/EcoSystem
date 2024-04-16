@@ -189,18 +189,18 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	}
 
 	private void setComboBoxes(int rows, int cols) {
-		this._fromColModel.removeAllElements();
-
-		for (int i = 0; i < cols; i++)
-			this._fromColModel.addElement(String.valueOf(i));
-
-		this._fromRowModel.removeAllElements();
-
-		for (int i = 0; i < rows; i++)
-			this._fromRowModel.addElement(String.valueOf(i));
-
-		this._fromColModel.setSelectedItem("0"); // FIXME la primera vez no va el fromCol/RowAction
-		this._fromRowModel.setSelectedItem("0"); // preguntar tb duda was
+//		this._fromColModel.removeAllElements();
+//
+//		for (int i = 0; i < cols; i++)
+//			this._fromColModel.addElement(String.valueOf(i));
+//
+//		this._fromRowModel.removeAllElements();
+//
+//		for (int i = 0; i < rows; i++)
+//			this._fromRowModel.addElement(String.valueOf(i));
+//
+//		this._fromColModel.setSelectedItem("0"); // FIXME la primera vez no va el fromCol/RowAction
+//		this._fromRowModel.setSelectedItem("0"); // preguntar tb duda was
 	}
 
 	private void updateTable() {
