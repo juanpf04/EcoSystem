@@ -188,21 +188,6 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 	}
 
-	private void setComboBoxes(int rows, int cols) {
-//		this._fromColModel.removeAllElements();
-//
-//		for (int i = 0; i < cols; i++)
-//			this._fromColModel.addElement(String.valueOf(i));
-//
-//		this._fromRowModel.removeAllElements();
-//
-//		for (int i = 0; i < rows; i++)
-//			this._fromRowModel.addElement(String.valueOf(i));
-//
-//		this._fromColModel.setSelectedItem("0"); // FIXME la primera vez no va el fromCol/RowAction
-//		this._fromRowModel.setSelectedItem("0"); // preguntar tb duda was
-	}
-
 	private void updateTable() {
 		for (int i = this._dataTableModel.getRowCount() - 1; i >= 0; i--)
 			this._dataTableModel.removeRow(i);
@@ -255,6 +240,21 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		rs.put(Messages.REGIONS_KEY, regs);
 
 		return rs;
+	}
+	
+	private void setComboBoxes(int rows, int cols) {
+		this._fromColModel.removeAllElements();
+
+		for (int i = 0; i < cols; i++)
+			this._fromColModel.addElement(String.valueOf(i));
+
+		this._fromRowModel.removeAllElements();
+
+		for (int i = 0; i < rows; i++)
+			this._fromRowModel.addElement(String.valueOf(i));
+
+//		this._fromColModel.setSelectedItem("0"); // FIXME la primera vez no va el fromCol/RowAction
+//		this._fromRowModel.setSelectedItem("0"); // preguntar tb duda was
 	}
 
 	private void fromRowAction() {
