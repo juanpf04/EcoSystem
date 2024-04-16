@@ -55,6 +55,8 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		this._regionsInfo = Main._regions_factory.get_info();
 		this.initGUI();
 		this._ctrl.addObserver(this);
+		this.fromColAction();
+		this.fromRowAction();
 	}
 
 	private void initGUI() {
@@ -241,7 +243,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		return rs;
 	}
-	
+
 	private void setComboBoxes(int rows, int cols) {
 		this._fromColModel.removeAllElements();
 
@@ -252,9 +254,6 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		for (int i = 0; i < rows; i++)
 			this._fromRowModel.addElement(String.valueOf(i));
-
-//		this._fromColModel.setSelectedItem("0"); // FIXME la primera vez no va el fromCol/RowAction
-//		this._fromRowModel.setSelectedItem("0"); // preguntar tb duda was
 	}
 
 	private void fromRowAction() {
