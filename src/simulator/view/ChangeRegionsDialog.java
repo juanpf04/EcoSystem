@@ -55,8 +55,6 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		this._regionsInfo = Main._regions_factory.get_info();
 		this.initGUI();
 		this._ctrl.addObserver(this);
-		this.fromColAction();
-		this.fromRowAction();
 	}
 
 	private void initGUI() {
@@ -179,6 +177,8 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
 		this.setComboBoxes(map.get_rows(), map.get_cols());
+		this._toColModel.setSelectedItem("0");
+		this._toRowModel.setSelectedItem("0");
 	}
 
 	@Override
@@ -249,50 +249,50 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 	private void setComboBoxes(int rows, int cols) {
 		this._fromColModel.removeAllElements();
-		this._toColModel.removeAllElements();
 
-		for (int i = 0; i < cols; i++) {
+		for (int i = 0; i < cols; i++)
 			this._fromColModel.addElement(String.valueOf(i));
-			this._toColModel.addElement(String.valueOf(i));
-		}
 
 		this._fromRowModel.removeAllElements();
-		this._toRowModel.removeAllElements();
 
-		for (int i = 0; i < rows; i++) {
+		for (int i = 0; i < rows; i++)
 			this._fromRowModel.addElement(String.valueOf(i));
-			this._toRowModel.addElement(String.valueOf(i));
-		}
+
+		this.fromColAction();
+		this.fromRowAction();
 	}
 
 	private void fromRowAction() {
-//		String actual_row = (String) this._toRowModel.getSelectedItem();
-//		this._toRowModel.removeAllElements();
-//
-//		String selected_row = (String) this._fromRowModel.getSelectedItem();
-//
-//		int last_row = Integer.valueOf(this._fromRowModel.getElementAt(this._fromRowModel.getSize() - 1));
-//
-//		for (int i = Integer.valueOf(selected_row); i <= last_row; i++)
-//			this._toRowModel.addElement(String.valueOf(i));
-//
-//		if (actual_row != null && Integer.valueOf(actual_row) > Integer.valueOf(selected_row))
-//			this._toRowModel.setSelectedItem(actual_row);
+		if (this._fromRowModel.getSize() != 0) {
+			String actual_row = (String) this._toRowModel.getSelectedItem();
+			this._toRowModel.removeAllElements();
+
+			String selected_row = (String) this._fromRowModel.getSelectedItem();
+
+			int last_row = Integer.valueOf(this._fromRowModel.getElementAt(this._fromRowModel.getSize() - 1));
+
+			for (int i = Integer.valueOf(selected_row); i <= last_row; i++)
+				this._toRowModel.addElement(String.valueOf(i));
+
+			if (actual_row != null && Integer.valueOf(actual_row) > Integer.valueOf(selected_row))
+				this._toRowModel.setSelectedItem(actual_row);
+		}
 	}
 
 	private void fromColAction() {
-//		String actual_col = (String) this._toColModel.getSelectedItem();
-//		this._toColModel.removeAllElements();
-//
-//		String selected_col = (String) this._fromColModel.getSelectedItem();
-//
-//		int last_col = Integer.valueOf(this._fromColModel.getElementAt(this._fromColModel.getSize() - 1));
-//
-//		for (int i = Integer.valueOf(selected_col); i <= last_col; i++)
-//			this._toColModel.addElement(String.valueOf(i));
-//
-//		if (actual_col != null && Integer.valueOf(actual_col) > Integer.valueOf(selected_col))
-//			this._toColModel.setSelectedItem(actual_col);
+		if (this._fromColModel.getSize() != 0) {
+			String actual_col = (String) this._toColModel.getSelectedItem();
+			this._toColModel.removeAllElements();
 
+			String selected_col = (String) this._fromColModel.getSelectedItem();
+
+			int last_col = Integer.valueOf(this._fromColModel.getElementAt(this._fromColModel.getSize() - 1));
+
+			for (int i = Integer.valueOf(selected_col); i <= last_col; i++)
+				this._toColModel.addElement(String.valueOf(i));
+
+			if (actual_col != null && Integer.valueOf(actual_col) > Integer.valueOf(selected_col))
+				this._toColModel.setSelectedItem(actual_col);
+		}
 	}
 }
