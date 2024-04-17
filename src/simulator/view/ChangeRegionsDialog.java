@@ -72,7 +72,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		// -----------------------------------------------------------------
 
 		// - Table ---------------------------------------------------------
-		JPanel table = new JPanel();
+		JPanel tablePanel = new JPanel();
 
 		this._dataTableModel = new DefaultTableModel() {
 
@@ -89,10 +89,13 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		this._dataTableModel.setColumnIdentifiers(this._headers);
 
-		JTable dataTable = new JTable(this._dataTableModel);
-		dataTable.getTableHeader().setEnabled(false);
-		table.add(new JScrollPane(dataTable));
-		mainPanel.add(table);
+		JTable table = new JTable(this._dataTableModel);
+		table.getTableHeader().setEnabled(false);
+//		table.setPreferredSize(new Dimension(700, 400));		
+		JScrollPane scroll = new JScrollPane(table);
+//		scroll.setPreferredSize(new Dimension(700, 400));
+		tablePanel.add(scroll);
+		mainPanel.add(tablePanel);
 		// -----------------------------------------------------------------
 
 		// - ComboBoxes ----------------------------------------------------
