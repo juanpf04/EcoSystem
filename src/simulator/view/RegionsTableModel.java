@@ -10,7 +10,6 @@ import javax.swing.table.AbstractTableModel;
 import simulator.control.Controller;
 import simulator.misc.Messages;
 import simulator.model.Animal.Diet;
-import simulator.model.Animal;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
