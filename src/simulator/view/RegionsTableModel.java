@@ -28,7 +28,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private List<String> _header;
 
-	private Map<RegionData, Map<Diet, Integer>> _regions;
+	private Map<RegionData, Map<String, Integer>> _regions;
 	private List<RegionData> _regions_data; // Auxiliary list
 
 	RegionsTableModel(Controller ctrl) {
@@ -74,9 +74,8 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		case 2:
 			return r.region().toString();
 		default:
-			Map<Diet, Integer> stats = this._regions.get(r);
-			Diet diet = Diet.valueOf(this.getColumnName(columnIndex));
-			Integer num_animals = stats.get(diet);
+			Map<String, Integer> stats = this._regions.get(r);
+			Integer num_animals = stats.get(this.getColumnName(columnIndex));
 			return num_animals == null ? 0 : num_animals;
 		}
 	}
@@ -98,14 +97,17 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		int index = row * map.get_cols() + col;
 
 		RegionData r = this._regions_data.get(index);
-		Map<Diet, Integer> stats = this._regions.get(r);
-		
-		int num_animals = 0;
-		if (stats != null)
-			num_animals = stats.get(a.get_diet()) == null ? 0 : stats.get(a.get_diet());
+		String diet = a.get_diet().toString();
+		Map<String, Integer> stats = this._regions.get(r);
+
+		Integer num_animals = 0;
+		if (stats != null) {
+			num_animals = stats.get(diet);
+			num_animals = num_animals == null ? 0 : num_animals;
+		}
 
 		num_animals++;
-		stats.replace(a.get_diet(), num_animals);
+		stats.replace(diet, num_animals);
 		this._regions.replace(r, stats);
 
 		this.fireTableDataChanged();
@@ -144,10 +146,10 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	private void addRegion(RegionData r) {
 		this._regions_data.add(r);
 
-		Map<Animal.Diet, Integer> stats = new HashMap<>();
+		Map<String, Integer> stats = new HashMap<>();
 
 		for (AnimalInfo a : r.region().getAnimalsInfo()) {
-			Diet diet = a.get_diet();
+			String diet = a.get_diet().toString();
 			Integer num_animals = stats.get(diet);
 
 			if (num_animals == null) {

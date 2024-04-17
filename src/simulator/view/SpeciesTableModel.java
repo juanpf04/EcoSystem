@@ -26,7 +26,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private List<String> _header;
 
-	private Map<String, Map<State, Integer>> _species;
+	private Map<String, Map<String, Integer>> _species;
 	private List<String> _gcodes; // Auxiliary list
 
 	SpeciesTableModel(Controller ctrl) {
@@ -65,9 +65,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		if (columnIndex == 0)
 			return specie;
 
-		Map<State, Integer> stats = this._species.get(specie);
-		State state = State.valueOf(this.getColumnName(columnIndex));
-		Integer num_animals = stats.get(state);
+		Map<String, Integer> stats = this._species.get(specie);
+		Integer num_animals = stats.get(this.getColumnName(columnIndex));
 		return num_animals == null ? 0 : num_animals;
 	}
 
@@ -110,9 +109,9 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private void addSpecie(AnimalInfo a) {
 		String specie = a.get_genetic_code();
-		State state = a.get_state();
+		String state = a.get_state().toString();
 
-		Map<State, Integer> stats = this._species.get(specie);
+		Map<String, Integer> stats = this._species.get(specie);
 
 		if (stats == null) {
 			stats = new HashMap<>();
