@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.Iterator;
@@ -11,6 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -70,8 +73,6 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		// -----------------------------------------------------------------
 
 		// - Table ---------------------------------------------------------
-		JPanel tablePanel = new JPanel();
-
 		this._dataTableModel = new DefaultTableModel() {
 
 			/**
@@ -87,13 +88,26 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		this._dataTableModel.setColumnIdentifiers(this._headers);
 
-		JTable table = new JTable(this._dataTableModel);
+		JTable table = new JTable(this._dataTableModel) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component component = super.prepareRenderer(renderer, row, column);
+				int rendererWidth = component.getPreferredSize().width;
+				TableColumn tableColumn = getColumnModel().getColumn(column);
+				tableColumn.setPreferredWidth(
+						Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
+				return component;
+			}
+		};
 		table.getTableHeader().setEnabled(false);
-//		table.setPreferredSize(new Dimension(700, 400));		
 		JScrollPane scroll = new JScrollPane(table);
-//		scroll.setPreferredSize(new Dimension(700, 400));
-		tablePanel.add(scroll);
-		mainPanel.add(tablePanel);
+		mainPanel.add(scroll);
 		// -----------------------------------------------------------------
 
 		// - ComboBoxes ----------------------------------------------------
