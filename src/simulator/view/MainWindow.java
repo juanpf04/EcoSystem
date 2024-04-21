@@ -36,6 +36,11 @@ public class MainWindow extends JFrame {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 
+		// - MenuBar --------------------------------------------
+		EcoMenu menu = new EcoMenu(this._ctrl);
+		this.setJMenuBar(menu);
+		// ------------------------------------------------------
+
 		// - ToolBar --------------------------------------------
 		ControlPanel controlPanel = new ControlPanel(this._ctrl);
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
