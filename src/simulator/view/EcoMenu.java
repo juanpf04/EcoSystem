@@ -30,6 +30,11 @@ public class EcoMenu extends JMenuBar {
 
 	private void initGUI() {
 		this.setBackground(Color.GRAY);
+		
+		
+		
+		
+		
 
 		JMenu starter = new JMenu("starter");
 		starter.setMnemonic(KeyEvent.VK_S);
