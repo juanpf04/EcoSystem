@@ -9,7 +9,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 
 import simulator.control.Controller;
@@ -29,14 +32,10 @@ public class EcoMenu extends JMenuBar {
 	}
 
 	private void initGUI() {
-		this.setBackground(Color.GRAY);
-		
-		
-		
-		
-		
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
 		JMenu starter = new JMenu("starter");
+		starter.getGraphics().setColor(Color.BLUE);
 		starter.setMnemonic(KeyEvent.VK_S);
 		JMenu maincourse = new JMenu("mainCourse");
 		JMenu desserts = new JMenu("desserts");
