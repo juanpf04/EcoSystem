@@ -89,8 +89,8 @@ public class EcoMenu extends JMenuBar {
 	}
 
 	private void hola() {
-		int b = 4;
-		System.out.println("b es " + b);
+		int a;
+		System.out.println("hola");
 	}
 
 }
