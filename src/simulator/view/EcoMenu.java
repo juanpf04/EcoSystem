@@ -9,8 +9,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -87,16 +85,4 @@ public class EcoMenu extends JMenuBar {
 		desserts.add(icecream);
 
 	}
-
-	private void hola() {
-		String texto = "";
-
-		System.out.println("si señoir");
-
-		int paco;
-		int a;
-		System.out.println("hola");
-		int p;
-	}
-
 }
