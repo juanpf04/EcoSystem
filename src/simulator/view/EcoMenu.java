@@ -87,5 +87,10 @@ public class EcoMenu extends JMenuBar {
 		desserts.add(icecream);
 
 	}
+	
+	private void hola() {
+		int a;
+		System.out.println("");
+	}
 
 }
