@@ -94,6 +94,9 @@ public class EcoMenu extends JMenuBar {
 		System.out.println("si señoir");
 
 		int paco;
+		int a;
+		System.out.println("hola");
+		int p;
 	}
 
 }
