@@ -35,7 +35,6 @@ public class EcoMenu extends JMenuBar {
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
 		JMenu starter = new JMenu("starter");
-		starter.getGraphics().setColor(Color.BLUE);
 		starter.setMnemonic(KeyEvent.VK_S);
 		JMenu maincourse = new JMenu("mainCourse");
 		JMenu desserts = new JMenu("desserts");
