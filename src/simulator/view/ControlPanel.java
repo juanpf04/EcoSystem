@@ -44,6 +44,8 @@ public class ControlPanel extends JPanel {
 	private JButton _runButton;
 	private JButton _stopButton;
 	private JButton _exitButton;
+	
+	
 
 	private JSpinner _steps_spinner;
 	private JTextField _delta_time_textField;
@@ -135,6 +137,7 @@ public class ControlPanel extends JPanel {
 		this._exitButton.addActionListener((e) -> ViewUtils.quit(this));
 		this._toolBar.add(this._exitButton);
 		// ----------------------------------------------------------------------
+
 
 		this._fc = new JFileChooser();
 		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/" + Messages.EXAMPLES_DIRECTORY));

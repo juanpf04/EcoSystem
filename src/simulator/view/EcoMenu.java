@@ -83,6 +83,46 @@ public class EcoMenu extends JMenuBar {
 		icecream.add(choc);
 		icecream.add(vani);
 		desserts.add(icecream);
+		
+		
+		//--------- View: standard (normal) / spectacular (icons)---------------
+		
+		JMenu view = new JMenu("View");
+		view.setMnemonic(KeyEvent.VK_V);
+		JRadioButtonMenuItem standard_view = new JRadioButtonMenuItem("Standard View");
+		standard_view.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
+		//TODO standard_view.addActionListener((e) -> this._ctrl.));
+		
+		JRadioButtonMenuItem spectacular_view = new JRadioButtonMenuItem("Spectacular View");
+		//TODO spectacular_view.addActionListener((e) -> this._ctrl.));
+		spectacular_view.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.SHIFT_MASK));
+		
+		ButtonGroup view_group = new ButtonGroup();
+		view_group.add(standard_view);
+		view_group.add(spectacular_view);
+		view.add(standard_view);
+		view.add(spectacular_view);
+		
+		this.add(view);
+		
+		//------------ Theme: Dark/Light --------------------
+		
+		JMenu theme = new JMenu("Theme");
+		theme.setMnemonic(KeyEvent.VK_T);
+		
+		JRadioButtonMenuItem light_theme = new JRadioButtonMenuItem("Light Theme");
+		light_theme.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.SHIFT_MASK));
+		
+		JRadioButtonMenuItem dark_theme = new JRadioButtonMenuItem("Dark Theme");
+		dark_theme.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.SHIFT_MASK));
+		
+		ButtonGroup theme_group = new ButtonGroup();
+		theme_group.add(light_theme);
+		theme_group.add(dark_theme);
+		theme.add(light_theme);
+		theme.add(dark_theme);
+		
+		this.add(theme);
 
 	}
 }
