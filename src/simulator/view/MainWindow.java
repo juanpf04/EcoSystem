@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
@@ -12,8 +13,9 @@ import javax.swing.JFrame;
 
 import simulator.control.Controller;
 import simulator.misc.Messages;
+import simulator.model.ViewObserver;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements ViewObserver {
 
 	/**
 	 * 
@@ -28,6 +30,7 @@ public class MainWindow extends JFrame {
 		super(Messages.GUI_TITLE);
 		this._ctrl = ctrl;
 		this.initGUI();
+		this._ctrl.addObserver(this);
 	}
 
 	private void initGUI() {
@@ -117,6 +120,30 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		setVisible(true);
+	}
+
+	@Override
+	public void onDarkMode() {
+		this.setBackground(Color.DARK_GRAY);	
+		System.out.println("Main window en modo oscuro");
+	}
+
+	@Override
+	public void onLightMode() {
+		this.setBackground(Color.white);
+		System.out.println("Main window en modo claro");
+	}
+
+	@Override
+	public void onSpectacularView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStandardView() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

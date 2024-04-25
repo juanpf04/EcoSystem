@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.List;
@@ -15,8 +16,9 @@ import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
+import simulator.model.ViewObserver;
 
-class StatusBar extends JPanel implements EcoSysObserver {
+class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 
 	/**
 	 * 
@@ -32,7 +34,8 @@ class StatusBar extends JPanel implements EcoSysObserver {
 	StatusBar(Controller ctrl) {
 		this._ctrl = ctrl;
 		this.initGUI();
-		this._ctrl.addObserver(this);
+		this._ctrl.addObserver((EcoSysObserver) this);
+		this._ctrl.addObserver((ViewObserver) this);
 	}
 
 	private void initGUI() {
@@ -108,5 +111,29 @@ class StatusBar extends JPanel implements EcoSysObserver {
 
 	private void setDimension(int width, int height, int cols, int rows) {
 		this._dimension.setText(width + "x" + height + " " + cols + "x" + rows);
+	}
+
+	@Override
+	public void onDarkMode() {
+		this.setBackground(Color.DARK_GRAY);	
+		System.out.println("status bar en modo oscuro");
+	}
+
+	@Override
+	public void onLightMode() {
+		this.setBackground(Color.white);
+		System.out.println("status bar en modo claro");
+	}
+
+	@Override
+	public void onSpectacularView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStandardView() {
+		// TODO Auto-generated method stub
+		
 	}
 }

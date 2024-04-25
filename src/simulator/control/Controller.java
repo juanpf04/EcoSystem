@@ -13,12 +13,15 @@ import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.Simulator;
+import simulator.model.ViewObserver;
+import simulator.view.EcoMenu;
 import simulator.view.SimpleObjectViewer;
 import simulator.view.SimpleObjectViewer.ObjInfo;
 
 public class Controller {
 
 	private Simulator _sim;
+	private EcoMenu _menu;
 
 	public Controller(Simulator sim) {
 
@@ -26,6 +29,11 @@ public class Controller {
 			throw new IllegalArgumentException(Messages.INVALID_SIMULATOR);
 
 		this._sim = sim;
+		this._menu = null;
+	}
+	
+	public void addMenu(EcoMenu menu) {
+		this._menu = menu;
 	}
 
 	public void load_data(JSONObject data) {
@@ -124,6 +132,14 @@ public class Controller {
 
 	public void removeObserver(EcoSysObserver o) {
 		this._sim.removeObserver(o);
+	}
+	
+	public void addObserver(ViewObserver o) {
+		this._menu.addObserver(o);
+	}
+
+	public void removeObserver(ViewObserver o) {
+		this._menu.removeObserver(o);
 	}
 
 }
