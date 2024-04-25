@@ -43,7 +43,6 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 		this.setBorder(BorderFactory.createBevelBorder(1));
 
 		// - Time ------------------------------
-		this.add(new JLabel(Messages.TIME));
 		this._time = new JLabel();
 		this.add(this._time);
 		// -------------------------------------
@@ -51,7 +50,6 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 		this.addVerticalSeparator();
 
 		// - Total Animals ---------------------
-		this.add(new JLabel(Messages.TOTAL_ANIMALS));
 		this._total_animals = new JLabel();
 		this.add(this._total_animals);
 		// -------------------------------------
@@ -59,7 +57,6 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 		this.addVerticalSeparator();
 
 		// - Dimension -------------------------
-		this.add(new JLabel(Messages.DIMENSION));
 		this._dimension = new JLabel();
 		this.add(this._dimension);
 		// -------------------------------------
@@ -102,38 +99,44 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 	}
 
 	private void setTime(double time) {
-		this._time.setText(String.format("%.3f", time));
+		this._time.setText(Messages.TIME + String.format("%.3f", time));
 	}
 
 	private void setTotalAnimals(int total_animals) {
-		this._total_animals.setText("" + total_animals);
+		this._total_animals.setText(Messages.TOTAL_ANIMALS + total_animals);
 	}
 
 	private void setDimension(int width, int height, int cols, int rows) {
-		this._dimension.setText(width + "x" + height + " " + cols + "x" + rows);
+		this._dimension.setText(Messages.DIMENSION + width + "x" + height + " " + cols + "x" + rows);
 	}
 
 	@Override
 	public void onDarkMode() {
-		this.setBackground(Color.DARK_GRAY);	
+		this.setBackground(Color.DARK_GRAY);
+		this._time.setForeground(Color.LIGHT_GRAY);
+		this._total_animals.setForeground(Color.LIGHT_GRAY);
+		this._dimension.setForeground(Color.LIGHT_GRAY);
 		System.out.println("status bar en modo oscuro");
 	}
 
 	@Override
 	public void onLightMode() {
 		this.setBackground(Color.white);
+		this._time.setForeground(Color.black);
+		this._total_animals.setForeground(Color.black);
+		this._dimension.setForeground(Color.black);
 		System.out.println("status bar en modo claro");
 	}
 
 	@Override
 	public void onSpectacularView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStandardView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
