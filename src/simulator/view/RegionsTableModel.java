@@ -100,11 +100,10 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		Map<String, Integer> stats = this._regions.get(r);
 
 		Integer num_animals = 0;
-		if (stats != null) {
+		//if (stats != null) {
 			num_animals = stats.get(diet);
 			num_animals = num_animals == null ? 0 : num_animals;
-		}
-
+		
 		num_animals++;
 		stats.replace(diet, num_animals);
 		this._regions.replace(r, stats);

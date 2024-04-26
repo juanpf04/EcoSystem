@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
 import simulator.misc.Messages;
 import simulator.misc.Utils;
 import simulator.model.Animal;
+import simulator.model.Contador;
 import simulator.model.Region;
 import simulator.model.SelectionStrategy;
 import simulator.model.Simulator;
@@ -254,7 +255,12 @@ public class Main {
 
 		Controller controller = new Controller(simulator);
 		controller.load_data(data);
+		
+		Contador cont = new Contador(controller);
+		
 		controller.run(_time, _delta_time, _simple_viewer, out);
+		
+		cont.imprimeInfo();
 
 		out.close();
 	}
