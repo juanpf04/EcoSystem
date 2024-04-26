@@ -28,15 +28,15 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 
 	private List<String> _header;
 
-	private Map<RegionData, AnimalInfo> _regions;
-	private List<RegionData> _regions_data; // Auxiliary list
+	private Map<RegionData, AnimalInfo> _fastest_animals;
+	private List<RegionData> _regiones; // Auxiliary list
 
 	MaxSpeedTableModel(Controller ctrl) {
 		this._ctrl = ctrl;
 
 		this._header = new ArrayList<>();
-		this._regions = new HashMap<>();
-		this._regions_data = new ArrayList<>();
+		this._fastest_animals = new HashMap<>();
+		this._regiones = new ArrayList<>();
 
 		this._header.add(Messages.ROW);
 		this._header.add(Messages.COL);
@@ -48,7 +48,7 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 
 	@Override
 	public int getRowCount() {
-		return this._regions.size();
+		return this._fastest_animals.size();
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		RegionData r = this._regions_data.get(rowIndex);
+		RegionData r = this._regiones.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:
@@ -71,15 +71,16 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 		case 1:
 			return r.col();
 		case 2:
-			if(this._regions.get(r) == null)
+			if(this._fastest_animals.get(r) == null)
 				return "no hay";
-			return this._regions.get(r).get_genetic_code();
+			return this._fastest_animals.get(r).get_genetic_code();
 		case 3:
-			if(this._regions.get(r) == null)
+			if(this._fastest_animals.get(r) == null)
 				return 0;			
-			return this._regions.get(r).get_speed();
+			return this._fastest_animals.get(r).get_speed();
+		default:
+			throw new UnsupportedOperationException("queee");
 		}
-		return null;
 	}
 
 	@Override
@@ -119,8 +120,8 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 	}
 
 	private void setFastestAnimal(MapInfo map) {
-		this._regions.clear();
-		this._regions_data.clear();
+		this._fastest_animals.clear();
+		this._regiones.clear();
 
 		for (RegionData r : map)
 			this.addMaxAnimal(r);
@@ -130,14 +131,15 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 	}
 
 	private void addMaxAnimal(RegionData r) {
-		this._regions_data.add(r);
+		this._regiones.add(r);
 
 		Optional<AnimalInfo> fastest_animal = r.region().getAnimalsInfo().stream().max((a1,a2) -> 
 			Double.compare(a1.get_speed(), a2.get_speed())
 		);
+		
 		if (fastest_animal.isPresent())
-			this._regions.put(r, fastest_animal.get());
+			this._fastest_animals.put(r, fastest_animal.get());
 		else 
-			this._regions.put(r, null);
+			this._fastest_animals.put(r, null);
 	}
 }
