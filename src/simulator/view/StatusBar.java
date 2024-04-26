@@ -23,16 +23,13 @@ class StatusBar extends JPanel implements EcoSysObserver {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Controller _ctrl;
-
 	private JLabel _time;
 	private JLabel _total_animals;
 	private JLabel _dimension;
 
 	StatusBar(Controller ctrl) {
-		this._ctrl = ctrl;
 		this.initGUI();
-		this._ctrl.addObserver(this);
+		ctrl.addObserver(this);
 	}
 
 	private void initGUI() {

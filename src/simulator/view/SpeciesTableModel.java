@@ -21,17 +21,13 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private Controller _ctrl;
-
+	
 	private List<String> _header;
 
 	private Map<String, Map<String, Integer>> _species;
 	private List<String> _gcodes; // Auxiliary list
 
 	SpeciesTableModel(Controller ctrl) {
-		this._ctrl = ctrl;
-
 		this._header = new ArrayList<>();
 		this._species = new HashMap<>();
 		this._gcodes = new ArrayList<>();
@@ -40,7 +36,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		for (State s : State.values())
 			this._header.add(s.toString());
 
-		this._ctrl.addObserver(this);
+		ctrl.addObserver(this);
 	}
 
 	@Override
