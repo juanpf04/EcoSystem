@@ -89,12 +89,10 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-
 			}
 		});
 
