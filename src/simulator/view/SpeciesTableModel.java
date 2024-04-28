@@ -21,7 +21,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private List<String> _header;
 
 	private Map<String, Map<String, Integer>> _species;
@@ -58,12 +58,17 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		String specie = this._gcodes.get(rowIndex);
 
-		if (columnIndex == 0)
-			return specie;
+		Object value;
 
-		Map<String, Integer> stats = this._species.get(specie);
-		Integer num_animals = stats.get(this.getColumnName(columnIndex));
-		return num_animals == null ? 0 : num_animals;
+		if (columnIndex == 0)
+			value = specie;
+		else {
+			Map<String, Integer> stats = this._species.get(specie);
+			Integer num_animals = stats.get(this.getColumnName(columnIndex));
+			value = num_animals == null ? 0 : num_animals;
+		}
+
+		return value;
 	}
 
 	@Override

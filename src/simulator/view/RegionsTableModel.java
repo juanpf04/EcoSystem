@@ -61,18 +61,25 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		RegionData r = this._regions_data.get(rowIndex);
 
+		Object value;
 		switch (columnIndex) {
 		case 0:
-			return r.row();
+			value = r.row();
+			break;
 		case 1:
-			return r.col();
+			value = r.col();
+			break;
 		case 2:
-			return r.region().toString();
+			value = r.region().toString();
+			break;
 		default:
 			Map<String, Integer> stats = this._regions.get(r);
 			Integer num_animals = stats.get(this.getColumnName(columnIndex));
-			return num_animals == null ? 0 : num_animals;
+			value = num_animals == null ? 0 : num_animals;
+			break;
 		}
+
+		return value;
 	}
 
 	@Override
