@@ -13,14 +13,15 @@ public class SelectYoungest implements SelectionStrategy {
 		if (as == null)
 			throw new IllegalArgumentException(Messages.INVALID_LIST);
 
-		if (as.isEmpty())
-			return null;
+		Animal youngest = null;
 
-		Animal youngest = as.get(0);
+		if (!as.isEmpty()) {
+			youngest = as.get(0);
 
-		for (Animal animal : as)
-			if (animal.get_age() < youngest.get_age())
-				youngest = animal;
+			for (Animal animal : as)
+				if (animal.get_age() < youngest.get_age())
+					youngest = animal;
+		}
 
 		return youngest;
 	}

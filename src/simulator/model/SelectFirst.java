@@ -13,9 +13,11 @@ public class SelectFirst implements SelectionStrategy {
 		if (as == null)
 			throw new IllegalArgumentException(Messages.INVALID_LIST);
 
-		if (as.isEmpty())
-			return null;
+		Animal first = null;
 
-		return as.get(0);
+		if (!as.isEmpty())
+			first = as.get(0);
+
+		return first;
 	}
 }
