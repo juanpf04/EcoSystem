@@ -101,8 +101,19 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		this._species.clear();
 		this._gcodes.clear();
 
-		for (AnimalInfo a : animals)
-			this.addSpecie(a);
+		for (AnimalInfo a : animals) {
+			String gcode = a.get_genetic_code();
+			if(!this._gcodes.contains(gcode)) {
+				this._gcodes.add(gcode);
+				Map<String, Integer> stats = new HashMap<>();
+				for(State s: State.values())
+					stats.put(s.toString(), (int) animals.stream().filter((a1)-> a1.get_genetic_code() == gcode && a1.get_state() == s).count());
+				this._species.put(gcode, stats);
+			}
+		}
+		
+//		for (AnimalInfo a : animals)
+//			this.addSpecie(a);
 
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
