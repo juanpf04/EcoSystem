@@ -1,0 +1,19 @@
+{
+  "width" : 400,
+  "height" : 300,
+  "cols" : 20,
+  "rows" : 15,
+  "animals" : [ {
+    "amount" : 100,
+    "spec" : {
+      "type" : "sheep",
+      "data" : { }
+    }
+  }, {
+    "amount" : 30,
+    "spec" : {
+      "type" : "wolf",
+      "data" : { }
+    }
+  } ]
+}
