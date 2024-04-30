@@ -25,6 +25,7 @@ import simulator.misc.Messages;
 import simulator.misc.Utils;
 import simulator.model.Animal;
 import simulator.model.Contador;
+import simulator.model.North;
 import simulator.model.Region;
 import simulator.model.SelectionStrategy;
 import simulator.model.Simulator;
@@ -85,6 +86,8 @@ public class Main {
 	private static String _out_file = null;
 	private static ExecMode _mode = null;
 	private static boolean _simple_viewer = false;
+	private static boolean _car = false;
+	private static boolean _north = false;
 
 	// factories
 	//
@@ -110,6 +113,8 @@ public class Main {
 			parse_out_file_option(line);
 			parse_simple_viewer_option(line);
 			parse_time_option(line);
+			parse_carnivore_option(line);
+			parse_north_option(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -156,6 +161,13 @@ public class Main {
 		// simple viewer
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT)
 				.longOpt(Messages.COMMAND_SIMPLE_VIEWER_NAME).desc(Messages.COMMAND_SIMPLE_VIEWER_DESCRIPTION).build());
+
+		// north count
+		cmdLineOptions.addOption(Option.builder("no")
+				.longOpt("north").desc("cuenta el numero de animales que van al norte en cada iteracion").build());
+		// carnivore count
+		cmdLineOptions.addOption(Option.builder("car")
+				.longOpt("carnivores").desc("cuenta el numero de veces que en una region hay mas de 3 animales carnivoros por iteracion").build());
 
 		// steps
 		cmdLineOptions.addOption(Option.builder(Messages.COMMAND_TIME_SHORTCUT).longOpt(Messages.COMMAND_TIME_NAME)
@@ -207,6 +219,12 @@ public class Main {
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
 		_simple_viewer = line.hasOption(Messages.COMMAND_SIMPLE_VIEWER_SHORTCUT);
 	}
+	private static void parse_carnivore_option(CommandLine line) throws ParseException {
+		_car = line.hasOption("car");
+	}
+	private static void parse_north_option(CommandLine line) throws ParseException {
+		_north = line.hasOption("no");
+	}
 
 	private static void parse_time_option(CommandLine line) throws ParseException {
 		String t = line.getOptionValue(Messages.COMMAND_TIME_SHORTCUT, _default_time.toString());
@@ -257,10 +275,13 @@ public class Main {
 		controller.load_data(data);
 		
 		Contador cont = new Contador(controller);
+		North north = new North(controller);
 		
 		controller.run(_time, _delta_time, _simple_viewer, out);
-		
-		cont.imprimeInfo();
+		if(_car)
+			cont.imprimeInfo();
+		if(_north)
+			north.imprimeInfo();
 
 		out.close();
 	}

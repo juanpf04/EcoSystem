@@ -3,6 +3,7 @@ package simulator.model;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import simulator.control.Controller;
 import simulator.model.Animal.Diet;
@@ -23,20 +24,14 @@ public class Contador implements EcoSysObserver {
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -59,7 +54,11 @@ public class Contador implements EcoSysObserver {
 	}
 
 	public void imprimeInfo() {
-		System.out.println("holaaa    " +this.contador);
+		System.out.println("numero de veces que hay 3 carnivoros en cada region");
+		for(Entry<RegionData, Integer> pair :contador.entrySet()) {
+			RegionData r = pair.getKey();
+			System.out.println("Region ("+r.row() + "," + r.col() + "): " + pair.getValue());
+		}
 	}
 
 }
