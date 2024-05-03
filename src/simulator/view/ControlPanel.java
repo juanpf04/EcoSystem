@@ -37,6 +37,7 @@ public class ControlPanel extends JPanel {
 	private JFileChooser _fc;
 
 	private boolean _stopped = true; // for run/stop buttons
+	volatile Thread _thread;
 
 	private JButton _openButton;
 	private JButton _viewerButton;
@@ -44,11 +45,10 @@ public class ControlPanel extends JPanel {
 	private JButton _runButton;
 	private JButton _stopButton;
 	private JButton _exitButton;
-	
-	
 
 	private JSpinner _steps_spinner;
 	private JTextField _delta_time_textField;
+	private JSpinner _delay_spinner;
 
 	ControlPanel(Controller ctrl) {
 		this._ctrl = ctrl;
@@ -127,6 +127,16 @@ public class ControlPanel extends JPanel {
 		this._toolBar.add(this._delta_time_textField);
 		// ----------------------------------------------------------------------
 
+		// - Delay spinner ------------------------------------------------------
+		this._toolBar.add(new JLabel(Messages.DELAY));
+		this._delay_spinner = new JSpinner(new SpinnerNumberModel(1, 0, 1000, 1));
+		this._delay_spinner.setMinimumSize(size);
+		this._delay_spinner.setMaximumSize(size);
+		this._delay_spinner.setPreferredSize(size);
+		this._delay_spinner.setToolTipText(Messages.DELAY_SPINNER_DESCRIPTION);
+		this._toolBar.add(this._delay_spinner);
+		// ----------------------------------------------------------------------
+
 		this._toolBar.add(Box.createGlue()); // this aligns the button to the right
 		this._toolBar.addSeparator();
 
@@ -138,31 +148,46 @@ public class ControlPanel extends JPanel {
 		this._toolBar.add(this._exitButton);
 		// ----------------------------------------------------------------------
 
-
 		this._fc = new JFileChooser();
 		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/" + Messages.EXAMPLES_DIRECTORY));
 
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
 	}
 
-	private void run_sim(int n, double dt) {
-		if (n > 0 && !this._stopped) {
+	private void run_sim(int n, double dt, int delay) {
+		while (n > 0 && !Thread.interrupted()) {
 			try {
-				long startTime = System.currentTimeMillis();
 				this._ctrl.advance(dt);
-				long endTime = System.currentTimeMillis();
-				long delay = (long) (dt * 1000 - (endTime - startTime));
-				Thread.sleep(delay > 0 ? delay : 0);
-				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
+				Thread.sleep(delay);
+				n--;
+			} catch (InterruptedException e) {
+				Thread.interrupted();
 			} catch (Exception e) {
 				ViewUtils.showErrorMsg(e.getMessage());
-				this.setEnabledButtons(true);
-				this._stopped = true;
+				n = 0;
 			}
-		} else {
-			this.setEnabledButtons(true);
-			this._stopped = true;
 		}
+
+		this.setEnabledButtons(true);
+		this._stopped = true;
+
+//		if (n > 0 && !this._stopped) {
+//			try {
+//				long startTime = System.currentTimeMillis();
+//				this._ctrl.advance(dt);
+//				long endTime = System.currentTimeMillis();
+//				long delay = (long) (dt * 1000 - (endTime - startTime));
+//				Thread.sleep(delay > 0 ? delay : 0);
+//				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
+//			} catch (Exception e) {
+//				ViewUtils.showErrorMsg(e.getMessage());
+//				this.setEnabledButtons(true);
+//				this._stopped = true;
+//			}
+//		} else {
+//			this.setEnabledButtons(true);
+//			this._stopped = true;
+//		}
 	}
 
 	private void setEnabledButtons(boolean b) {
@@ -172,6 +197,7 @@ public class ControlPanel extends JPanel {
 		this._runButton.setEnabled(b);
 		this._exitButton.setEnabled(b);
 		this._steps_spinner.setEnabled(b);
+		this._delay_spinner.setEnabled(b);
 		this._delta_time_textField.setEnabled(b);
 	}
 
@@ -200,18 +226,18 @@ public class ControlPanel extends JPanel {
 	}
 
 	private void runButtonAction() {
-		this._stopped = false;
-		this.setEnabledButtons(false);
-		try {
-			this.run_sim((int) this._steps_spinner.getValue(), Double.valueOf(this._delta_time_textField.getText()));
-		} catch (NumberFormatException e) {
-			ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
-			this.setEnabledButtons(true);
-			this._stopped = true;
-		} catch (Exception e) {
-			ViewUtils.showErrorMsg(e.getMessage());
-			this.setEnabledButtons(true);
-			this._stopped = true;
+		if(this._thread == null) {
+			this._thread = nuevo hilo
+			this._stopped = false;
+			this.setEnabledButtons(false);
+			try {
+				this.run_sim((int) this._steps_spinner.getValue(), Double.valueOf(this._delta_time_textField.getText()),
+						(int) this._delay_spinner.getValue());
+			} catch (NumberFormatException e) {
+				ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
+				this.setEnabledButtons(true);
+				this._stopped = true;
+			} 
 		}
 	}
 }
