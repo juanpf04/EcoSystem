@@ -97,12 +97,10 @@ public class MainWindow extends JFrame implements ViewObserver {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-
 			}
 		});
 

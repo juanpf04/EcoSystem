@@ -23,16 +23,12 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Controller _ctrl;
-
 	private List<String> _header;
 
 	private Map<RegionData, Map<String, Integer>> _regions;
 	private List<RegionData> _regions_data; // Auxiliary list
 
 	RegionsTableModel(Controller ctrl) {
-		this._ctrl = ctrl;
-
 		this._header = new ArrayList<>();
 		this._regions = new HashMap<>();
 		this._regions_data = new ArrayList<>();
@@ -43,7 +39,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		for (Diet d : Diet.values())
 			this._header.add(d.toString());
 
-		this._ctrl.addObserver(this);
+		ctrl.addObserver(this);
 	}
 
 	@Override
@@ -65,18 +61,25 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		RegionData r = this._regions_data.get(rowIndex);
 
+		Object value;
 		switch (columnIndex) {
 		case 0:
-			return r.row();
+			value = r.row();
+			break;
 		case 1:
-			return r.col();
+			value = r.col();
+			break;
 		case 2:
-			return r.region().toString();
+			value = r.region().toString();
+			break;
 		default:
 			Map<String, Integer> stats = this._regions.get(r);
 			Integer num_animals = stats.get(this.getColumnName(columnIndex));
-			return num_animals == null ? 0 : num_animals;
+			value = num_animals == null ? 0 : num_animals;
+			break;
 		}
+
+		return value;
 	}
 
 	@Override
@@ -99,13 +102,9 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 		String diet = a.get_diet().toString();
 		Map<String, Integer> stats = this._regions.get(r);
 
-		Integer num_animals = 0;
-		if (stats != null) {
-			num_animals = stats.get(diet);
-			num_animals = num_animals == null ? 0 : num_animals;
-		}
+		Integer num_animals = stats.get(diet);
+		num_animals = num_animals == null ? 1 : num_animals + 1;
 
-		num_animals++;
 		stats.replace(diet, num_animals);
 		this._regions.replace(r, stats);
 
@@ -147,17 +146,20 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 		Map<String, Integer> stats = new HashMap<>();
 
-		for (AnimalInfo a : r.region().getAnimalsInfo()) {
-			String diet = a.get_diet().toString();
-			Integer num_animals = stats.get(diet);
+		for(Diet d: Diet.values())
+			stats.put(d.toString(), (int) r.region().getAnimalsInfo().stream().filter((a)->a.get_diet() == d).count());
 
-			if (num_animals == null) {
-				stats.put(diet, 1);
-			} else {
-				num_animals++;
-				stats.replace(diet, num_animals);
-			}
-		}
+//		for (AnimalInfo a : r.region().getAnimalsInfo()) {
+//			String diet = a.get_diet().toString();
+//			Integer num_animals = stats.get(diet);
+//
+//			if (num_animals == null) {
+//				stats.put(diet, 1);
+//			} else {
+//				num_animals++;
+//				stats.replace(diet, num_animals);
+//			}
+//		}
 
 		this._regions.put(r, stats);
 	}

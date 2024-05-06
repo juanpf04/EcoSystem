@@ -25,14 +25,11 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Controller _ctrl;
-
 	private JLabel _time;
 	private JLabel _total_animals;
 	private JLabel _dimension;
 
 	StatusBar(Controller ctrl) {
-		this._ctrl = ctrl;
 		this.initGUI();
 		this._ctrl.addObserver((EcoSysObserver) this);
 		this._ctrl.addObserver((ViewObserver) this);

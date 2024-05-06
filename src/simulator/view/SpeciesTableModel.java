@@ -22,16 +22,12 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Controller _ctrl;
-
 	private List<String> _header;
 
 	private Map<String, Map<String, Integer>> _species;
 	private List<String> _gcodes; // Auxiliary list
 
 	SpeciesTableModel(Controller ctrl) {
-		this._ctrl = ctrl;
-
 		this._header = new ArrayList<>();
 		this._species = new HashMap<>();
 		this._gcodes = new ArrayList<>();
@@ -40,7 +36,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		for (State s : State.values())
 			this._header.add(s.toString());
 
-		this._ctrl.addObserver(this);
+		ctrl.addObserver(this);
 	}
 
 	@Override
@@ -62,12 +58,17 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		String specie = this._gcodes.get(rowIndex);
 
-		if (columnIndex == 0)
-			return specie;
+		Object value;
 
-		Map<String, Integer> stats = this._species.get(specie);
-		Integer num_animals = stats.get(this.getColumnName(columnIndex));
-		return num_animals == null ? 0 : num_animals;
+		if (columnIndex == 0)
+			value = specie;
+		else {
+			Map<String, Integer> stats = this._species.get(specie);
+			Integer num_animals = stats.get(this.getColumnName(columnIndex));
+			value = num_animals == null ? 0 : num_animals;
+		}
+
+		return value;
 	}
 
 	@Override
@@ -100,8 +101,19 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		this._species.clear();
 		this._gcodes.clear();
 
-		for (AnimalInfo a : animals)
-			this.addSpecie(a);
+		for (AnimalInfo a : animals) {
+			String gcode = a.get_genetic_code();
+			if(!this._gcodes.contains(gcode)) {
+				this._gcodes.add(gcode);
+				Map<String, Integer> stats = new HashMap<>();
+				for(State s: State.values())
+					stats.put(s.toString(), (int) animals.stream().filter((a1)-> a1.get_genetic_code() == gcode && a1.get_state() == s).count());
+				this._species.put(gcode, stats);
+			}
+		}
+		
+//		for (AnimalInfo a : animals)
+//			this.addSpecie(a);
 
 		this.fireTableDataChanged();
 		this.fireTableStructureChanged();
