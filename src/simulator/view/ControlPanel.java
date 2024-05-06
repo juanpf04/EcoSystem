@@ -15,7 +15,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -227,7 +226,7 @@ public class ControlPanel extends JPanel {
 
 	private void runButtonAction() {
 		if(this._thread == null) {
-			this._thread = nuevo hilo
+			this._thread = null; // FIXME = algo
 			this._stopped = false;
 			this.setEnabledButtons(false);
 			try {

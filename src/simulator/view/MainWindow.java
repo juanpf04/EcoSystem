@@ -122,7 +122,7 @@ public class MainWindow extends JFrame implements ViewObserver {
 
 	@Override
 	public void onDarkMode() {
-		this.setBackground(Color.DARK_GRAY);	
+		this.setBackground(Color.DARK_GRAY);
 		System.out.println("Main window en modo oscuro");
 	}
 
@@ -135,13 +135,13 @@ public class MainWindow extends JFrame implements ViewObserver {
 	@Override
 	public void onSpectacularView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStandardView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

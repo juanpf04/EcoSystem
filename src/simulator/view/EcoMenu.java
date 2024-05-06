@@ -40,61 +40,80 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 	private void initGUI() {
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
-		JMenu starter = new JMenu("starter");
-		starter.setMnemonic(KeyEvent.VK_S);
-		JMenu maincourse = new JMenu("mainCourse");
-		JMenu desserts = new JMenu("desserts");
-		this.add(starter);
-		this.add(maincourse);
-		this.add(desserts);
+		// -------------------------------------------------------------------
+		JMenu file = new JMenu("File");
+		file.setMnemonic(KeyEvent.VK_F);
+		this.add(file);
 
 		JMenuItem soup = new JMenuItem("soup");
 		soup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
 		soup.addActionListener((e) -> System.out.print("soup seleccionado"));
+		file.add(soup);
 		JMenuItem pate = new JMenuItem("pate");
 		pate.addActionListener((e) -> System.out.print("pate seleccionado"));
+		file.add(pate);
 		JMenuItem salad = new JMenuItem("salad");
 		salad.addActionListener((e) -> System.out.print("salad seleccionado"));
-		starter.add(soup);
-		starter.add(pate);
-		starter.add(salad);
+		file.add(salad);
+		// -------------------------------------------------------------------
 
-		JMenuItem fish = new JMenuItem("Haddock");
-		maincourse.add(fish);
-		JMenu steak = new JMenu("Steak");
-		JMenuItem rare = new JMenuItem("Rare");
-		JMenuItem welldone = new JMenuItem("WellDone");
-		steak.add(rare);
-		steak.add(welldone);
-		maincourse.add(steak);
-		JMenuItem pie = new JMenuItem("Pie");
-		maincourse.add(pie);
-		maincourse.addSeparator();
-		JRadioButtonMenuItem chips = new JRadioButtonMenuItem("Chips");
-		JRadioButtonMenuItem bp = new JRadioButtonMenuItem("BakedPotato");
-		JRadioButtonMenuItem vege = new JRadioButtonMenuItem("Vegetables");
-		ButtonGroup sides = new ButtonGroup();
-		sides.add(chips);
-		sides.add(bp);
-		sides.add(vege);
-		maincourse.add(chips);
-		maincourse.add(bp);
-		maincourse.add(vege);
+		// -------------------------------------------------------------------
+		JMenu edit = new JMenu("Edit");
+		edit.setMnemonic(KeyEvent.VK_E);
+		this.add(edit);
 
-		JCheckBoxMenuItem cake = new JCheckBoxMenuItem("Cake");
-		desserts.add(cake);
-		JCheckBoxMenuItem sorbet = new JCheckBoxMenuItem("Sorbet");
-		desserts.add(sorbet);
-		JMenu icecream = new JMenu("IceCream");
-		JCheckBoxMenuItem choc = new JCheckBoxMenuItem("Chocolate");
-		JCheckBoxMenuItem vani = new JCheckBoxMenuItem("Vanilla");
-		icecream.add(choc);
-		icecream.add(vani);
-		desserts.add(icecream);
+		JMenuItem regions = new JMenuItem("Regions");
+		regions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.SHIFT_MASK));
+		regions.addActionListener((e) -> System.out.print("hacer"));
+		edit.add(regions);
+		JMenuItem steps = new JMenuItem("Steps");
+		steps.addActionListener((e) -> System.out.print("hacer"));
+		edit.add(steps);
+		JMenuItem delta_time = new JMenuItem("Delta time");
+		delta_time.addActionListener((e) -> System.out.print("hacer"));
+		edit.add(delta_time);
+		JMenuItem delay = new JMenuItem("Delay");
+		delay.addActionListener((e) -> System.out.print("hacer"));
+		edit.add(delay);
+		// -------------------------------------------------------------------
+
+		// -------------------------------------------------------------------
+		JMenu mode = new JMenu("Mode");
+		mode.setMnemonic(KeyEvent.VK_M);
+		this.add(mode);
+
+		ButtonGroup mode_group = new ButtonGroup();
+
+		JRadioButtonMenuItem normal = new JRadioButtonMenuItem("Normal");
+		// TODO añadir actionlistener
+		mode.add(normal);
+		mode_group.add(normal);
+		normal.setSelected(true);
+		JRadioButtonMenuItem thread = new JRadioButtonMenuItem("Thread");
+		// TODO añadir actionlistener
+		mode.add(thread);
+		mode_group.add(thread);
+		JRadioButtonMenuItem worker = new JRadioButtonMenuItem("Worker");
+		// TODO añadir actionlistener
+		mode.add(worker);
+		mode_group.add(worker);
+
+		// -------------------------------------------------------------------
+
+		// -------------------------------------------------------------------
+		JMenu window = new JMenu("Window");
+		window.setMnemonic(KeyEvent.VK_W);
+		this.add(window);
+
+		JMenuItem viewer = new JMenuItem("New Map Viewer");
+		viewer.addActionListener((e) -> new MapWindow(ViewUtils.getWindow(this), this._ctrl));
+		window.add(viewer);
+		// TODO añadir poder ocultar y mostrar el status bar y toolbar
+		// poder crear una ventana nueva del viewer
 
 		// --------- View: standard (normal) / spectacular (icons) ---------------
 
-		JMenu view = new JMenu("View");
+		JMenu view = new JMenu("Viewer");
 		view.setMnemonic(KeyEvent.VK_V);
 		JRadioButtonMenuItem standard_view = new JRadioButtonMenuItem("Standard View");
 		standard_view.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
@@ -110,19 +129,32 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 		view.add(standard_view);
 		view.add(spectacular_view);
 
-		this.add(view);
+		window.add(view);
 
+		window.addSeparator();
 		// ------------ Theme: Dark/Light --------------------
+
+		JMenu appearance = new JMenu("Appearance");
+		window.add(appearance);
+
+		JCheckBoxMenuItem toolBar = new JCheckBoxMenuItem("ToolBar");
+		toolBar.setSelected(true);
+		// TODO ACTIONLISTENER
+		appearance.add(toolBar);
+		JCheckBoxMenuItem statusBar = new JCheckBoxMenuItem("StatusBar");
+		statusBar.setSelected(true);
+		// TODO ACTIONLISTENER
+		appearance.add(statusBar);
 
 		JMenu theme = new JMenu("Theme");
 		theme.setMnemonic(KeyEvent.VK_T);
 
 		JRadioButtonMenuItem light_theme = new JRadioButtonMenuItem("Light Theme");
-		light_theme.addActionListener((e)-> notify_on_light_theme());
+		light_theme.addActionListener((e) -> notify_on_light_theme());
 		light_theme.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.SHIFT_MASK));
 
 		JRadioButtonMenuItem dark_theme = new JRadioButtonMenuItem("Dark Theme");
-		dark_theme.addActionListener((e)-> notify_on_dark_theme());
+		dark_theme.addActionListener((e) -> notify_on_dark_theme());
 		dark_theme.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.SHIFT_MASK));
 
 		ButtonGroup theme_group = new ButtonGroup();
@@ -132,16 +164,30 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 		theme.add(dark_theme);
 		light_theme.setSelected(true);
 
-		this.add(theme);
+		appearance.add(theme);
 
+		// -------------------------------------------------------------------
+		JMenu run = new JMenu("Run");
+		run.setMnemonic(KeyEvent.VK_R);
+		this.add(run);
+
+		JMenuItem run_ = new JMenuItem("Run");
+		run_.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+		run_.addActionListener((e) -> System.out.print("run seleccionado"));
+		run.add(run_);
+		JMenuItem stop = new JMenuItem("Stop");
+		stop.addActionListener((e) -> System.out.print("stop seleccionado"));
+		run.add(stop);
+		// -------------------------------------------------------------------
 	}
 
 	private void notify_on_dark_theme() {
-		for(ViewObserver o: this._observers)
+		for (ViewObserver o : this._observers)
 			o.onDarkMode();
 	}
+
 	private void notify_on_light_theme() {
-		for(ViewObserver o: this._observers)
+		for (ViewObserver o : this._observers)
 			o.onLightMode();
 	}
 
@@ -169,7 +215,7 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 
 	@Override
 	public void onDarkMode() {
-		this.setBackground(Color.DARK_GRAY);		
+		this.setBackground(Color.DARK_GRAY);
 	}
 
 	@Override
@@ -180,12 +226,12 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 	@Override
 	public void onSpectacularView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStandardView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

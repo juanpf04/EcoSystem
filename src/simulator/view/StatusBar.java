@@ -31,8 +31,8 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 
 	StatusBar(Controller ctrl) {
 		this.initGUI();
-		this._ctrl.addObserver((EcoSysObserver) this);
-		this._ctrl.addObserver((ViewObserver) this);
+		ctrl.addObserver((EcoSysObserver) this);
+		ctrl.addObserver((ViewObserver) this);
 	}
 
 	private void initGUI() {
