@@ -32,7 +32,6 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 	StatusBar(Controller ctrl) {
 		this.initGUI();
 		ctrl.addObserver((EcoSysObserver) this);
-		ctrl.addObserver((ViewObserver) this);
 	}
 
 	private void initGUI() {
@@ -113,7 +112,6 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 		this._time.setForeground(Color.LIGHT_GRAY);
 		this._total_animals.setForeground(Color.LIGHT_GRAY);
 		this._dimension.setForeground(Color.LIGHT_GRAY);
-		System.out.println("status bar en modo oscuro");
 	}
 
 	@Override
@@ -122,18 +120,14 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 		this._time.setForeground(Color.black);
 		this._total_animals.setForeground(Color.black);
 		this._dimension.setForeground(Color.black);
-		System.out.println("status bar en modo claro");
 	}
 
 	@Override
 	public void onSpectacularView() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onStandardView() {
-		// TODO Auto-generated method stub
-
 	}
+
 }
