@@ -17,12 +17,14 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.w3c.dom.css.ViewCSS;
 
 import simulator.control.Controller;
 import simulator.launcher.Main;
 import simulator.misc.Messages;
+import simulator.model.ViewObserver;
 
-public class ControlPanel extends JPanel {
+public class ControlPanel extends JPanel implements ViewObserver {
 
 	/**
 	 * 
@@ -30,6 +32,7 @@ public class ControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private Controller _ctrl;
+	private ViewActions _actions;
 	private ChangeRegionsDialog _changeRegionsDialog;
 
 	private JToolBar _toolBar;
@@ -49,8 +52,9 @@ public class ControlPanel extends JPanel {
 	private JTextField _delta_time_textField;
 	private JSpinner _delay_spinner;
 
-	ControlPanel(Controller ctrl) {
+	ControlPanel(Controller ctrl,ViewActions actions) {
 		this._ctrl = ctrl;
+		this._actions = actions;
 		this.initGUI();
 	}
 
@@ -238,5 +242,29 @@ public class ControlPanel extends JPanel {
 				this._stopped = true;
 			} 
 		}
+	}
+
+	@Override
+	public void onDarkMode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLightMode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSpectacularView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStandardView() {
+		// TODO Auto-generated method stub
+		
 	}
 }

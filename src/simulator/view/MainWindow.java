@@ -15,7 +15,7 @@ import simulator.control.Controller;
 import simulator.misc.Messages;
 import simulator.model.ViewObserver;
 
-public class MainWindow extends JFrame implements ViewObserver {
+public class MainWindow extends JFrame {
 
 	/**
 	 * 
@@ -30,7 +30,6 @@ public class MainWindow extends JFrame implements ViewObserver {
 		super(Messages.GUI_TITLE);
 		this._ctrl = ctrl;
 		this.initGUI();
-		this._ctrl.addObserver(this);
 	}
 
 	private void initGUI() {
@@ -39,19 +38,21 @@ public class MainWindow extends JFrame implements ViewObserver {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 
-		// - MenuBar --------------------------------------------
-		EcoMenu menu = new EcoMenu(this._ctrl);
-		this.setJMenuBar(menu);
-		// ------------------------------------------------------
+		ViewActions actions = new ViewActions();
 
 		// - ToolBar --------------------------------------------
-		ControlPanel controlPanel = new ControlPanel(this._ctrl);
+		ControlPanel controlPanel = new ControlPanel(this._ctrl, actions);
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
 		// ------------------------------------------------------
 
 		// - StatusBar ------------------------------------------
 		StatusBar statusBar = new StatusBar(this._ctrl);
 		mainPanel.add(statusBar, BorderLayout.PAGE_END);
+		// ------------------------------------------------------
+
+		// - MenuBar --------------------------------------------
+		EcoMenu menu = new EcoMenu(this._ctrl, actions, controlPanel, statusBar);
+		this.setJMenuBar(menu);
 		// ------------------------------------------------------
 
 		// - Tables panel ----------------------------------------
@@ -118,30 +119,6 @@ public class MainWindow extends JFrame implements ViewObserver {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		setVisible(true);
-	}
-
-	@Override
-	public void onDarkMode() {
-		this.setBackground(Color.DARK_GRAY);
-		System.out.println("Main window en modo oscuro");
-	}
-
-	@Override
-	public void onLightMode() {
-		this.setBackground(Color.white);
-		System.out.println("Main window en modo claro");
-	}
-
-	@Override
-	public void onSpectacularView() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onStandardView() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

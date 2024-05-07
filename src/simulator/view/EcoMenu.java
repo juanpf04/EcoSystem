@@ -27,14 +27,23 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 	private static final long serialVersionUID = 1L;
 
 	private Controller _ctrl;
+	private ViewActions _actions;
+	private ControlPanel _toolBar;
+	private StatusBar _statusBar;
+
 	private List<ViewObserver> _observers;
 
-	public EcoMenu(Controller ctrl) {
+	public EcoMenu(Controller ctrl, ViewActions actions, ControlPanel toolBar, StatusBar statusBar) {
 		this._ctrl = ctrl;
+		this._actions = actions;
+		this._toolBar = toolBar;
+		this._statusBar = statusBar;
 		this._ctrl.addMenu(this);
 		this.initGUI();
 		this._observers = new LinkedList<>();
 		this._ctrl.addObserver(this);
+		this._ctrl.addObserver(toolBar);
+		this._ctrl.addObserver((ViewObserver) statusBar);
 	}
 
 	private void initGUI() {
@@ -139,11 +148,11 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 
 		JCheckBoxMenuItem toolBar = new JCheckBoxMenuItem("ToolBar");
 		toolBar.setSelected(true);
-		// TODO ACTIONLISTENER
+		toolBar.addActionListener((e) -> _toolBar.setVisible(toolBar.isSelected()));
 		appearance.add(toolBar);
 		JCheckBoxMenuItem statusBar = new JCheckBoxMenuItem("StatusBar");
 		statusBar.setSelected(true);
-		// TODO ACTIONLISTENER
+		statusBar.addActionListener((e) -> _statusBar.setVisible(statusBar.isSelected()));
 		appearance.add(statusBar);
 
 		JMenu theme = new JMenu("Theme");
