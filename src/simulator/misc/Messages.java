@@ -213,6 +213,7 @@ public class Messages {
 	public static final String COL_FROM_TO = "Column from/to: ";
 
 	public static final String STEPS = "Steps: ";
+	public static final String DELAY = "Delay: ";
 	public static final String TIME = "Time: ";
 	public static final String TOTAL_ANIMALS = "Total Animals: ";
 	public static final String DIMENSION = "Dimension: ";
@@ -229,6 +230,7 @@ public class Messages {
 	public static final String STOP_BUTTON_DESCRIPTION = "Stop the simulator";
 	public static final String EXIT_BUTTON_DESCRIPTION = "Exit";
 	public static final String STEPS_SPINNER_DESCRIPTION = "Simulation steps to run: 1-10000";
+	public static final String DELAY_SPINNER_DESCRIPTION = "Delay (miliseconds) between consecutive simulation steps";
 	public static final String DT_TEXT_FIELD_DESCRIPTION = "Real time (seconds) corresponding to a step";
 
 	public static final String OK_BUTTON = "OK";

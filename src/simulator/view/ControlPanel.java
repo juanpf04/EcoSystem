@@ -36,6 +36,11 @@ public class ControlPanel extends JPanel {
 	private JToolBar _toolBar;
 	private JFileChooser _fc;
 
+	private static enum Mode {
+		EDT, NORMAL, THREAD, WORKER;
+	}
+	
+	private Mode _mode = Mode.NORMAL;
 	private boolean _stopped = true; // for run/stop buttons
 
 	private JButton _openButton;
@@ -47,6 +52,7 @@ public class ControlPanel extends JPanel {
 
 	private JSpinner _steps_spinner;
 	private JTextField _delta_time_textField;
+	private JSpinner _delay_spinner;
 
 	ControlPanel(Controller ctrl) {
 		this._ctrl = ctrl;
@@ -123,6 +129,20 @@ public class ControlPanel extends JPanel {
 		this._delta_time_textField.setPreferredSize(size);
 		this._delta_time_textField.setToolTipText(Messages.DT_TEXT_FIELD_DESCRIPTION);
 		this._toolBar.add(this._delta_time_textField);
+		// ----------------------------------------------------------------------
+
+		// - Delay spinner ------------------------------------------------------
+		this._toolBar.add(new JLabel(Messages.DELAY));
+		this._delay_spinner = new JSpinner(new SpinnerNumberModel(1, 0, 1000, 1));
+		this._delay_spinner.setMinimumSize(size);
+		this._delay_spinner.setMaximumSize(size);
+		this._delay_spinner.setPreferredSize(size);
+		this._delay_spinner.setToolTipText(Messages.DELAY_SPINNER_DESCRIPTION);
+		this._toolBar.add(this._delay_spinner);
+		// ----------------------------------------------------------------------
+
+		// - Mode ---------------------------------------------------------------
+		// TODO
 		// ----------------------------------------------------------------------
 
 		this._toolBar.add(Box.createGlue()); // this aligns the button to the right
@@ -209,6 +229,26 @@ public class ControlPanel extends JPanel {
 			ViewUtils.showErrorMsg(e.getMessage());
 			this.setEnabledButtons(true);
 			this._stopped = true;
+		}
+	}
+	
+	private void runNormal() {
+		
+		switch (this._mode) {
+		case EDT: 
+		
+			break;
+		case NORMAL:
+			
+			break;
+		case THREAD:
+			
+			break;
+		case WORKER:
+			
+			break;
+		default:
+			break;
 		}
 	}
 }
