@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -44,6 +45,7 @@ public class ControlPanel extends JPanel {
 
 	private Mode _mode = Mode.NORMAL;
 	private boolean _stopped = true; // for run/stop buttons
+	private volatile Thread _thread = null;
 
 	private JButton _openButton;
 	private JButton _viewerButton;
@@ -108,7 +110,7 @@ public class ControlPanel extends JPanel {
 		this._stopButton = new JButton();
 		this._stopButton.setToolTipText(Messages.STOP_BUTTON_DESCRIPTION);
 		this._stopButton.setIcon(ViewUtils.get_icon("stop"));
-		this._stopButton.addActionListener((e) -> this._stopped = true);
+		this._stopButton.addActionListener((e) -> stopButtonAction());
 		this._toolBar.add(this._stopButton);
 		// ----------------------------------------------------------------------
 
@@ -147,13 +149,14 @@ public class ControlPanel extends JPanel {
 		// - Mode ---------------------------------------------------------------
 		this._toolBar.add(new JLabel(Messages.MODE));
 		DefaultComboBoxModel<String> modeModel = new DefaultComboBoxModel<String>();
-		
-		for(Mode m: Mode.values())
+
+		for (Mode m : Mode.values())
 			modeModel.addElement(m.toString());
-		
+
 		this._mode_comboBox = new JComboBox<>(modeModel);
 		this._mode_comboBox.setSelectedItem(Mode.NORMAL.toString());
-		this._mode_comboBox.addActionListener((e) -> _mode = Mode.valueOf((String) this._mode_comboBox.getSelectedItem()));
+		this._mode_comboBox
+				.addActionListener((e) -> _mode = Mode.valueOf((String) this._mode_comboBox.getSelectedItem()));
 		this._toolBar.add(this._mode_comboBox);
 		// ----------------------------------------------------------------------
 
@@ -175,22 +178,49 @@ public class ControlPanel extends JPanel {
 	}
 
 	private void run_sim(int n, double dt) {
-		if (n > 0 && !this._stopped) {
-			try {
-				long startTime = System.currentTimeMillis();
-				this._ctrl.advance(dt);
-				long endTime = System.currentTimeMillis();
-				long delay = (long) (dt * 1000 - (endTime - startTime));
-				Thread.sleep(delay > 0 ? delay : 0);
-				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
-			} catch (Exception e) {
-				ViewUtils.showErrorMsg(e.getMessage());
+		try {
+			switch (this._mode) {
+			case EDT:
+				for (int i = 0; i < n; i++)
+					this._ctrl.advance(dt);
 				this.setEnabledButtons(true);
 				this._stopped = true;
+				break;
+			case NORMAL:
+				if (n > 0 && !this._stopped) {
+					long startTime = System.currentTimeMillis();
+					this._ctrl.advance(dt);
+					long endTime = System.currentTimeMillis();
+					long delay = (long) (dt * 1000 - (endTime - startTime));
+					Thread.sleep(delay > 0 ? delay : 0);
+					SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
+				} else {
+					this.setEnabledButtons(true);
+					this._stopped = true;
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + this._mode);
 			}
-		} else {
+		} catch (Exception e) {
+			ViewUtils.showErrorMsg(e.getMessage());
 			this.setEnabledButtons(true);
 			this._stopped = true;
+		}
+	}
+
+	private void run_sim(int n, double dt, int delay) {
+		while (n > 0 && !Thread.interrupted()) {
+			try {
+				this._ctrl.advance(dt);
+				Thread.sleep(delay);
+				n--;
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			} catch (Exception e) {
+				ViewUtils.showErrorMsg(e.getMessage());
+				n = 0; // TODO Hay que obligarle a salir del bucle o se sale solo
+			}
 		}
 	}
 
@@ -233,31 +263,81 @@ public class ControlPanel extends JPanel {
 	private void runButtonAction() {
 		switch (this._mode) {
 		case EDT:
-			break;
 		case NORMAL:
-			this.runNormal();
+			this.run();
 			break;
 		case THREAD:
+			this.runThread();
 			break;
 		case WORKER:
+			this.runWorker();
 			break;
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + this._mode);
 		}
 	}
 
-	private void runNormal() {
-		this._stopped = false;
+	private void stopButtonAction() {
+		switch (this._mode) {
+		case EDT:
+		case NORMAL:
+			this._stopped = true;
+			break;
+		case THREAD:
+			if (this._thread != null)
+				this._thread.interrupt();
+			break;
+		case WORKER:
+			this.stopWorker();
+			break;
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + this._mode);
+		}
+	}
+
+	private void run() {
 		this.setEnabledButtons(false);
+		this._stopped = false;
 		try {
 			this.run_sim((int) this._steps_spinner.getValue(), Double.valueOf(this._delta_time_textField.getText()));
 		} catch (NumberFormatException e) {
 			ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
 			this.setEnabledButtons(true);
 			this._stopped = true;
-		} catch (Exception e) {
-			ViewUtils.showErrorMsg(e.getMessage());
-			this.setEnabledButtons(true);
-			this._stopped = true;
 		}
+	}
+
+	private void runThread() {
+		if (this._thread == null) {
+			this.setEnabledButtons(false);
+			this._thread = new Thread(() -> {
+				try {
+					this.run_sim((int) this._steps_spinner.getValue(),
+							Double.valueOf(this._delta_time_textField.getText()), (int) this._delay_spinner.getValue());
+				} catch (NumberFormatException e) {
+					ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
+					this.setEnabledButtons(true);
+					this._stopped = true;
+				}
+				this.setEnabledButtons(true);
+				this._thread = null;
+			});
+			this._thread.start();
+//			try {
+//				this._thread.join();
+//			} catch (InterruptedException e) {
+//				ViewUtils.showErrorMsg("CONTROPANEL RUNBUTTONACTION");
+//			}
+//			this._thread = null;
+		}
+	}
+
+	private void runWorker() {
+		JOptionPane.showMessageDialog(null, "Unfinished mode", "WORKER", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private void stopWorker() {
+		JOptionPane.showMessageDialog(null, "Unfinished mode", "WORKER", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }

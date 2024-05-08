@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -83,9 +84,11 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		this.addSpecie(a);
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
+		SwingUtilities.invokeLater(() -> {
+			this.addSpecie(a);
+			this.fireTableDataChanged();
+			this.fireTableStructureChanged();
+		});
 	}
 
 	@Override
@@ -94,7 +97,9 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		this.setSpecies(animals);
+		SwingUtilities.invokeLater(() -> {
+			this.setSpecies(animals);
+		});
 	}
 
 	private void setSpecies(List<AnimalInfo> animals) {

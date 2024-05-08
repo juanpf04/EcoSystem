@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -94,22 +95,24 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		int row = (int) (a.get_position().getY() / map.get_region_height());
-		int col = (int) (a.get_position().getX() / map.get_region_width());
-		int index = row * map.get_cols() + col;
-
-		RegionData r = this._regions_data.get(index);
-		String diet = a.get_diet().toString();
-		Map<String, Integer> stats = this._regions.get(r);
-
-		Integer num_animals = stats.get(diet);
-		num_animals = num_animals == null ? 1 : num_animals + 1;
-
-		stats.replace(diet, num_animals);
-		this._regions.replace(r, stats);
-
-		this.fireTableDataChanged();
-		this.fireTableStructureChanged();
+		SwingUtilities.invokeLater(() -> {
+			int row = (int) (a.get_position().getY() / map.get_region_height());
+			int col = (int) (a.get_position().getX() / map.get_region_width());
+			int index = row * map.get_cols() + col;
+			
+			RegionData r = this._regions_data.get(index);
+			String diet = a.get_diet().toString();
+			Map<String, Integer> stats = this._regions.get(r);
+			
+			Integer num_animals = stats.get(diet);
+			num_animals = num_animals == null ? 1 : num_animals + 1;
+			
+			stats.replace(diet, num_animals);
+			this._regions.replace(r, stats);
+			
+			this.fireTableDataChanged();
+			this.fireTableStructureChanged();
+		});
 	}
 
 	@Override
@@ -127,7 +130,9 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		this.setRegions(map);
+		SwingUtilities.invokeLater(() -> {
+			this.setRegions(map);
+		});
 	}
 
 	private void setRegions(MapInfo map) {
