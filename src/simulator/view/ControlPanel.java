@@ -38,8 +38,8 @@ public class ControlPanel extends JPanel implements ViewObserver {
 	private JToolBar _toolBar;
 	private JFileChooser _fc;
 
-	private boolean _stopped = true; // for run/stop buttons
-	volatile Thread _thread;
+	private volatile boolean _stopped = true; // for run/stop buttons
+	private volatile Thread _thread;
 
 	private JButton _openButton;
 	private JButton _viewerButton;
@@ -104,7 +104,10 @@ public class ControlPanel extends JPanel implements ViewObserver {
 		this._stopButton = new JButton();
 		this._stopButton.setToolTipText(Messages.STOP_BUTTON_DESCRIPTION);
 		this._stopButton.setIcon(ViewUtils.get_icon("stop"));
-		this._stopButton.addActionListener((e) -> this._stopped = true);
+		this._stopButton.addActionListener((e) -> {
+			if(this._thread != null)
+				this._thread.interrupt();
+		});//this._stopped = true);
 		this._toolBar.add(this._stopButton);
 		// ----------------------------------------------------------------------
 
@@ -164,15 +167,12 @@ public class ControlPanel extends JPanel implements ViewObserver {
 				Thread.sleep(delay);
 				n--;
 			} catch (InterruptedException e) {
-				Thread.interrupted();
+				Thread.currentThread().interrupt();
 			} catch (Exception e) {
 				ViewUtils.showErrorMsg(e.getMessage());
-				n = 0;
+				n = 0; //TODO Hay que obligarle a salir del bucle o se sale solo
 			}
 		}
-
-		this.setEnabledButtons(true);
-		this._stopped = true;
 
 //		if (n > 0 && !this._stopped) {
 //			try {
@@ -229,18 +229,32 @@ public class ControlPanel extends JPanel implements ViewObserver {
 	}
 
 	private void runButtonAction() {
-		if(this._thread == null) {
-			this._thread = null; // FIXME = algo
+		if (this._thread == null) {
 			this._stopped = false;
 			this.setEnabledButtons(false);
-			try {
-				this.run_sim((int) this._steps_spinner.getValue(), Double.valueOf(this._delta_time_textField.getText()),
-						(int) this._delay_spinner.getValue());
-			} catch (NumberFormatException e) {
-				ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
+			this._thread = new Thread(() -> {
+				try {
+					
+					this.run_sim((int) this._steps_spinner.getValue(),
+							Double.valueOf(this._delta_time_textField.getText()), (int) this._delay_spinner.getValue());
+				} catch (NumberFormatException e) {
+					ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
+					this.setEnabledButtons(true);
+					this._stopped = true;
+				}
+				
 				this.setEnabledButtons(true);
 				this._stopped = true;
-			} 
+				
+				this._thread = null;
+			});
+			this._thread.start();
+//			try {
+//				this._thread.join();
+//			} catch (InterruptedException e) {
+//				ViewUtils.showErrorMsg("CONTROPANEL RUNBUTTONACTION");
+//			}
+//			this._thread = null;
 		}
 	}
 

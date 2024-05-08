@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
 import simulator.misc.Messages;
@@ -75,7 +76,9 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-		this.setTotalAnimals(animals.size());
+		SwingUtilities.invokeLater(() -> {
+			this.setTotalAnimals(animals.size());
+		});
 	}
 
 	@Override
@@ -84,8 +87,10 @@ class StatusBar extends JPanel implements EcoSysObserver, ViewObserver {
 
 	@Override
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		this.setTime(time);
-		this.setTotalAnimals(animals.size());
+		SwingUtilities.invokeLater(() -> {
+			this.setTime(time);
+			this.setTotalAnimals(animals.size());
+		});
 	}
 
 	private void addVerticalSeparator() {
