@@ -214,6 +214,7 @@ public class Messages {
 
 	public static final String STEPS = "Steps: ";
 	public static final String DELAY = "Delay: ";
+	public static final String MODE = "Mode: ";
 	public static final String TIME = "Time: ";
 	public static final String TOTAL_ANIMALS = "Total Animals: ";
 	public static final String DIMENSION = "Dimension: ";

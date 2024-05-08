@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,7 +41,7 @@ public class ControlPanel extends JPanel {
 	private static enum Mode {
 		EDT, NORMAL, THREAD, WORKER;
 	}
-	
+
 	private Mode _mode = Mode.NORMAL;
 	private boolean _stopped = true; // for run/stop buttons
 
@@ -53,6 +55,7 @@ public class ControlPanel extends JPanel {
 	private JSpinner _steps_spinner;
 	private JTextField _delta_time_textField;
 	private JSpinner _delay_spinner;
+	private JComboBox<String> _mode_comboBox;
 
 	ControlPanel(Controller ctrl) {
 		this._ctrl = ctrl;
@@ -142,7 +145,16 @@ public class ControlPanel extends JPanel {
 		// ----------------------------------------------------------------------
 
 		// - Mode ---------------------------------------------------------------
-		// TODO
+		this._toolBar.add(new JLabel(Messages.MODE));
+		DefaultComboBoxModel<String> modeModel = new DefaultComboBoxModel<String>();
+		
+		for(Mode m: Mode.values())
+			modeModel.addElement(m.toString());
+		
+		this._mode_comboBox = new JComboBox<>(modeModel);
+		this._mode_comboBox.setSelectedItem(Mode.NORMAL.toString());
+		this._mode_comboBox.addActionListener((e) -> _mode = Mode.valueOf((String) this._mode_comboBox.getSelectedItem()));
+		this._toolBar.add(this._mode_comboBox);
 		// ----------------------------------------------------------------------
 
 		this._toolBar.add(Box.createGlue()); // this aligns the button to the right
@@ -190,6 +202,8 @@ public class ControlPanel extends JPanel {
 		this._exitButton.setEnabled(b);
 		this._steps_spinner.setEnabled(b);
 		this._delta_time_textField.setEnabled(b);
+		this._delay_spinner.setEnabled(b);
+		this._mode_comboBox.setEnabled(b);
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
@@ -217,6 +231,20 @@ public class ControlPanel extends JPanel {
 	}
 
 	private void runButtonAction() {
+		switch (this._mode) {
+		case EDT:
+			break;
+		case NORMAL:
+			this.runNormal();
+			break;
+		case THREAD:
+			break;
+		case WORKER:
+			break;
+		}
+	}
+
+	private void runNormal() {
 		this._stopped = false;
 		this.setEnabledButtons(false);
 		try {
@@ -231,24 +259,5 @@ public class ControlPanel extends JPanel {
 			this._stopped = true;
 		}
 	}
-	
-	private void runNormal() {
-		
-		switch (this._mode) {
-		case EDT: 
-		
-			break;
-		case NORMAL:
-			
-			break;
-		case THREAD:
-			
-			break;
-		case WORKER:
-			
-			break;
-		default:
-			break;
-		}
-	}
+
 }
