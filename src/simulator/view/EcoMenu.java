@@ -177,6 +177,7 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 
 		// -------------------------------------------------------------------
 		JMenu run = new JMenu("Run");
+		run.setForeground(Color.LIGHT_GRAY); // TODO PARA EL MODO OSCURO
 		run.setMnemonic(KeyEvent.VK_R);
 		this.add(run);
 
@@ -229,18 +230,15 @@ public class EcoMenu extends JMenuBar implements ViewObserver, Observable<ViewOb
 
 	@Override
 	public void onLightMode() {
-		this.setBackground(Color.white);
+		this.setBackground(Color.WHITE);
 	}
 
 	@Override
 	public void onSpectacularView() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onStandardView() {
-		// TODO Auto-generated method stub
-
 	}
+
 }

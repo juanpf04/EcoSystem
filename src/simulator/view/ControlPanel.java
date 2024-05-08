@@ -17,7 +17,6 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.w3c.dom.css.ViewCSS;
 
 import simulator.control.Controller;
 import simulator.launcher.Main;
@@ -256,6 +255,9 @@ public class ControlPanel extends JPanel implements ViewObserver {
 //			}
 //			this._thread = null;
 		}
+		
+		
+		
 	}
 
 	@Override
