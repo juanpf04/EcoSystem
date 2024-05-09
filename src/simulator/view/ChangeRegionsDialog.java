@@ -42,7 +42,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	private DefaultComboBoxModel<String> _fromRowModel;
 	private DefaultComboBoxModel<String> _toRowModel;
 	private DefaultComboBoxModel<String> _fromColModel;
-	private DefaultComboBoxModel<String> _toColModel;
+	private DefaultComboBoxModel<String> _toColModel; 
 
 	private DefaultTableModel _dataTableModel;
 
@@ -221,7 +221,7 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			this._dataTableModel.addRow(o);
 		}
 
-		this._dataTableModel.fireTableDataChanged();
+		//this._dataTableModel.fireTableDataChanged();
 	}
 
 	private JSONObject tableToJSON() {
@@ -231,6 +231,8 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			region_data.put((String) this._dataTableModel.getValueAt(i, 0), this._dataTableModel.getValueAt(i, 1));
 		}
 
+		System.out.println(region_data);
+		
 		JSONObject r_json = new JSONObject();
 
 		r_json.put(Messages.TYPE_KEY, this._regionsModel.getSelectedItem());

@@ -104,8 +104,8 @@ public class Main {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parse_delta_time_option(line);
 			parse_help_option(line, cmdLineOptions);
-			parse_in_file_option(line);
 			parse_mode_option(line);
+			parse_in_file_option(line);
 			parse_out_file_option(line);
 			parse_simple_viewer_option(line);
 			parse_time_option(line);
@@ -126,7 +126,7 @@ public class Main {
 			System.exit(1);
 		}
 
-	}
+	} 
 
 	private static Options build_options() {
 		Options cmdLineOptions = new Options();
