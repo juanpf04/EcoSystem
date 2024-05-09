@@ -12,13 +12,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -46,6 +47,7 @@ public class ControlPanel extends JPanel {
 	private Mode _mode = Mode.NORMAL;
 	private boolean _stopped = true; // for run/stop buttons
 	private volatile Thread _thread = null;
+	private volatile SwingWorker<Void, Void> _worker;
 
 	private JButton _openButton;
 	private JButton _viewerButton;
@@ -209,7 +211,7 @@ public class ControlPanel extends JPanel {
 		}
 	}
 
-	private void run_sim(int n, double dt, int delay) {
+	private void run_sim_thread(int n, double dt, int delay) {
 		while (n > 0 && !Thread.interrupted()) {
 			try {
 				this._ctrl.advance(dt);
@@ -219,7 +221,22 @@ public class ControlPanel extends JPanel {
 				Thread.currentThread().interrupt();
 			} catch (Exception e) {
 				ViewUtils.showErrorMsg(e.getMessage());
-				n = 0; // TODO Hay que obligarle a salir del bucle o se sale solo
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
+	private void run_sim_worker(int n, double dt, int delay) {
+		while (n > 0 && !Thread.interrupted()) {
+			try {
+				this._ctrl.advance(dt);
+				Thread.sleep(delay);
+				n--;
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			} catch (Exception e) {
+				ViewUtils.showErrorMsg(e.getMessage());
+				Thread.currentThread().interrupt();
 			}
 		}
 	}
@@ -286,9 +303,12 @@ public class ControlPanel extends JPanel {
 		case THREAD:
 			if (this._thread != null)
 				this._thread.interrupt();
+			this._thread = null;
 			break;
 		case WORKER:
-			this.stopWorker();
+			if (this._worker != null)
+				this._worker.cancel(true);
+			this._worker = null;
 			break;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this._mode);
@@ -312,32 +332,42 @@ public class ControlPanel extends JPanel {
 			this.setEnabledButtons(false);
 			this._thread = new Thread(() -> {
 				try {
-					this.run_sim((int) this._steps_spinner.getValue(),
+					this.run_sim_thread((int) this._steps_spinner.getValue(),
 							Double.valueOf(this._delta_time_textField.getText()), (int) this._delay_spinner.getValue());
 				} catch (NumberFormatException e) {
 					ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
-					this.setEnabledButtons(true);
-					this._stopped = true;
 				}
-				this.setEnabledButtons(true);
-				this._thread = null;
+				SwingUtilities.invokeLater(() -> {
+					this.setEnabledButtons(true);
+				});
 			});
 			this._thread.start();
-//			try {
-//				this._thread.join();
-//			} catch (InterruptedException e) {
-//				ViewUtils.showErrorMsg("CONTROPANEL RUNBUTTONACTION");
-//			}
-//			this._thread = null;
 		}
 	}
 
 	private void runWorker() {
-		JOptionPane.showMessageDialog(null, "Unfinished mode", "WORKER", JOptionPane.INFORMATION_MESSAGE);
-	}
+		if (this._worker == null) {
+			this.setEnabledButtons(false);
+			this._worker = new SwingWorker<>() {
 
-	private void stopWorker() {
-		JOptionPane.showMessageDialog(null, "Unfinished mode", "WORKER", JOptionPane.INFORMATION_MESSAGE);
+				@Override
+				protected Void doInBackground() throws Exception {
+					try {
+						run_sim_worker((int) _steps_spinner.getValue(), Double.valueOf(_delta_time_textField.getText()),
+								(int) _delay_spinner.getValue());
+					} catch (NumberFormatException e) {
+						ViewUtils.showErrorMsg(Messages.DELTA_TIME_ERROR);
+					}
+					SwingUtilities.invokeLater(() -> {
+						setEnabledButtons(true);
+					});
+
+					return null;
+				}
+
+			};
+			this._worker.execute();
+		}
 	}
 
 }
