@@ -45,7 +45,9 @@ public class ControlPanel extends JPanel {
 	}
 
 	private Mode _mode = Mode.NORMAL;
-	private boolean _stopped = true; // for run/stop buttons
+
+	// for run/stop buttons
+	private boolean _stopped = true;
 	private volatile Thread _thread = null;
 	private volatile SwingWorker<Void, Void> _worker;
 
