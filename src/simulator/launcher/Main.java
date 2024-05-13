@@ -126,7 +126,7 @@ public class Main {
 			System.exit(1);
 		}
 
-	} 
+	}
 
 	private static Options build_options() {
 		Options cmdLineOptions = new Options();
