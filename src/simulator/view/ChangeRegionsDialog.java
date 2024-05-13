@@ -157,6 +157,8 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			try {
 				this._ctrl.set_regions(tableToJSON());
 				setVisible(false);
+			} catch (NumberFormatException ex) {
+				ViewUtils.showErrorMsg(Messages.VALUE_ERROR);
 			} catch (Exception ex) {
 				ViewUtils.showErrorMsg(ex.getMessage());
 			}
@@ -230,10 +232,9 @@ class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			String key = this._dataTableModel.getValueAt(i, 0).toString();
 			Object value = this._dataTableModel.getValueAt(i, 1);
 
-			region_data.put(key, value);
+			if (value != null && !value.toString().isEmpty())
+				region_data.put(key, Double.parseDouble(value.toString()));
 		}
-
-		System.out.println(region_data);
 
 		JSONObject r_json = new JSONObject();
 
