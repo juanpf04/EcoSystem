@@ -14,7 +14,6 @@ import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
-import simulator.model.Animal.Diet;
 import simulator.model.MapInfo.RegionData;
 
 public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObserver {
@@ -71,12 +70,12 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 		case 1:
 			return r.col();
 		case 2:
-			if(this._fastest_animals.get(r) == null)
+			if (this._fastest_animals.get(r) == null)
 				return "no hay";
 			return this._fastest_animals.get(r).get_genetic_code();
 		case 3:
-			if(this._fastest_animals.get(r) == null)
-				return 0;			
+			if (this._fastest_animals.get(r) == null)
+				return 0;
 			return this._fastest_animals.get(r).get_speed();
 		default:
 			throw new UnsupportedOperationException("queee");
@@ -133,13 +132,9 @@ public class MaxSpeedTableModel extends AbstractTableModel implements EcoSysObse
 	private void addMaxAnimal(RegionData r) {
 		this._regiones.add(r);
 
-		Optional<AnimalInfo> fastest_animal = r.region().getAnimalsInfo().stream().max((a1,a2) -> 
-			Double.compare(a1.get_speed(), a2.get_speed())
-		);
-		
-		if (fastest_animal.isPresent())
-			this._fastest_animals.put(r, fastest_animal.get());
-		else 
-			this._fastest_animals.put(r, null);
+		Optional<AnimalInfo> fastest_animal = r.region().getAnimalsInfo().stream()
+				.max((a1, a2) -> Double.compare(a1.get_speed(), a2.get_speed()));
+
+		this._fastest_animals.put(r, fastest_animal.orElse(null));
 	}
 }

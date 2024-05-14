@@ -42,11 +42,15 @@ public class North implements EcoSysObserver {
 	public void onAvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 		int cont = 0;
 		for(AnimalInfo a: animals) {
-			Double old_y = this.estado_anterior.get(a);
 			Double new_y = a.get_position().getY();
-			if(old_y != null && old_y > new_y)
-				cont++;
-			this.estado_anterior.replace(a, old_y, new_y);
+			if(this.estado_anterior.containsKey(a)) {
+				Double old_y = this.estado_anterior.get(a);
+				if(old_y > new_y)
+					cont++;
+				this.estado_anterior.replace(a, old_y, new_y);
+			}
+			else
+				this.estado_anterior.put(a, new_y);
 		}
 		this.north.add(cont);
 //		Integer cont = (int) animals.stream().filter((a)->{
