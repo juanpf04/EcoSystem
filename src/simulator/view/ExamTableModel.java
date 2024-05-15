@@ -24,22 +24,7 @@ class ExamTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private List<String> _header;
 
-	private class InfoTable {
-		private int _herbivores;
-		private int _carnivores;
-
-		public InfoTable(int herbivore, int carnivore) {
-			this._herbivores = herbivore;
-			this._carnivores = carnivore;
-		}
-
-		public int get_herbivores() {
-			return _herbivores;
-		}
-
-		public int get_carnivores() {
-			return _carnivores;
-		}
+	public record InfoTable(int herbivores, int carnivores) {
 	}
 
 	private List<InfoTable> _info;
@@ -80,9 +65,9 @@ class ExamTableModel extends AbstractTableModel implements EcoSysObserver {
 		case 0:
 			return rowIndex;
 		case 1:
-			return info.get_herbivores();
+			return info.herbivores();
 		case 2:
-			return info.get_carnivores();
+			return info.carnivores();
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + columnIndex);
 		}
