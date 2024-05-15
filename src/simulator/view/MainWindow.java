@@ -63,12 +63,18 @@ public class MainWindow extends JFrame {
 		regions.setPreferredSize(_default_table_size);
 		contentPanel.add(regions);
 		// ------------------------------------------------------
-		
-		// - Max speed table --------------------------------------
-		InfoTable speeds = new InfoTable("Max speed", new MaxSpeedTableModel(this._ctrl));
-		speeds.setPreferredSize(_default_table_size);
-		contentPanel.add(speeds);
+
+		// - Exam table -----------------------------------------
+		InfoTable exam = new InfoTable("Exam", new ExamTableModel(this._ctrl));
+		exam.setPreferredSize(_default_table_size);
+		contentPanel.add(exam);
 		// ------------------------------------------------------
+
+//		// - Max speed table --------------------------------------
+//		InfoTable speeds = new InfoTable("Max speed", new MaxSpeedTableModel(this._ctrl));
+//		speeds.setPreferredSize(_default_table_size);
+//		contentPanel.add(speeds);
+//		// ------------------------------------------------------
 
 		addWindowListener(new WindowListener() {
 
