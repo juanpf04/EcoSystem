@@ -32,6 +32,7 @@ public class ControlPanel extends JPanel {
 
 	private Controller _ctrl;
 	private ChangeRegionsDialog _changeRegionsDialog;
+	private ExamDialog _examDialog;
 
 	private JToolBar _toolBar;
 	private JFileChooser _fc;
@@ -41,6 +42,7 @@ public class ControlPanel extends JPanel {
 	private JButton _openButton;
 	private JButton _viewerButton;
 	private JButton _regionsButton;
+	private JButton _examDialogButton;
 	private JButton _runButton;
 	private JButton _stopButton;
 	private JButton _exitButton;
@@ -82,6 +84,14 @@ public class ControlPanel extends JPanel {
 		this._regionsButton.setIcon(ViewUtils.get_icon("regions"));
 		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this)));
 		this._toolBar.add(this._regionsButton);
+		// ----------------------------------------------------------------------
+
+		// - Dialog Button -----------------------------------------------------
+		this._examDialogButton = new JButton();
+		this._examDialogButton.setToolTipText("Deaths Dialog");
+//		this._examDialogButton.setIcon(ViewUtils.get_icon("deaths"));
+		this._examDialogButton.addActionListener((e) -> this._examDialog.open(ViewUtils.getWindow(this)));
+		this._toolBar.add(this._examDialogButton);
 		// ----------------------------------------------------------------------
 
 		// - Run Button ---------------------------------------------------------
@@ -140,6 +150,7 @@ public class ControlPanel extends JPanel {
 		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/" + Messages.EXAMPLES_DIRECTORY));
 
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
+		this._examDialog = new ExamDialog(this._ctrl);
 	}
 
 	private void run_sim(int n, double dt) {
@@ -166,6 +177,7 @@ public class ControlPanel extends JPanel {
 		this._openButton.setEnabled(b);
 		this._viewerButton.setEnabled(b);
 		this._regionsButton.setEnabled(b);
+		this._examDialogButton.setEnabled(b);
 		this._runButton.setEnabled(b);
 		this._exitButton.setEnabled(b);
 		this._steps_spinner.setEnabled(b);
