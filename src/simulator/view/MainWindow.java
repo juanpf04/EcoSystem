@@ -70,6 +70,12 @@ public class MainWindow extends JFrame {
 		contentPanel.add(exam);
 		// ------------------------------------------------------
 
+		// - Born table -----------------------------------------
+		InfoTable born = new InfoTable("Borns", new BornTableModel(this._ctrl));
+		born.setPreferredSize(_default_table_size);
+		contentPanel.add(born);
+		// ------------------------------------------------------
+
 //		// - Max speed table --------------------------------------
 //		InfoTable speeds = new InfoTable("Max speed", new MaxSpeedTableModel(this._ctrl));
 //		speeds.setPreferredSize(_default_table_size);
