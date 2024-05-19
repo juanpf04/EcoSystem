@@ -230,12 +230,14 @@ public class Main {
 		List<Builder<Animal>> animal_builders = new LinkedList<>();
 		animal_builders.add(new SheepBuilder(_strategies_factory));
 		animal_builders.add(new WolfBuilder(_strategies_factory));
+		animal_builders.add(new CowBuilder(_strategies_factory));
 		_animals_factory = new BuilderBasedFactory<Animal>(animal_builders);
 
 		// initialize the regions factory
 		List<Builder<Region>> region_builders = new LinkedList<>();
 		region_builders.add(new DefaultRegionBuilder());
 		region_builders.add(new DynamicSupplyRegionBuilder());
+		region_builders.add(new CarnivoreRegionBuilder());
 		_regions_factory = new BuilderBasedFactory<Region>(region_builders);
 	}
 

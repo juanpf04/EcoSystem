@@ -1,0 +1,174 @@
+package simulator.model;
+
+import simulator.misc.Messages;
+import simulator.misc.Vector2D;
+
+public class Cow extends Animal {
+
+	protected static final String GENETIC_CODE = "Cowasd";
+	protected static final Diet DIET = Diet.HERBIVORE;
+	protected static final double INIT_SIGHT_RANGE = 50.0;
+	protected static final double INIT_SPEED = 25.0;
+	protected static final double MAX_AGE = 20.0;
+
+	protected static final double ENERGY_COST = -20.0;
+	protected static final double DESIRE_COST = 40.0;
+
+	protected static final double DANGER_SPEED = 2.0;
+	protected static final double MATE_SPEED = 2.0;
+
+	private Animal _danger_source;
+	private SelectionStrategy _danger_strategy;
+
+	private int contador = 0;
+
+	private boolean closest = false;
+
+	public Cow(SelectionStrategy mate_strategy, SelectionStrategy danger_strategy, Vector2D pos) {
+		super(GENETIC_CODE, DIET, INIT_SIGHT_RANGE, INIT_SPEED, mate_strategy, pos);
+
+		if (danger_strategy == null)
+			throw new IllegalArgumentException(Messages.INVALID_STRATEGY);
+
+		this._danger_strategy = danger_strategy;
+		this._danger_source = null;
+	}
+
+	protected Cow(Cow p1, Animal p2) {
+		super(p1, p2);
+
+		this._danger_strategy = p1._danger_strategy;
+		this._danger_source = null;
+	}
+
+	// Update
+
+	@Override
+	protected void update_normal(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		super.update_normal(dt);
+
+		if (this._danger_source == null)
+			this._danger_source = this._danger_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
+
+		if (this._danger_source != null)
+			this.set_danger();
+		else if (this.on_heat())
+			this.set_mate();
+	}
+
+	@Override
+	protected void update_mate(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		super.update_mate(dt);
+
+		if (this._mate_target != null)
+			if (this.in_action_range(this._mate_target)) {
+				this.reset_desire();
+				this._mate_target.reset_desire();
+
+				if (!this.is_pregnant() && this.can_pregnant())
+					this._baby = new Cow(this, this._mate_target);
+
+				this._mate_target = null;
+			}
+
+		if (this._danger_source == null)
+			this._danger_source = this._danger_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
+
+		if (this._danger_source != null)
+			this.set_danger();
+		else if (!this.on_heat())
+			this.set_normal();
+	}
+
+	@Override
+	protected void update_danger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		super.update_danger(dt);
+
+		if (this._danger_source != null && this._danger_source.dead())
+			this._danger_source = null;
+
+		if (this._danger_source == null)
+			super.advance(dt);
+		else {
+			this._dest = this.get_position().plus(this.get_position().minus(_danger_source.get_position()).direction());
+
+			this.update_status(dt, DANGER_SPEED);
+		}
+
+		if (this._danger_source == null || !this._danger_source.in_sight_range(this)) {
+			this._danger_source = this._danger_strategy.select(this,
+					this._region_mngr.get_animals_in_range(this, a -> a.carnivore()));
+
+			if (this._danger_source == null) {
+				if (this.on_heat())
+					this.set_mate();
+				else
+					this.set_normal();
+			}
+		}
+	}
+
+	@Override
+	protected void update_hunger(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException(Messages.DELTA_TIME_ERROR);
+
+		throw new IllegalStateException(Messages.illegal_state(this.get_genetic_code(), this.get_state()));
+	}
+
+	// Auxiliary
+
+	@Override
+	protected void update_reference_animal() {
+		this._danger_source = null;
+	}
+
+	@Override
+	protected double max_age() {
+		return MAX_AGE;
+	}
+
+	@Override
+	protected double energy_cost() {
+		return ENERGY_COST;
+	}
+
+	@Override
+	protected double desire_cost() {
+		return DESIRE_COST;
+	}
+
+	@Override
+	protected double mate_speed() {
+		return MATE_SPEED;
+	}
+
+	@Override
+	public void update(double dt) {
+		super.update(dt);
+		contador++;
+
+		if (contador == 10) {
+			contador = 0;
+
+			if (closest) {
+				this._danger_strategy = new SelectClosest();
+				closest = false;
+			} else {
+				this._danger_strategy = new SelectFirst();
+				closest = true;
+			}
+		}
+	}
+}

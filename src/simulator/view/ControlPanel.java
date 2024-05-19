@@ -32,6 +32,7 @@ public class ControlPanel extends JPanel {
 
 	private Controller _ctrl;
 	private ChangeRegionsDialog _changeRegionsDialog;
+	private AddAnimalsDialog _addAnimalsDialog;
 
 	private JToolBar _toolBar;
 	private JFileChooser _fc;
@@ -41,6 +42,7 @@ public class ControlPanel extends JPanel {
 	private JButton _openButton;
 	private JButton _viewerButton;
 	private JButton _regionsButton;
+	private JButton _animalsButton;
 	private JButton _runButton;
 	private JButton _stopButton;
 	private JButton _exitButton;
@@ -82,6 +84,14 @@ public class ControlPanel extends JPanel {
 		this._regionsButton.setIcon(ViewUtils.get_icon("regions"));
 		this._regionsButton.addActionListener((e) -> this._changeRegionsDialog.open(ViewUtils.getWindow(this)));
 		this._toolBar.add(this._regionsButton);
+		// ----------------------------------------------------------------------
+
+		// - Animals Button -----------------------------------------------------
+		this._animalsButton = new JButton();
+		this._animalsButton.setToolTipText("Add Animals");
+		this._animalsButton.setIcon(ViewUtils.get_icon("regions"));
+		this._animalsButton.addActionListener((e) -> this._addAnimalsDialog.open(ViewUtils.getWindow(this)));
+		this._toolBar.add(this._animalsButton);
 		// ----------------------------------------------------------------------
 
 		// - Run Button ---------------------------------------------------------
@@ -140,6 +150,7 @@ public class ControlPanel extends JPanel {
 		this._fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/" + Messages.EXAMPLES_DIRECTORY));
 
 		this._changeRegionsDialog = new ChangeRegionsDialog(this._ctrl);
+		this._addAnimalsDialog = new AddAnimalsDialog(this._ctrl);
 	}
 
 	private void run_sim(int n, double dt) {
@@ -166,6 +177,7 @@ public class ControlPanel extends JPanel {
 		this._openButton.setEnabled(b);
 		this._viewerButton.setEnabled(b);
 		this._regionsButton.setEnabled(b);
+		this._animalsButton.setEnabled(b);
 		this._runButton.setEnabled(b);
 		this._exitButton.setEnabled(b);
 		this._steps_spinner.setEnabled(b);

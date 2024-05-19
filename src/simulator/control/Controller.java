@@ -36,18 +36,7 @@ public class Controller {
 			this.set_regions(data);
 		}
 
-		JSONArray ja = data.getJSONArray(Messages.ANIMALS_KEY);
-
-		for (int i = 0; i < ja.length(); i++) {
-			JSONObject jo = ja.getJSONObject(i);
-			int amount = jo.getInt(Messages.AMOUNT_KEY);
-
-			if (amount <= 0)
-				throw new IllegalArgumentException(Messages.INVALID_AMOUNT);
-
-			for (int j = 0; j < amount; j++)
-				this._sim.add_animal(jo.getJSONObject(Messages.SPEC_KEY));
-		}
+		this.set_animals(data);
 	}
 
 	public void run(double t, double dt, boolean sv, OutputStream out) {
@@ -111,6 +100,21 @@ public class Controller {
 			for (int col = fromCol; col <= toCol; col++)
 				for (int row = fromRow; row <= toRow; row++)
 					this._sim.set_region(row, col, jo.getJSONObject(Messages.SPEC_KEY));
+		}
+	}
+
+	public void set_animals(JSONObject as) {
+		JSONArray ja = as.getJSONArray(Messages.ANIMALS_KEY);
+
+		for (int i = 0; i < ja.length(); i++) {
+			JSONObject jo = ja.getJSONObject(i);
+			int amount = jo.getInt(Messages.AMOUNT_KEY);
+
+			if (amount <= 0)
+				throw new IllegalArgumentException(Messages.INVALID_AMOUNT);
+
+			for (int j = 0; j < amount; j++)
+				this._sim.add_animal(jo.getJSONObject(Messages.SPEC_KEY));
 		}
 	}
 

@@ -26,16 +26,22 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected String _genetic_code;
 
 	public static enum Diet {
-		HERBIVORE(1.0), CARNIVORE(0.0);
+		HERBIVORE(1.0, 0.0), CARNIVORE(0.0, 1.0);
 
 		private double _herbivorous_region_weighting;
+		private double _carnivorous_region_weighting;
 
-		Diet(double herbivorous_region_weighting) {
+		Diet(double herbivorous_region_weighting, double carnivorous_region_weighting) {
 			this._herbivorous_region_weighting = herbivorous_region_weighting;
+			this._carnivorous_region_weighting = carnivorous_region_weighting;
 		}
 
 		public double get_herbivorous_region_weighting() {
 			return this._herbivorous_region_weighting;
+		}
+
+		public double get_carnivorous_region_weighting() {
+			return this._carnivorous_region_weighting;
 		}
 	}
 
