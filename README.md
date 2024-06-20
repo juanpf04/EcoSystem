@@ -1,1 +1,1 @@
-Proyecto realizado para la asignatura de TP2
+Programa que simula el comportamiento de animales en regiones
